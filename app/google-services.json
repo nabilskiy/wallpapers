@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "935832880988",
+    "firebase_url": "https://akspic-fdb13.firebaseio.com",
+    "project_id": "akspic-fdb13",
+    "storage_bucket": "akspic-fdb13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935832880988:android:b79dd01d937daa7c22a399",
+        "android_client_info": {
+          "package_name": "wallgram.hd.wallpapers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935832880988-e529pi1fnp6fl6dabsg9je2r2r6ttj9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5NkrjvO5XOP3zhreUa4iSJpL_aNc_8ok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935832880988-e529pi1fnp6fl6dabsg9je2r2r6ttj9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

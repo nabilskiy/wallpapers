@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="34dp">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:padding="0dp"
+            android:backgroundTint="@android:color/transparent"
+            android:layout_alignTop="@id/setting_title"
+            android:layout_alignBottom="@id/setting_title"
+            android:src="@drawable/ic_back"/>
+        <TextView
+            android:id="@+id/setting_title"
+            android:layout_toEndOf="@id/back_btn"
+            android:layout_marginStart="16dp"
+            android:text="Настройки"
+            android:paddingStart="0dp"
+            style="@style/MenuTextStyle" />
+
+        <View
+            android:id="@+id/border_1"
+            android:layout_below="@id/setting_title"
+            android:layout_width="match_parent"
+            android:background="#1FFFFFFF"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/lang_title"
+            android:text="Язык"
+            android:layout_below="@id/border_1"
+            android:layout_marginTop="18dp"
+            android:drawablePadding="16dp"
+            android:paddingStart="0dp"
+            style="@style/MenuTextStyle"
+            app:drawableStartCompat="@drawable/ic_translate" />
+
+        <RadioGroup
+            android:id="@+id/lang_group"
+            android:layout_below="@id/lang_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/ukraine_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="42dp"
+                style="@style/LanguageRadioStyle"
+                android:text="Украинский"/>
+            <RadioButton
+                android:id="@+id/russia_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LanguageRadioStyle"
+                android:paddingStart="42dp"
+                android:text="Русский"/>
+            <RadioButton
+                android:id="@+id/english_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LanguageRadioStyle"
+                android:paddingStart="42dp"
+                android:text="Английский"/>
+            <RadioButton
+                android:id="@+id/deutsch_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LanguageRadioStyle"
+                android:paddingStart="42dp"
+                android:text="Немецкий"/>
+            <RadioButton
+                android:id="@+id/espanol_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LanguageRadioStyle"
+                android:paddingStart="42dp"
+                android:text="Испанский"/>
+            <RadioButton
+                android:id="@+id/china_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/LanguageRadioStyle"
+                android:paddingStart="42dp"
+                android:text="Китайский"/>
+        </RadioGroup>
+
+        <View
+            android:id="@+id/border_2"
+            android:layout_below="@id/lang_group"
+            android:layout_width="match_parent"
+            android:background="#1FFFFFFF"
+            android:layout_marginTop="14dp"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/cache_title"
+            android:text="Кэш приложения"
+            android:layout_below="@id/border_2"
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:paddingStart="0dp"
+            style="@style/MenuTextStyle" />
+
+        <TextView
+            android:id="@+id/cache_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_below="@id/cache_title"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="#66FFFFFF"
+            android:text="Размер кэша"/>
+        
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clear_btn"
+            android:layout_below="@id/cache_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="false"
+            android:letterSpacing="0.03"
+            android:stateListAnimator="@null"
+            app:strokeWidth="2dp"
+            app:elevation="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:strokeColor="#BAFFFFFF"
+            app:backgroundTint="@android:color/transparent"
+            android:textColor="#BAFFFFFF"
+            android:text="Очистить кэш"
+            android:fontFamily="@font/roboto_medium"/>
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

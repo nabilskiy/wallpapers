@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:iconSpaceReserved="false">
+
+    <PreferenceCategory android:title="@string/general_title" app:iconSpaceReserved="false">
+        <ListPreference
+            android:key="langList"
+            app:iconSpaceReserved="false"
+            android:title="@string/lang_title"
+            android:entries="@array/lang_entries"
+            android:entryValues="@array/lang_values"
+            android:dialogTitle="@string/lang_choose" />
+
+        <Preference
+            android:key="prefClearCache"
+            app:iconSpaceReserved="false"
+            android:title="@string/clear_cache_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

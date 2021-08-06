@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.core.widget.NestedScrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.wallpapers.WallpapersFragment">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@id/clear_btn"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Любимые"
+            android:textColor="#E6FFFFFF"
+            android:textSize="24sp" />
+
+        <ImageButton
+            android:id="@+id/clear_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignTop="@id/title_text"
+            android:layout_alignBottom="@id/title_text"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_trash" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_text"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/recommend_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@id/clear_btn"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Рекомендуем"
+            android:textColor="#E6FFFFFF"
+            android:textSize="20sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recommend_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recommend_text"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/popular_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recommend_list"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/roboto_bold"
+            android:text="Популярные"
+            android:textColor="#E6FFFFFF"
+            android:textSize="20sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/all_btn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/popular_text"
+            android:layout_alignBottom="@id/popular_text"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/roboto_regular"
+            android:letterSpacing="0.01"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="Все"
+            android:textAllCaps="false"
+            android:textColor="#8690F1"
+            android:textSize="14sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popular_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/popular_text"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:nestedScrollingEnabled="false" />
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

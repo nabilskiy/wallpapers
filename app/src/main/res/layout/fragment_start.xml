@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/start_bg"
+
+    tools:context=".ui.start.StartFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingTop="24dp"
+        android:paddingRight="24dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_logo"
+            app:srcCompat="@drawable/ic_wallgram" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="62dp"
+            android:text="Лучшие обои для"
+            android:fontFamily="@font/roboto_regular"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#BAFFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/device_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:textAlignment="center"
+            android:fontFamily="@font/comfortaa_bold"
+            android:text="Samsung Galaxy S6 edge plus"
+            android:textColor="#E6FFFFFF"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="1440 x 2560"
+            android:fontFamily="@font/roboto_regular"
+            android:textAlignment="center"
+            android:textColor="#E6FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="40dp"
+            android:text="@string/wallpapers_adapted"
+            android:textAlignment="center"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="#BAFFFFFF"
+            android:textSize="14sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/purchase_button"
+            android:layout_width="214dp"
+            android:layout_height="58dp"
+            android:fontFamily="@font/roboto_medium"
+            android:layout_marginTop="48dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="72dp"
+            app:cornerRadius="8dp"
+            android:textSize="14sp"
+            android:letterSpacing="0.02"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/color_secondary"
+            android:textColor="#E6000000"
+            android:text="Продолжить" />
+
+        <TextView
+            android:id="@+id/user_agreement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/user_agreement"
+            android:textAlignment="center"
+            android:textColor="#BAFFFFFF"
+            android:textColorLink="#BAFFFFFF"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

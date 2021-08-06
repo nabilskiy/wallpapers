@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Wallgram</string>
+    <string name="action_settings">Paramètres</string>
+
+    <string name="your_device">Votre appareil</string>
+    <string name="user_agreement">En démarrant l’application, vous acceptez les termes et les conditions d’utilisation</string>
+    <string name="menu_favorites">Favoris</string>
+    <string name="menu_history">Historique</string>
+    <string name="menu_feedback">Laisser un commentaire</string>
+    <string name="menu_site">Site web officiel</string>
+    <string name="menu_history_clear">Vider l’historique</string>
+    <string name="action_search">"Recherche "</string>
+    <string name="category_title">Categories</string>
+    <string name="news_title">Nouveautes</string>
+    <string name="popular_title">Populaires</string>
+    <string name="random_title">Aleatoires</string>
+    <string name="image_applying">L’installation de l’image…</string>
+    <string name="wallpaper_installed">Fonds d’écran sont installés</string>
+    <string name="wrong_error">Quelque chose a mal tourné…</string>
+    <string name="wallpaper_downloaded">Image est téléchargée</string>
+    <string name="wallpapers_adapted">Tous les fonds d\'écran sont adaptés à votre écran</string>
+    <string name="start_button">Commencer</string>
+    <string name="agreement_sub">les conditions d’utilisation</string>
+    <string name="favorites_empty">Vous n\'avez encore rien ajouté.</string>
+    <string name="history_empty">La liste de l\'historique est vide.</string>
+    <string name="internet_connection">Pas de connexion Internet</string>
+    <string name="retry_button">Répéter</string>
+    <string name="lang_title">Langage</string>
+    <string name="lang_choose">Sélectionnez une langue</string>
+
+    <string-array name="lang_entries">
+        <item>Русский</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Deutsch</item>
+        <item>Français</item>
+        <item>汉语</item>
+    </string-array>
+
+    <string-array name="lang_values">
+        <item>ru</item>
+        <item>en</item>
+        <item>es</item>
+        <item>de</item>
+        <item>fr</item>
+        <item>zh</item>
+    </string-array>
+
+    <string name="search_none">Rien trouvé</string>
+    <string name="image_background">Image d’arrière-plan</string>
+    <string name="image_logo">Logo de l’application</string>
+    <string name="image">Image</string>
+    <string name="search_icon">"Recherche "</string>
+    <string name="favorites_icon">Favoris</string>
+    <string name="history_icon">Historique</string>
+    <string name="similar_wallpapers">Fonds d\'écran similaires</string>
+    <string name="general_title">Général</string>
+    <string name="exit_toast">Appuyez de nouveau pour sortir</string>
+    <string name="home_screen">Ecran principal</string>
+    <string name="lock_screen">Ecran de verrouillage</string>
+    <string name="both_screens">Deux écrans</string>
+    <string name="upload_gallery">Uploader dans la galerie</string>
+    <string name="license_key">Licence: %1$s</string>
+    <string name="clear_history_confirm">Voulez-vous vraiment effacer tout l’historique?</string>
+    <string name="clear">Effacer</string>
+    <string name="cancel">Annuler</string>
+    <string name="clear_cache_title">Vider le cache</string>
+    <string name="cache_size">Taille du cache: %1$s</string>
+    <string name="clear_cache_confirm">Voulez-vous vraiment vider le cache?</string>
+    <string name="cache_cleared">Le cache a été vidé.</string>
+    <string name="brightness_key">Luminosité</string>
+    <string name="contrast_key">Contraste</string>
+    <string name="saturation_key">Saturation</string>
+    <string name="editing_key">Edition</string>
+    <string name="filter_key">Filtre</string>
+    <string name="edit_key">Editer</string>
+    <string name="exit_confirm_key">Les modifications n\'ont pas été sauvegardées. Vous êtes sûr de vouloir partir ?</string>
+    <string name="exit_key">Quitter</string>
+    <string name="crop_image_key">Recadrage d’image</string>
+    <string name="action_subscription">Abonnement</string>
+    <string name="ads_without_key">Pas de publicité</string>
+    <string name="unlim_download_key">Téléchargement illimité de fonds d\'écran</string>
+    <string name="install_key">Install</string>
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+    <string name="sub_purchase">Vous avez acheté l\'abonnement</string>
+    <string name="more_sixteen">C\'est 16% plus rentable</string>
+    <string name="more_thirty">C\'est 31% plus rentable</string>
+    <string name="continue_key">CONTINUER</string>
+    <string name="free_days">Obtenez 3 jours gratuits</string>
+    <string name="sub_text">L\'abonnement à l\'application est automatiquement renouvelé si vous ne désactivez pas le renouvellement automatique plus de 24 heures avant la fin de la période payante en cours. Vous pouvez annuler le renouvellement automatique sur Google Play à tout moment.</string>
+    <string name="sub_year">1 an</string>
+    <string name="sub_six">6 mois</string>
+    <string name="sub_one">1 mois</string>
+    <string name="error_msg">Impossible de charger les fonds d’écran</string>
+    <string name="error_msg_details">Impossible de charger les données</string>
+    <string name="error_msg_category">Impossible de charger les catégories</string>
+    <string name="tap_to_reload">"Appuyez pour réessayer "</string>
+    <string name="error_msg_timeout">Le serveur ne répond pas</string>
+    <string name="error_msg_unkown">Erreue inconnue</string>
+    <string name="search_change_query">Essayez de changer votre demande</string>
+    <string name="loading_key">"Téléchargement "</string>
+
+    <string name="feedback_title">Laissez un commentaire</string>
+    <string name="rate_title">Evaluez l’application</string>
+    <string name="ok_btn">OK</string>
+    <string name="rate_neutral">Non, merci</string>
+    <string name="rate_later">Plus tard</string>
+    <string name="send_feedback">Envoyer des commentaires</string>
+    <string name="email_error">Clients de messagerie ne sont pas installés</string>
+    <string name="email_subject">Akspic_feedback</string>
+    <string name="ads_not_load">La publicité n\'est pas encore téléchargée</string>
+    <string name="list_of_images">Liste des images</string>
+    <string name="ad_attribution">Ad</string>
+    <string name="other_key">Autre</string>
+    <string name="enter_query">Saisir la requête</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="menu_favorites_clear">Сlaire favoris</string>
+    <string name="clear_confirm">Voulez-vous vraiment effacer la liste des images?</string>
+    <string name="back" >Arrière</string>
+    <string name="portrait">Vertical</string>
+    <string name="landscape">Horizontal</string>
+    <string name="original">Taille originale</string>
+    <string name="install_wallpaper">Installer</string>
+    <string name="download">"Télécharger "</string>
+</resources>
