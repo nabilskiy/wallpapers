@@ -34,16 +34,13 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
 ) {
 
     companion object {
-        private const val ARG_CATEGORY = "arg_category"
         private const val ARG_TYPE = "arg_type"
-        fun create(type: Int) = FavoriteFragment().withArgs(
+        fun create(type: WallType) = FavoriteFragment().withArgs(
                 ARG_TYPE to type
         )
     }
 
-    private val type: Int by args(ARG_TYPE, 0)
-
-    private val modo = wallgram.hd.wallpapers.App.modo
+    private val type: WallType by args(ARG_TYPE, WallType.FAVORITE)
 
     private val favoritesAdapter: FavoritesAdapter by lazy {
         FavoritesAdapter(onItemClicked = {position, id ->
@@ -55,19 +52,19 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
 
     private val categoriesAdapter: CategoriesListAdapter by lazy {
         CategoriesListAdapter(onItemClicked = {
-            modo.forward(Screens.CategoriesList(it, type = WallType.CATEGORY))
+            viewModel.onItemClicked(Screens.CategoriesList(it, type = WallType.CATEGORY))
         }, tag = MainFragment::class.java.simpleName)
     }
 
     private val popularAdapter: PopularAdapter by lazy {
         PopularAdapter { position, id ->
-            modo.externalForward(Screens.Wallpaper(position, id))
+            viewModel.onItemClicked(Screens.Wallpaper(position, id), true)
         }
     }
 
     private val tagsAdapter: TagsAdapter by lazy{
         TagsAdapter{
-            modo.forward(Screens.CategoriesList(type = WallType.TAG, category = it))
+            viewModel.onItemClicked(Screens.CategoriesList(type = WallType.TAG, category = it))
         }
     }
 
@@ -97,14 +94,9 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
         })
 
         with(binding) {
-            
-            if(type == 1){
-                favoritesView.titleText.text = "История"
-                emptyView.titleText.text = "История"
-            }
 
             emptyView.allBtn.setOnClickListener {
-                modo.selectStack(1)
+                viewModel.onSelectStack(1)
             }
 
             emptyView.listCategory.apply {
@@ -120,12 +112,8 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
 
             TabLayoutMediator(emptyView.tabLayout, emptyView.viewPager) { tab: TabLayout.Tab, position: Int -> tab.text = resources.getStringArray(R.array.feed_list)[position] }.attach()
 
-            favoritesView.clearBtn.setOnClickListener {
-                clearAll()
-            }
-
             favoritesView.allBtn.setOnClickListener{
-                modo.forward(Screens.CategoriesList(type = WallType.POPULAR, category = Category()))
+                viewModel.onItemClicked(Screens.CategoriesList(type = WallType.POPULAR, category = Category()))
             }
 
             favoritesView.list.apply {

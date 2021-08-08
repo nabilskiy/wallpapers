@@ -19,7 +19,7 @@
         <item name="materialAlertDialogTheme">@style/CustomAlertDialogTheme</item>
         <item name="alertDialogTheme">@style/DialogStyle</item>
 
-        <item name="android:statusBarColor">@color/color_status_bar</item>
+        <item name="android:statusBarColor">#1B1928</item>
         <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
     </style>
 

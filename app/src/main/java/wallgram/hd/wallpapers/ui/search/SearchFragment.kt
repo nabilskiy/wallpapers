@@ -26,15 +26,15 @@ import wallgram.hd.wallpapers.ui.wallpapers.ReposLoadStateAdapter
 import wallgram.hd.wallpapers.util.afterTextChangedFlow
 
 class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
-        SearchFragmentBinding::inflate
+    SearchFragmentBinding::inflate
 ) {
 
 
     private lateinit var suggestionAdapter: ArrayAdapter<String>
 
     private val wallpapersAdapter: WallpapersAdapter by lazy {
-        WallpapersAdapter{ position, id ->
-            viewModel.onItemClicked(position,id)
+        WallpapersAdapter { position, id ->
+            viewModel.onItemClicked(position, id)
         }
     }
 
@@ -50,12 +50,12 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
 
 
         suggestionAdapter = ArrayAdapter<String>(
-                requireContext(),
-                R.layout.dropdown_menu_popup_item,
+            requireContext(),
+            R.layout.dropdown_menu_popup_item,
         )
 
 
-        with(binding){
+        with(binding) {
             searchField.setStartIconOnClickListener {
                 withMainFragment {
 
@@ -66,18 +66,18 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
                 if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
                     if (!binding.searchText.text.isNullOrBlank()) {
                         lifecycleScope.launch {
-                            viewModel.getFlow(binding.searchText.text.toString()).collectLatest { pagingData ->
-                                wallpapersAdapter.submitData(pagingData)
-                            }
+                            viewModel.getFlow(binding.searchText.text.toString())
+                                .collectLatest { pagingData ->
+                                    wallpapersAdapter.submitData(pagingData)
+                                }
                         }
                     }
                     true
                 } else false
             }
 
-            searchText.onItemClickListener = AdapterView.OnItemClickListener{
-                parent, _,
-                position, id ->
+            searchText.onItemClickListener = AdapterView.OnItemClickListener { parent, _,
+                                                                               position, id ->
                 val selectedItem = parent.getItemAtPosition(position).toString()
                 lifecycleScope.launch {
                     viewModel.getFlow(selectedItem).collectLatest { pagingData ->
@@ -88,14 +88,14 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
 
             lifecycleScope.launchWhenResumed {
                 binding.searchText.afterTextChangedFlow()
-                        .filterNot { it.isNullOrBlank() }
-                        .debounce(300)
-                        .collect {
-                            viewModel.getSuggest(it.toString())
+                    .filterNot { it.isNullOrBlank() }
+                    .debounce(300)
+                    .collect {
+                        viewModel.getSuggest(it.toString())
 //                            viewModel.search(it.toString()).collect{
 //                                searchLiveDataPrivate.value = it
 //                            }
-                        }
+                    }
             }
 
             list.apply {
@@ -103,8 +103,8 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
                 setHasFixedSize(true)
                 addItemDecoration(ItemOffsetDecoration(24))
                 adapter = wallpapersAdapter.withLoadStateHeaderAndFooter(
-                        header = ReposLoadStateAdapter { wallpapersAdapter.retry() },
-                        footer = ReposLoadStateAdapter { wallpapersAdapter.retry() }
+                    header = ReposLoadStateAdapter { wallpapersAdapter.retry() },
+                    footer = ReposLoadStateAdapter { wallpapersAdapter.retry() }
                 )
             }
             wallpapersAdapter.addLoadStateListener { loadState ->
@@ -113,13 +113,13 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
                 // Show loading spinner during initial load or refresh.
                 binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
                 // Show the retry state if initial load or refresh fails.
-              //  binding.errorLayout.root.isVisible = loadState.source.refresh is LoadState.Error
+                //  binding.errorLayout.root.isVisible = loadState.source.refresh is LoadState.Error
 
                 // Toast on any error, regardless of whether it came from RemoteMediator or PagingSource
                 val errorState = loadState.source.append as? LoadState.Error
-                        ?: loadState.source.prepend as? LoadState.Error
-                        ?: loadState.append as? LoadState.Error
-                        ?: loadState.prepend as? LoadState.Error
+                    ?: loadState.source.prepend as? LoadState.Error
+                    ?: loadState.append as? LoadState.Error
+                    ?: loadState.prepend as? LoadState.Error
                 errorState?.let {
 //                    Toast.makeText(
 //                            this,
@@ -135,17 +135,16 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
         }
 
         viewModel.suggestLiveData.observe(viewLifecycleOwner, { resource ->
-            when(resource){
+            when (resource) {
                 is Resource.Success -> {
                     resource.data?.let {
-                        if(it.isNotEmpty()){
+                        if (it.isNotEmpty()) {
                             suggestionAdapter.clear()
                             it.forEach {
                                 suggestionAdapter.add(it)
                             }
                             suggestionAdapter.notifyDataSetChanged()
-                        }
-                        else {
+                        } else {
                             suggestionAdapter.clear()
                             suggestionAdapter.add("No result")
                             suggestionAdapter.notifyDataSetChanged()
@@ -159,6 +158,7 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
 
     override fun getViewModel(): Class<SearchViewModel> = SearchViewModel::class.java
     fun setSearch(text: String) {
+        binding.searchText.setText(text)
         lifecycleScope.launch {
             viewModel.getFlow(text).collectLatest { pagingData ->
                 wallpapersAdapter.submitData(pagingData)

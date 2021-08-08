@@ -100,68 +100,40 @@ open class MainFragment : MultiStackFragment() {
         MenuCategoriesListAdapter {
             modo.selectStack(1)
             modo.forward(Screens.CategoriesList(it, type = WallType.CATEGORY))
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.categoriesLiveData.observe(viewLifecycleOwner, ::handleCategoriesList)
-
-        binding.categoriesList.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-       //     addItemDecoration(ItemOffsetDecoration())
-            adapter = categoriesAdapter
-        }
-
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.home -> modo.selectStack(0)
-                R.id.category -> modo.selectStack(1)
-                R.id.favorites -> modo.selectStack(2)
-                R.id.history -> modo.selectStack(3)
-                R.id.search -> modo.selectStack(4)
-            }
-            true
-        }
-
-        binding.bottomAppBar.setNavigationOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
-
-        binding.menuItems.children.forEach { v ->
-            v.setOnClickListener {
-                onClickMenuItem(it)
-            }
-        }
-
-    }
-
-    private fun handleCategoriesList(status: Resource<List<Category>>) {
-        when (status) {
-            is Resource.Success -> {
-                //binding.progressBar.toGone()
-                status.data?.let {
-                    categoriesAdapter.submitList(it)
+        with(binding){
+            bottomNavigationView.setOnItemSelectedListener {
+                when (it.itemId) {
+                    R.id.home -> modo.selectStack(0)
+                    R.id.category -> modo.selectStack(1)
+                    R.id.favorites -> modo.selectStack(2)
+                    R.id.search -> modo.selectStack(3)
+                    R.id.settings -> modo.selectStack(4)
                 }
+                true
             }
         }
+
     }
 
-    private fun onClickMenuItem(view: View) {
-        when (view.id) {
-            R.id.home_item -> modo.selectStack(0)
-            R.id.category_item -> modo.selectStack(1)
-            R.id.favorites_item -> modo.selectStack(2)
-            R.id.history_item -> modo.selectStack(3)
-            R.id.settings_item -> modo.externalForward(Screens.Settings())
-            R.id.subs_item -> modo.externalForward(Screens.Subscription())
-            R.id.feedback_item -> showRateApp()
-            R.id.site_item -> modo.launch(Screens.Browser(wallgram.hd.wallpapers.util.Common.getSiteUrl()))
-        }
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-    }
+//    private fun onClickMenuItem(view: View) {
+//        when (view.id) {
+//            R.id.home_item -> modo.selectStack(0)
+//            R.id.category_item -> modo.selectStack(1)
+//            R.id.favorites_item -> modo.selectStack(2)
+//            R.id.history_item -> modo.selectStack(3)
+//            R.id.settings_item -> modo.externalForward(Screens.Settings())
+//            R.id.subs_item -> modo.externalForward(Screens.Subscription())
+//            R.id.feedback_item -> showRateApp()
+//            R.id.site_item -> modo.launch(Screens.Browser(wallgram.hd.wallpapers.util.Common.getSiteUrl()))
+//        }
+//        binding.drawerLayout.closeDrawer(GravityCompat.START)
+//    }
 
     private fun showRateApp() {
         val request = manager.requestReviewFlow()
@@ -204,7 +176,7 @@ open class MainFragment : MultiStackFragment() {
 
         val currentContainerFragment = addedFragments.firstOrNull { it.isVisible }
         if (currentContainerFragment?.index == index) {
-            Toast.makeText(requireContext(), "Уже выбрано", Toast.LENGTH_SHORT).show()
+           // Toast.makeText(requireContext(), "Уже выбрано", Toast.LENGTH_SHORT).show()
             return
         }
 

@@ -77,6 +77,10 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
             })
 
+            bottomSheet.setOnClickListener {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+
             toolbar.setNavigationIcon(R.drawable.ic_back)
             toolbar.setNavigationOnClickListener {
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)

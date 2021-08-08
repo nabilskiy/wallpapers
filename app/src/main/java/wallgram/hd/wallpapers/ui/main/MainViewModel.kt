@@ -14,13 +14,12 @@ import kotlinx.coroutines.launch
 import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
-import wallgram.hd.wallpapers.util.modo.forward
-import wallgram.hd.wallpapers.util.modo.selectStack
+import wallgram.hd.wallpapers.util.modo.*
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-        private val dataRepository: DataRepositorySource
-): BaseViewModel(){
+    private val dataRepository: DataRepositorySource
+) : BaseViewModel() {
 
     private val categoriesLiveDataPrivate = MutableLiveData<Resource<List<Category>>>()
     val categoriesLiveData: LiveData<Resource<List<Category>>> get() = categoriesLiveDataPrivate
@@ -60,8 +59,8 @@ class MainViewModel @Inject constructor(
 
 
     fun onItemClicked(@ColorInt color: Int, type: WallType) {
-       // modo.forward()
-       // modo.forward(Screens.CategoriesList(it, type = type))
+        // modo.forward()
+        // modo.forward(Screens.CategoriesList(it, type = type))
     }
 
     fun onAllCategoryClicked() {
@@ -69,7 +68,19 @@ class MainViewModel @Inject constructor(
     }
 
     fun onSearchClicked() {
-        modo.selectStack(4)
+        modo.selectStack(3)
+    }
+
+    fun onItemClicked(screen: AppScreen) {
+        if (screen is Screens.History) {
+            modo.selectStack(2)
+            return
+        }
+        modo.forward(screen)
+    }
+
+    fun onItemClicked(screen: ExternalScreen) {
+        modo.launch(screen)
     }
 
 

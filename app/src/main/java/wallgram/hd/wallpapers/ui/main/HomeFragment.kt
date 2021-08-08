@@ -24,6 +24,9 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNot
 import wallgram.hd.wallpapers.util.afterTextChangedFlow
 import kotlinx.coroutines.flow.collect
+import wallgram.hd.wallpapers.databinding.SearchFragmentBinding
+import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
+import wallgram.hd.wallpapers.ui.search.SearchFragment
 
 class HomeFragment : BaseFragment<MainViewModel, HomeFragmentBinding>(
         HomeFragmentBinding::inflate
@@ -93,10 +96,16 @@ class HomeFragment : BaseFragment<MainViewModel, HomeFragmentBinding>(
         binding.searchText.setOnKeyListener { _, i, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
                 if (!binding.searchText.text.isNullOrBlank()) {
-                    viewModel.onSearchClicked()
+                    setSearch(binding.searchText.text.toString())
                 }
                 true
             } else false
+        }
+        binding.searchText.setOnItemClickListener { _, _, position, _ ->
+            val item = suggestionAdapter.getItem(position)
+            if (!item.isNullOrBlank()) {
+                setSearch(item)
+            }
         }
 
         lifecycleScope.launchWhenResumed {
@@ -129,6 +138,14 @@ class HomeFragment : BaseFragment<MainViewModel, HomeFragmentBinding>(
                 }
             }
         })
+    }
+
+    private fun setSearch(item: String) {
+        viewModel.onSearchClicked()
+        val fragment = requireParentFragment().requireParentFragment()
+        (fragment as MainFragment).getCurrentFragment()?.let {
+            (it as SearchFragment).setSearch(item)
+        }
     }
 
     private fun handleCategoriesList(status: Resource<List<Category>>) {

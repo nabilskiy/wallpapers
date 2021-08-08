@@ -18,13 +18,14 @@
         android:title="Главная"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/history"
-        android:icon="@drawable/ic_history"
-        android:title="Главная"
-        app:showAsAction="always"/>
-    <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
         android:title="Главная"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Главная"
+        app:showAsAction="always"/>
+
 </menu>

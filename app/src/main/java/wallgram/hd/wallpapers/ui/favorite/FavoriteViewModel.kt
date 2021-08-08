@@ -15,8 +15,12 @@ import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.wallpapers.WallType
 import wallgram.hd.wallpapers.util.cache.ICacheManager
+import wallgram.hd.wallpapers.util.modo.AppScreen
 import wallgram.hd.wallpapers.util.modo.externalForward
+import wallgram.hd.wallpapers.util.modo.forward
+import wallgram.hd.wallpapers.util.modo.selectStack
 import javax.inject.Inject
 
 class FavoriteViewModel @Inject constructor(
@@ -75,11 +79,11 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun getFavorites(type: Int) {
+    fun getFavorites(type: WallType) {
         viewModelScope.launch {
             favoritesLiveDataPrivate.value = Resource.Loading()
 
-            dataRepository.getSavedItems(type).collect {
+            dataRepository.getSavedItems(if(type == WallType.FAVORITE) 0 else 1).collect {
                 favoritesLiveDataPrivate.value = Resource.Success(it)
             }
 
@@ -103,10 +107,22 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun clearAll(type: Int) {
+    fun clearAll(type: WallType) {
         viewModelScope.launch {
-            dataRepository.deleteAllItems(type)
+            dataRepository.deleteAllItems(if(type == WallType.FAVORITE) 0 else 1)
         }
+    }
+
+    fun onItemClicked(screen: AppScreen, external: Boolean = false){
+        if(external){
+            modo.externalForward(screen)
+            return
+        }
+        modo.forward(screen)
+    }
+
+    fun onSelectStack(position: Int){
+        modo.selectStack(position)
     }
 
     fun itemClicked(position: Int, id: Int) {

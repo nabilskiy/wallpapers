@@ -12,35 +12,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:layout_toStartOf="@id/clear_btn"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Любимые"
-            android:textColor="#E6FFFFFF"
-            android:textSize="24sp" />
-
-        <ImageButton
-            android:id="@+id/clear_btn"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignTop="@id/title_text"
-            android:layout_alignBottom="@id/title_text"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp"
-            android:background="?selectableItemBackground"
-            android:src="@drawable/ic_trash" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title_text"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp" />
@@ -53,7 +28,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
-            android:layout_toStartOf="@id/clear_btn"
             android:fontFamily="@font/roboto_bold"
             android:text="Рекомендуем"
             android:textColor="#E6FFFFFF"

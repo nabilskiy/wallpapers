@@ -8,11 +8,13 @@ import wallgram.hd.wallpapers.ui.components.crop.CropFragment
 import wallgram.hd.wallpapers.ui.details.DownloadDialogFragment
 import wallgram.hd.wallpapers.ui.details.InstallDialogFragment
 import wallgram.hd.wallpapers.ui.favorite.FavoriteFragment
+import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
 import wallgram.hd.wallpapers.ui.main.HomeFragment
 import wallgram.hd.wallpapers.ui.main.MainActivity
 import wallgram.hd.wallpapers.ui.main.MainFragment
 import wallgram.hd.wallpapers.ui.search.SearchFragment
 import wallgram.hd.wallpapers.ui.settings.SettingsFragment
+import wallgram.hd.wallpapers.ui.settings.language.LanguageFragment
 import wallgram.hd.wallpapers.ui.start.StartFragment
 import wallgram.hd.wallpapers.ui.subscribe.SubscriptionFragment
 import wallgram.hd.wallpapers.ui.wallpaper.WallpaperFragment
@@ -66,5 +68,11 @@ abstract class ActivityModuleBuilder {
 
     @ContributesAndroidInjector()
     abstract fun contributeCropFragment(): CropFragment
+
+    @ContributesAndroidInjector()
+    abstract fun contributeLanguageFragment(): LanguageFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeFavoriteContainerFragment(): FavoriteContainerFragment
 
 }

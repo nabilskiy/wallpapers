@@ -14,6 +14,7 @@ import wallgram.hd.wallpapers.ui.details.DownloadViewModel
 import wallgram.hd.wallpapers.ui.favorite.FavoriteViewModel
 import wallgram.hd.wallpapers.ui.main.MainViewModel
 import wallgram.hd.wallpapers.ui.search.SearchViewModel
+import wallgram.hd.wallpapers.ui.settings.SettingsViewModel
 import wallgram.hd.wallpapers.ui.start.StartViewModel
 import wallgram.hd.wallpapers.ui.subscribe.BillingViewModel
 import wallgram.hd.wallpapers.ui.wallpaper.WallpaperViewModel
@@ -79,4 +80,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(WallpaperViewModel::class)
     internal abstract fun bindWallpaperViewModel(viewModel: WallpaperViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    internal abstract fun bindSettingsViewModel(viewModel: SettingsViewModel): ViewModel
 }

@@ -38,7 +38,6 @@ class SearchViewModel @Inject constructor(
             dataRepository.getSuggest(search, "ru").collect {
                 suggestLiveDataPrivate.value = it
             }
-
         }
     }
 
@@ -51,7 +50,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onItemClicked(position: Int, id: Int) {
-        //cacheManager.wallpapersData = wallpapersLiveDataPrivate
+       // cacheManager.wallpapersData = wallpapersLiveDataPrivate
         modo.externalForward(Screens.Wallpaper(position, id))
     }
 }

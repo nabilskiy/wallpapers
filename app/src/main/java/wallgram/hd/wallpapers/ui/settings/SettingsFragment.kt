@@ -2,6 +2,7 @@ package wallgram.hd.wallpapers.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.forEach
 import androidx.lifecycle.lifecycleScope
@@ -19,15 +20,17 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
+import wallgram.hd.wallpapers.ui.main.MainFragment
+import wallgram.hd.wallpapers.util.Common
 import wallgram.hd.wallpapers.util.modo.back
 import java.util.*
 import javax.inject.Inject
 
 class SettingsFragment : BaseFragment<MainViewModel, FragmentSettingsBinding>(
-        FragmentSettingsBinding::inflate
+    FragmentSettingsBinding::inflate
 ) {
-
-    private val modo = wallgram.hd.wallpapers.App.modo
 
     @Inject
     lateinit var preferences: PreferenceContract
@@ -38,66 +41,40 @@ class SettingsFragment : BaseFragment<MainViewModel, FragmentSettingsBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(binding) {
-            backBtn.setOnClickListener { modo.back() }
             clearBtn.setOnClickListener { clearCacheImages() }
-            setLanguage()
-            langGroup.setOnCheckedChangeListener { _, i ->
-                selectLanguage(i)
+
+            historyItem.setOnClickListener {
+                viewModel.onItemClicked(Screens.History())
+                val fragment = requireParentFragment().requireParentFragment()
+                (fragment as MainFragment).getCurrentFragment()?.let {
+                    (it as FavoriteContainerFragment).selectScreen(1)
+                }
+
             }
+            subscribeItem.setOnClickListener { viewModel.onItemClicked(Screens.Subscription()) }
+            reviewItem.setOnClickListener { }
+            siteItem.setOnClickListener { viewModel.onItemClicked(Screens.Browser(Common.getSiteUrl())) }
+            langItem.setOnClickListener { viewModel.onItemClicked(Screens.Language()) }
 
             lifecycleScope.launch(Dispatchers.IO) {
                 withContext(Dispatchers.Main) {
-                    cacheValue.text = resources.getString(R.string.cache_size, fileUtils.getFileSize(fileUtils.getFolderSize(requireContext().cacheDir)))
+                    cacheValue.text = resources.getString(
+                        R.string.cache_size,
+                        fileUtils.getFileSize(fileUtils.getFolderSize(requireContext().cacheDir))
+                    )
                 }
             }
         }
-    }
-
-    private fun selectLanguage(i: Int) {
-        var lang = preferences.getString(LANGUAGE, Locale.getDefault().language)
-        when(i){
-            R.id.russia_item -> lang = "ru"
-            R.id.english_item -> lang = "en"
-            R.id.deutsch_item -> lang = "de"
-            R.id.espanol_item -> lang = "es"
-            R.id.china_item -> lang = "zh"
-        }
-        binding.langGroup.forEach {
-            if(it.id == binding.langGroup.checkedRadioButtonId)
-                it.setPadding(24.dp, 0,0,0)
-            else it.setPadding(42.dp, 0,0,0)
-        }
-        preferences.save(LANGUAGE, lang)
-
-        wallgram.hd.wallpapers.App.localeHelper.setNewLocale(requireContext(), lang)
-        requireActivity().finish()
-        startActivity(Intent(requireContext(), MainActivity::class.java))
-    }
-
-    private fun setLanguage(){
-        val lang = preferences.getString(LANGUAGE, Locale.getDefault().language)
-        with(binding){
-            when(lang){
-                "en" -> langGroup.check(R.id.english_item)
-                "ru" -> langGroup.check(R.id.russia_item)
-                "de" -> langGroup.check(R.id.deutsch_item)
-                "es" -> langGroup.check(R.id.espanol_item)
-                "zh" -> langGroup.check(R.id.china_item)
-            }
-            langGroup.forEach {
-                if(it.id == langGroup.checkedRadioButtonId)
-                    it.setPadding(24.dp, 0,0,0)
-                else it.setPadding(42.dp, 0,0,0)
-            }
-        }
-
     }
 
     private fun clearCacheImages() {
         lifecycleScope.launch(Dispatchers.IO) {
             Glide.get(requireContext()).clearDiskCache()
             withContext(Dispatchers.Main) {
-                binding.cacheValue.text = resources.getString(R.string.cache_size, fileUtils.getFileSize(fileUtils.getFolderSize(requireContext().cacheDir)))
+                binding.cacheValue.text = resources.getString(
+                    R.string.cache_size,
+                    fileUtils.getFileSize(fileUtils.getFolderSize(requireContext().cacheDir))
+                )
             }
         }
     }

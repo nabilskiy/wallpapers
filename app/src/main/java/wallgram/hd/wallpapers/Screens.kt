@@ -22,6 +22,8 @@ import wallgram.hd.wallpapers.util.modo.ExternalScreen
 import wallgram.hd.wallpapers.util.modo.MultiAppScreen
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
+import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
+import wallgram.hd.wallpapers.ui.settings.language.LanguageFragment
 
 object Screens {
 
@@ -53,12 +55,12 @@ object Screens {
 
     @Parcelize
     class Favorite : AppScreen("Favorite") {
-        override fun create(): Fragment = FavoriteFragment()
+        override fun create(): Fragment = FavoriteFragment.create(WallType.FAVORITE)
     }
 
     @Parcelize
-    class History(private val type: Int) : AppScreen("History") {
-        override fun create(): Fragment = FavoriteFragment.create(type)
+    class History : AppScreen("History") {
+        override fun create(): Fragment = FavoriteFragment.create(WallType.HISTORY)
     }
 
     @Parcelize
@@ -69,6 +71,11 @@ object Screens {
     @Parcelize
     class Settings : AppScreen("Settings") {
         override fun create(): Fragment = SettingsFragment()
+    }
+
+    @Parcelize
+    class Favorites: AppScreen("Favorites"){
+        override fun create() = FavoriteContainerFragment.create()
     }
 
     @Parcelize
@@ -87,9 +94,14 @@ object Screens {
         override fun create(): Fragment = CropFragment.create(gallery = gallery)
     }
 
+    @Parcelize
+    class Language: AppScreen("Language"){
+        override fun create() = LanguageFragment.create()
+    }
+
     fun MultiStack() = MultiAppScreen(
             "MultiStack",
-            listOf(Home(), Categories(), Favorite(), History(1), Search()),
+            listOf(Home(), Categories(), Favorites(), Search(), Settings()),
             0
     )
 

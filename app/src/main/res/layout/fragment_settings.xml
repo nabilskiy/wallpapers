@@ -1,150 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_bg">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingEnd="16dp"
         android:paddingStart="16dp"
-        android:paddingTop="34dp">
+        android:paddingTop="24dp"
+        android:paddingEnd="16dp">
 
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:padding="0dp"
-            android:backgroundTint="@android:color/transparent"
-            android:layout_alignTop="@id/setting_title"
-            android:layout_alignBottom="@id/setting_title"
-            android:src="@drawable/ic_back"/>
         <TextView
             android:id="@+id/setting_title"
-            android:layout_toEndOf="@id/back_btn"
-            android:layout_marginStart="16dp"
-            android:text="Настройки"
-            android:paddingStart="0dp"
-            style="@style/MenuTextStyle" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:lineSpacingExtra="0sp"
+            android:text="@string/action_settings"
+            android:textColor="#E6FFFFFF"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/history_item"
+            style="@style/MenuTextStyle"
+            android:layout_below="@id/setting_title"
+            android:layout_marginTop="34dp"
+            android:text="@string/menu_history"
+            app:drawableStartCompat="@drawable/ic_history"
+            app:drawableTint="#66FFFFFF" />
+        <TextView
+            android:id="@+id/subscribe_item"
+            android:layout_below="@id/history_item"
+            app:drawableTint="#66FFFFFF"
+            style="@style/MenuTextStyle"
+            android:text="@string/action_subscription"
+            app:drawableStartCompat="@drawable/ic_sub_doll" />
+
+        <TextView
+            android:id="@+id/review_item"
+            android:layout_below="@id/subscribe_item"
+            app:drawableTint="#66FFFFFF"
+            style="@style/MenuTextStyle"
+            android:text="@string/menu_feedback"
+            app:drawableStartCompat="@drawable/ic_testimonial" />
+
+        <TextView
+            android:id="@+id/site_item"
+            style="@style/MenuTextStyle"
+            android:layout_below="@id/review_item"
+            android:text="@string/menu_site"
+            app:drawableStartCompat="@drawable/ic_weixin_mini_app"
+            app:drawableTint="#66FFFFFF" />
+
+
+        <TextView
+            android:id="@+id/lang_item"
+            style="@style/MenuTextStyle"
+            android:layout_below="@id/site_item"
+            android:text="@string/lang_title"
+            app:drawableStartCompat="@drawable/ic_translate" />
 
         <View
             android:id="@+id/border_1"
-            android:layout_below="@id/setting_title"
             android:layout_width="match_parent"
-            android:background="#1FFFFFFF"
-            android:layout_height="1dp"/>
-
-        <TextView
-            android:id="@+id/lang_title"
-            android:text="Язык"
-            android:layout_below="@id/border_1"
-            android:layout_marginTop="18dp"
-            android:drawablePadding="16dp"
-            android:paddingStart="0dp"
-            style="@style/MenuTextStyle"
-            app:drawableStartCompat="@drawable/ic_translate" />
-
-        <RadioGroup
-            android:id="@+id/lang_group"
-            android:layout_below="@id/lang_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <RadioButton
-                android:id="@+id/ukraine_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="42dp"
-                style="@style/LanguageRadioStyle"
-                android:text="Украинский"/>
-            <RadioButton
-                android:id="@+id/russia_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/LanguageRadioStyle"
-                android:paddingStart="42dp"
-                android:text="Русский"/>
-            <RadioButton
-                android:id="@+id/english_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/LanguageRadioStyle"
-                android:paddingStart="42dp"
-                android:text="Английский"/>
-            <RadioButton
-                android:id="@+id/deutsch_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/LanguageRadioStyle"
-                android:paddingStart="42dp"
-                android:text="Немецкий"/>
-            <RadioButton
-                android:id="@+id/espanol_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/LanguageRadioStyle"
-                android:paddingStart="42dp"
-                android:text="Испанский"/>
-            <RadioButton
-                android:id="@+id/china_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/LanguageRadioStyle"
-                android:paddingStart="42dp"
-                android:text="Китайский"/>
-        </RadioGroup>
-
-        <View
-            android:id="@+id/border_2"
-            android:layout_below="@id/lang_group"
-            android:layout_width="match_parent"
-            android:background="#1FFFFFFF"
-            android:layout_marginTop="14dp"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/lang_item"
+            android:background="#1FFFFFFF" />
 
         <TextView
             android:id="@+id/cache_title"
-            android:text="Кэш приложения"
-            android:layout_below="@id/border_2"
-            android:layout_marginTop="16dp"
+            style="@style/MenuTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/border_1"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
-            android:paddingStart="0dp"
-            style="@style/MenuTextStyle" />
+            android:text="Кэш приложения" />
 
         <TextView
             android:id="@+id/cache_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
             android:layout_below="@id/cache_title"
             android:fontFamily="@font/roboto_regular"
+            android:text="Размер кэша"
             android:textColor="#66FFFFFF"
-            android:text="Размер кэша"/>
-        
+            android:textSize="12sp" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/clear_btn"
-            android:layout_below="@id/cache_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:layout_below="@id/cache_value"
             android:layout_marginTop="16dp"
-            android:textAllCaps="false"
+            android:fontFamily="@font/roboto_medium"
             android:letterSpacing="0.03"
-            android:stateListAnimator="@null"
-            app:strokeWidth="2dp"
-            app:elevation="0dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:paddingStart="16dp"
+            android:paddingTop="8dp"
             android:paddingEnd="16dp"
-            app:strokeColor="#BAFFFFFF"
-            app:backgroundTint="@android:color/transparent"
-            android:textColor="#BAFFFFFF"
+            android:paddingBottom="8dp"
+            android:stateListAnimator="@null"
             android:text="Очистить кэш"
-            android:fontFamily="@font/roboto_medium"/>
-
+            android:textAllCaps="false"
+            android:textColor="#BAFFFFFF"
+            android:textSize="12sp"
+            app:backgroundTint="@android:color/transparent"
+            app:elevation="0dp"
+            app:strokeColor="#BAFFFFFF"
+            app:strokeWidth="2dp" />
     </RelativeLayout>
+
 </androidx.core.widget.NestedScrollView>

@@ -59,6 +59,11 @@
         <item>Случайные</item>
     </string-array>
 
+    <string-array name="favorite_list">
+        <item>Любимые</item>
+        <item>История</item>
+    </string-array>
+
     <string name="no_internet">Please check your internet connection</string>
     <string name="network_error">Network error, could get data, please try again!</string>
     <string name="invalid_username">Not a valid email</string>
