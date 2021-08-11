@@ -11,7 +11,6 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.data.Resource
-import wallgram.hd.wallpapers.databinding.SearchFragmentBinding
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.ui.wallpapers.WallpapersAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -20,13 +19,14 @@ import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.collect
 
 import kotlinx.coroutines.launch
+import wallgram.hd.wallpapers.databinding.FragmentSearchBinding
 import wallgram.hd.wallpapers.ui.main.withMainFragment
 import wallgram.hd.wallpapers.ui.wallpapers.ItemOffsetDecoration
 import wallgram.hd.wallpapers.ui.wallpapers.ReposLoadStateAdapter
 import wallgram.hd.wallpapers.util.afterTextChangedFlow
 
-class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
-    SearchFragmentBinding::inflate
+class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
+    FragmentSearchBinding::inflate
 ) {
 
 
@@ -56,6 +56,12 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
 
 
         with(binding) {
+
+            swipeRefreshLayout.setColorSchemeResources(R.color.colorYellow)
+            swipeRefreshLayout.setOnRefreshListener {
+                wallpapersAdapter.refresh()
+            }
+
             searchField.setStartIconOnClickListener {
                 withMainFragment {
 
@@ -112,6 +118,8 @@ class SearchFragment : BaseFragment<SearchViewModel, SearchFragmentBinding>(
                 binding.list.isVisible = loadState.source.refresh is LoadState.NotLoading
                 // Show loading spinner during initial load or refresh.
                 binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                if (swipeRefreshLayout.isRefreshing)
+                    swipeRefreshLayout.isRefreshing = loadState.source.refresh is LoadState.Loading
                 // Show the retry state if initial load or refresh fails.
                 //  binding.errorLayout.root.isVisible = loadState.source.refresh is LoadState.Error
 

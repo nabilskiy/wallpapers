@@ -1,66 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.search.SearchFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_field"
-        android:layout_alignParentTop="true"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_gravity="top"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeColor="@color/colorPrimaryDark"
         app:boxBackgroundColor="@color/colorPrimaryDark"
-        app:endIconMode="clear_text"
-        app:hintEnabled="false"
+        app:boxStrokeColor="@color/colorPrimaryDark"
+        app:boxStrokeWidth="0dp"
         app:endIconDrawable="@drawable/ic_delete"
+        app:endIconMode="clear_text"
         app:endIconTint="@color/colorWhite"
-        app:startIconTint="@color/colorWhite"
-        app:startIconDrawable="@drawable/ic_back">
+        app:hintEnabled="false"
+        app:startIconDrawable="@drawable/ic_back"
+        app:startIconTint="@color/colorWhite">
 
         <AutoCompleteTextView
             android:id="@+id/search_text"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="Поиск обоев"
             android:imeOptions="actionSearch"
             android:maxLines="1"
-            android:fontFamily="@font/roboto_regular"
             android:paddingStart="0dp"
             android:singleLine="true"
             android:textColor="#E6FFFFFF"
-            android:hint="Поиск обоев"
             android:textColorHint="#66FFFFFF"
             android:textSize="16sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_below="@id/search_field"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_field">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:theme="@style/CircularProgress" />
+        android:theme="@style/CircularProgress"
+        android:visibility="gone" />
 
-   <!-- <include
-        android:id="@+id/error_layout"
-        layout="@layout/view_error"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
+    <!-- <include
+         android:id="@+id/error_layout"
+         layout="@layout/view_error"
+         android:layout_centerInParent="true"
+         android:visibility="gone"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" />-->
 
 </RelativeLayout>

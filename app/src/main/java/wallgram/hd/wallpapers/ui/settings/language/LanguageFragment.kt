@@ -60,7 +60,7 @@ class LanguageFragment: BaseFragment<SettingsViewModel, FragmentLanguageBinding>
 
         wallgram.hd.wallpapers.App.localeHelper.setNewLocale(requireContext(), lang)
         requireActivity().finish()
-        startActivity(Intent(requireContext(), MainActivity::class.java))
+        startActivity(Intent(requireActivity(), MainActivity::class.java))
     }
 
     private fun setLanguage(){

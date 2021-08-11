@@ -20,12 +20,14 @@ class FeedPagingSource(val feedRequest: FeedRequest,
 
     private val service = serviceGenerator.createService(AkspicService::class.java)
 
-    override fun getRefreshKey(state: PagingState<Int, Gallery>): Int? =
-            state.anchorPosition
+    override fun getRefreshKey(state: PagingState<Int, Gallery>): Int? = state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Gallery> {
+        val position = params.key ?: PAGE_START
         try {
-            val position = params.key ?: PAGE_START
 
             val response: Response<ServerResponse<Gallery>> = when(feedRequest.type){
                 WallType.CATEGORY -> service.getWallpapersFromCategory(feedRequest.category, feedRequest.sort, position, feedRequest.resolution, feedRequest.lang)
@@ -39,7 +41,7 @@ class FeedPagingSource(val feedRequest: FeedRequest,
 
             return LoadResult.Page(
                     data = feed,
-                    prevKey = if (position <= PAGE_START) null else position - 1,
+                    prevKey = if (position == PAGE_START) null else position - 1,
                     nextKey = if (feed.isEmpty()) null else position + 1
             )
         } catch (exception: IOException) {

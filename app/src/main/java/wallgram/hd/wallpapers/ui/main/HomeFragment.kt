@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNot
 import wallgram.hd.wallpapers.util.afterTextChangedFlow
 import kotlinx.coroutines.flow.collect
-import wallgram.hd.wallpapers.databinding.SearchFragmentBinding
 import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
 import wallgram.hd.wallpapers.ui.search.SearchFragment
 
