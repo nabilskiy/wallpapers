@@ -34,7 +34,6 @@ class WallpapersAdapter(private val onItemClicked: ((Int, Int) -> Unit)) :
         fun bind(item: Gallery) {
             with(binding) {
                 Glide.with(root.context).load(item.preview)
-                    .thumbnail(0.1f)
                     .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .apply(RequestOptions().format(DecodeFormat.PREFER_RGB_565))
 
