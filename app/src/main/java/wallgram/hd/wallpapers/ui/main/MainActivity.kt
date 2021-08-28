@@ -22,6 +22,9 @@ import android.widget.RatingBar
 import com.google.android.material.textfield.TextInputLayout
 import android.widget.RatingBar.OnRatingBarChangeListener
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.data.local.preference.FIRST_LAUNCH
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
@@ -31,37 +34,35 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import wallgram.hd.wallpapers.util.modo.*
 
 import com.github.terrakok.cicerone.*
+import wallgram.hd.wallpapers.App
 import java.util.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMainBinding::inflate), ConfirmationListener {
 
-    private val modo = wallgram.hd.wallpapers.App.modo
+
+    val modo = App.modo
 
     @Inject
     lateinit var preferences: PreferenceContract
 
-    private val mSkuDetailsMap: MutableMap<String, SkuDetails> = HashMap()
-    private var mBillingClient: BillingClient? = null
-
     private var mFirebaseAnalytics: FirebaseAnalytics? = null
-
-
-    private fun payComplete(isAdsAndLimited: Boolean) {
-        wallgram.hd.wallpapers.views.ratedialog.PreferenceHelper.setLimitedDownload(this, isAdsAndLimited)
-        wallgram.hd.wallpapers.views.ratedialog.PreferenceHelper.setAdsShowState(this, isAdsAndLimited)
-    }
 
     private val modoRender by lazy {
         object : ModoRender(this@MainActivity, R.id.container) {
+
+
             override fun createMultiStackFragment(multiScreen: MultiScreen): MultiStackFragment = MainFragment()
 
             //only for sample
             override fun invoke(state: NavigationState) {
                 super.invoke(state)
+
+                window.statusBarColor = ContextCompat.getColor(this@MainActivity, if(state.chain.last() is Screens.Wallpaper) R.color.color_status_bar else R.color.colorPrimaryDark)
                 val stateStr = "‣root\n${getNavigationStateString("⦙  ", state).trimEnd()}  ᐊ current screen"
                 Log.d("STATE", stateStr)
             }
+
 
             //copy-paste from LogReducer
             private fun getNavigationStateString(prefix: String, navigationState: NavigationState): String =
@@ -85,44 +86,12 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
         }
     }
 
-    private fun querySkuDetails() {
-        val skuDetailsParamsBuilder = SkuDetailsParams.newBuilder()
-        val mSkuIdYear = "akspic.year"
-        val mSkuIdSix = "akspic6"
-        val mSkuIdOne = "akspic"
-        val skuList = Arrays.asList(mSkuIdOne, mSkuIdSix, mSkuIdYear)
-        skuDetailsParamsBuilder.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
-        mBillingClient!!.querySkuDetailsAsync(skuDetailsParamsBuilder.build()) { billingResult: BillingResult, skuDetailsList: List<SkuDetails>? ->
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                for (skuDetails in skuDetailsList!!) {
-                    mSkuDetailsMap[skuDetails.sku] = skuDetails
-                }
-                if (wallgram.hd.wallpapers.util.BillingHelper.areSubscriptionsSupported(mBillingClient)) {
-                    val purchasesList = wallgram.hd.wallpapers.util.BillingHelper.queryPurchases(mBillingClient) //запрос о покупках
-                    if (purchasesList == null) {
-                        payComplete(true)
-                        return@querySkuDetailsAsync
-                    }
-                    if (purchasesList.size > 0) {
-                        val purchaseId = purchasesList[0].skus[0]
-                        if (mSkuDetailsMap.containsKey(purchaseId)) {
-                            payComplete(false)
-                        } else payComplete(true)
-                    } else payComplete(true)
-                }
-            }
-        }
-    }
-
     private fun exitFromApp() {
-        if (back_pressed + 2000 > System.currentTimeMillis()) finish() else Toast.makeText(baseContext, resources.getString(R.string.exit_toast),
-                Toast.LENGTH_SHORT).show()
+        if (back_pressed + 2000 > System.currentTimeMillis()) finish() else Toast.makeText(
+            baseContext, resources.getString(R.string.exit_toast),
+            Toast.LENGTH_SHORT
+        ).show()
         back_pressed = System.currentTimeMillis()
-    }
-
-
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(wallgram.hd.wallpapers.App.localeHelper?.setLocale(base))
     }
 
     private fun showRateDialog() {
@@ -167,22 +136,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
         super.onCreate(savedInstanceState)
 
         showRateDialog()
-        mBillingClient = BillingClient.newBuilder(this).setListener { billingResult: BillingResult, purchases: List<Purchase?>? ->
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
-                for (purchase in purchases) {
-                    payComplete(wallgram.hd.wallpapers.util.BillingHelper.handlePurchase(purchase, mBillingClient))
-                }
-            }
-        }.enablePendingPurchases().build()
-        mBillingClient!!.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                    querySkuDetails()
-                }
-            }
 
-            override fun onBillingServiceDisconnected() {}
-        })
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         FirebaseDynamicLinks.getInstance()

@@ -1,5 +1,7 @@
 package wallgram.hd.wallpapers.ui.categories
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -14,48 +16,64 @@ import wallgram.hd.wallpapers.util.withArgs
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import wallgram.hd.wallpapers.App.Companion.modo
+import wallgram.hd.wallpapers.model.request.FeedRequest
+import wallgram.hd.wallpapers.util.modo.back
+import wallgram.hd.wallpapers.util.modo.exit
 
 
 class CategoriesListFragment : BaseFragment<FeedViewModel, FragmentCategoriesItemsBinding>(
-        FragmentCategoriesItemsBinding::inflate
+    FragmentCategoriesItemsBinding::inflate
 ) {
 
     companion object {
-        private const val ARG_CATEGORY = "arg_category"
-        private const val ARG_TYPE = "arg_type"
-        fun create(type: WallType, category: SubCategory) = CategoriesListFragment().withArgs(
-                ARG_TYPE to type,
-                ARG_CATEGORY to category
+        private const val ARG_FEED_REQUEST = "arg_feed_request"
+
+        fun create(feedRequest: FeedRequest) = CategoriesListFragment().withArgs(
+            ARG_FEED_REQUEST to feedRequest
         )
     }
 
-    private val category: SubCategory by args(ARG_CATEGORY)
-    private val type: WallType by args(ARG_TYPE, WallType.ALL)
+    private val feedRequest: FeedRequest by args(ARG_FEED_REQUEST)
+
+    override fun invalidate() {
+        super.invalidate()
+        modo.back()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         with(binding) {
 
-            if(category.name.isBlank()){
+            if (feedRequest.type == WallType.COLOR) {
                 titleText.isVisible = false
-                (titleText.layoutParams as AppBarLayout.LayoutParams)
+            } else {
+                if (feedRequest.categoryName.isBlank()) {
+                    titleText.isVisible = false
+                    (titleText.layoutParams as AppBarLayout.LayoutParams)
                         .scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+                }
             }
 
-            titleText.text = category.name.capitalize()
+            titleText.text = feedRequest.categoryName.capitalize()
             viewPager.apply {
                 offscreenPageLimit = 3
-                adapter = CategoriesItemsAdapter(this@CategoriesListFragment, category = category.id, type)
+                adapter = CategoriesItemsAdapter(this@CategoriesListFragment, feedRequest)
             }
             viewPager.post {
-                when (type) {
+                when (feedRequest.type) {
                     WallType.POPULAR -> viewPager.currentItem = 1
                     else -> viewPager.currentItem = 0
                 }
             }
 
-            TabLayoutMediator(tabLayout, viewPager) { tab: TabLayout.Tab, position: Int -> tab.text = resources.getStringArray(R.array.feed_list)[position] }.attach()
+            TabLayoutMediator(
+                tabLayout,
+                viewPager
+            ) { tab: TabLayout.Tab, position: Int ->
+                tab.text = resources.getStringArray(R.array.feed_list)[position]
+            }.attach()
         }
     }
 

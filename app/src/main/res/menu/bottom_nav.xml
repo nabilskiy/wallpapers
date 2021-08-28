@@ -6,24 +6,29 @@
         android:id="@+id/home"
         android:icon="@drawable/ic_home"
         android:title="Главная"
+        android:orderInCategory="0"
         app:showAsAction="always"/>
     <item
         android:id="@+id/category"
         android:icon="@drawable/ic_catalog"
         android:title="Главная"
+        android:orderInCategory="1"
         app:showAsAction="always"/>
     <item
         android:id="@+id/favorites"
         android:icon="@drawable/ic_liked"
         android:title="Главная"
+        android:orderInCategory="2"
         app:showAsAction="always"/>
     <item
         android:id="@+id/search"
+        android:orderInCategory="3"
         android:icon="@drawable/ic_search"
         android:title="Главная"
         app:showAsAction="always"/>
     <item
         android:id="@+id/settings"
+        android:orderInCategory="4"
         android:icon="@drawable/ic_settings"
         android:title="Главная"
         app:showAsAction="always"/>

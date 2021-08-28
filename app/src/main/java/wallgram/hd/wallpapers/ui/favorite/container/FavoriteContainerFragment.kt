@@ -17,6 +17,7 @@ import wallgram.hd.wallpapers.ui.categories.CategoriesListFragment
 import wallgram.hd.wallpapers.ui.favorite.FavoriteViewModel
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
 import wallgram.hd.wallpapers.util.args
+import wallgram.hd.wallpapers.util.findCurrentFragment
 import wallgram.hd.wallpapers.util.withArgs
 
 class FavoriteContainerFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteContainerBinding>(
@@ -30,6 +31,14 @@ class FavoriteContainerFragment : BaseFragment<FavoriteViewModel, FragmentFavori
     }
 
     private val type: WallType by args(ARG_TYPE, WallType.FAVORITE)
+
+    override fun invalidate() {
+        super.invalidate()
+        binding.appBarLayout.setExpanded(true, true)
+        binding.viewPager.findCurrentFragment(childFragmentManager)?.let{
+            (it as BaseFragment<*,*>).invalidate()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -11,6 +11,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.text.PrecomputedTextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -72,4 +75,15 @@ fun View.slide(direction: Int){
     this.startAnimation(animate)
     isVisible = direction != 0
 
+}
+
+fun ViewPager2.findCurrentFragment(fragmentManager: FragmentManager): Fragment? {
+    return fragmentManager.findFragmentByTag("f$currentItem")
+}
+
+fun ViewPager2.findFragmentAtPosition(
+    fragmentManager: FragmentManager,
+    position: Int
+): Fragment? {
+    return fragmentManager.findFragmentByTag("f$position")
 }

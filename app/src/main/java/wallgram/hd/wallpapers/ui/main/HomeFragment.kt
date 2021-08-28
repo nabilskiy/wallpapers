@@ -1,16 +1,18 @@
 package wallgram.hd.wallpapers.ui.main
 
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.data.Resource
-import wallgram.hd.wallpapers.databinding.HomeFragmentBinding
 import wallgram.hd.wallpapers.model.Category
 import wallgram.hd.wallpapers.ui.*
 import wallgram.hd.wallpapers.ui.base.BaseFragment
@@ -24,17 +26,18 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNot
 import wallgram.hd.wallpapers.util.afterTextChangedFlow
 import kotlinx.coroutines.flow.collect
+import wallgram.hd.wallpapers.databinding.FragmentHomeBinding
 import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
 import wallgram.hd.wallpapers.ui.search.SearchFragment
+import wallgram.hd.wallpapers.util.findCurrentFragment
 
-class HomeFragment : BaseFragment<MainViewModel, HomeFragmentBinding>(
-        HomeFragmentBinding::inflate
+class HomeFragment : BaseFragment<MainViewModel, FragmentHomeBinding>(
+        FragmentHomeBinding::inflate
 ) {
 
     companion object {
         fun newInstance() = HomeFragment()
     }
-
 
     override fun getViewModel(): Class<MainViewModel> = MainViewModel::class.java
 
@@ -50,6 +53,14 @@ class HomeFragment : BaseFragment<MainViewModel, HomeFragmentBinding>(
         })
     }
 
+    override fun invalidate() {
+        super.invalidate()
+
+        binding.viewPager.findCurrentFragment(childFragmentManager)?.let{
+            (it as BaseFragment<*,*>).invalidate()
+        }
+        binding.appbar.setExpanded(true, true)
+    }
 
     private lateinit var suggestionAdapter: ArrayAdapter<String>
 

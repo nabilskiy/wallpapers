@@ -10,6 +10,7 @@ import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.databinding.FragmentCategoriesBinding
 import wallgram.hd.wallpapers.model.Category
+import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.HeaderAdapter
 import wallgram.hd.wallpapers.ui.ItemOffsetDecoration
 import wallgram.hd.wallpapers.ui.base.BaseFragment
@@ -23,7 +24,7 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel, FragmentCategoriesB
 
     private val categoriesAdapter: CategoriesListAdapter by lazy {
         CategoriesListAdapter(onItemClicked = {
-            modo.forward(Screens.CategoriesList(it, type = WallType.CATEGORY))
+            modo.forward(Screens.CategoriesList(FeedRequest(type = WallType.CATEGORY, category = it.id, categoryName = it.name)))
         }, tag = CategoriesFragment::class.java.simpleName)
     }
 
@@ -44,6 +45,11 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel, FragmentCategoriesB
                     categoriesAdapter)
         }
 
+    }
+
+    override fun invalidate() {
+        super.invalidate()
+        binding.categoriesList.smoothScrollToPosition(0)
     }
 
     private fun handleCategoriesList(status: Resource<List<Category>>) {

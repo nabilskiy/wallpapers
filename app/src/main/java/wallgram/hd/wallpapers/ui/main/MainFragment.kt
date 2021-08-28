@@ -3,6 +3,7 @@ package wallgram.hd.wallpapers.ui.main
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.GravityCompat
@@ -26,6 +27,8 @@ import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_main.view.*
+import wallgram.hd.wallpapers.model.request.FeedRequest
+import wallgram.hd.wallpapers.ui.base.BaseFragment
 import javax.inject.Inject
 
 
@@ -77,15 +80,25 @@ open class MainFragment : MultiStackFragment() {
     }
 
     override fun getCurrentFragment(): Fragment? =
-            childFragmentManager.fragments
-                    .filterIsInstance<StackContainerFragment>()
-                    .firstOrNull { it.isVisible }
-                    ?.getCurrentFragment()
+        childFragmentManager.fragments
+            .filterIsInstance<StackContainerFragment>()
+            .firstOrNull { it.isVisible }
+            ?.getCurrentFragment()
+
+    private fun getFragment(index: Int): Fragment? =
+        childFragmentManager.fragments
+            .filterIsInstance<StackContainerFragment>()
+            .firstOrNull { it.index == index }
+            ?.getCurrentFragment()
 
 
     private val modo = wallgram.hd.wallpapers.App.modo
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -99,41 +112,40 @@ open class MainFragment : MultiStackFragment() {
     private val categoriesAdapter: MenuCategoriesListAdapter by lazy {
         MenuCategoriesListAdapter {
             modo.selectStack(1)
-            modo.forward(Screens.CategoriesList(it, type = WallType.CATEGORY))
+            modo.forward(
+                Screens.CategoriesList(
+                    FeedRequest(
+                        type = WallType.CATEGORY,
+                        category = it.id,
+                        categoryName = it.name
+                    )
+                )
+            )
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        with(binding){
-            bottomNavigationView.setOnItemSelectedListener {
-                when (it.itemId) {
-                    R.id.home -> modo.selectStack(0)
-                    R.id.category -> modo.selectStack(1)
-                    R.id.favorites -> modo.selectStack(2)
-                    R.id.search -> modo.selectStack(3)
-                    R.id.settings -> modo.selectStack(4)
+        with(binding) {
+            bottomNavigationView.setOnItemSelectedListener { it ->
+                if (multiScreen?.selectedStack == it.order)
+                    getCurrentFragment()?.let { fragment ->
+                        (fragment as BaseFragment<*, *>).invalidate()
+                    }
+                else {
+                    if (multiScreen?.selectedStack == 4) {
+                        getCurrentFragment()?.let { fragment ->
+                            (fragment as BaseFragment<*, *>).invalidate()
+                        }
+                    }
+                    modo.selectStack(it.order)
                 }
                 true
             }
         }
 
     }
-
-//    private fun onClickMenuItem(view: View) {
-//        when (view.id) {
-//            R.id.home_item -> modo.selectStack(0)
-//            R.id.category_item -> modo.selectStack(1)
-//            R.id.favorites_item -> modo.selectStack(2)
-//            R.id.history_item -> modo.selectStack(3)
-//            R.id.settings_item -> modo.externalForward(Screens.Settings())
-//            R.id.subs_item -> modo.externalForward(Screens.Subscription())
-//            R.id.feedback_item -> showRateApp()
-//            R.id.site_item -> modo.launch(Screens.Browser(wallgram.hd.wallpapers.util.Common.getSiteUrl()))
-//        }
-//        binding.drawerLayout.closeDrawer(GravityCompat.START)
-//    }
 
     private fun showRateApp() {
         val request = manager.requestReviewFlow()
@@ -148,13 +160,13 @@ open class MainFragment : MultiStackFragment() {
 
     private fun showRateAppFallbackDialog() {
         MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.rate_title)
-                .setMessage("If you are enjoying our app, please take a moment to rate it on PlayStore. Thanks for your support!")
-                .setPositiveButton("Rate Now") { dialog, which -> redirectToPlayStore() }
-                .setNegativeButton("Remind me later") { dialog, which -> }
-                .setNeutralButton("No, Thanks") { dialog, which -> }
-                .setOnDismissListener(DialogInterface.OnDismissListener { dialog: DialogInterface? -> })
-                .show()
+            .setTitle(R.string.rate_title)
+            .setMessage("If you are enjoying our app, please take a moment to rate it on PlayStore. Thanks for your support!")
+            .setPositiveButton("Rate Now") { dialog, which -> redirectToPlayStore() }
+            .setNegativeButton("Remind me later") { dialog, which -> }
+            .setNeutralButton("No, Thanks") { dialog, which -> }
+            .setOnDismissListener(DialogInterface.OnDismissListener { dialog: DialogInterface? -> })
+            .show()
     }
 
     private fun redirectToPlayStore() {
@@ -170,13 +182,11 @@ open class MainFragment : MultiStackFragment() {
 
         binding.bottomNavigationView.menu.getItem(index).isChecked = true
 
-
         val addedFragments =
-                childFragmentManager.fragments.filterIsInstance<StackContainerFragment>()
+            childFragmentManager.fragments.filterIsInstance<StackContainerFragment>()
 
         val currentContainerFragment = addedFragments.firstOrNull { it.isVisible }
         if (currentContainerFragment?.index == index) {
-           // Toast.makeText(requireContext(), "Уже выбрано", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -184,9 +194,9 @@ open class MainFragment : MultiStackFragment() {
             val tabExists = addedFragments.any { it.index == index }
             if (!tabExists) {
                 transaction.add(
-                        R.id.mainScreenContainer,
-                        StackContainerFragment.create(index),
-                        index.toString()
+                    R.id.mainScreenContainer,
+                    StackContainerFragment.create(index),
+                    index.toString()
                 )
             }
             addedFragments.forEach { f ->
@@ -208,6 +218,12 @@ open class MainFragment : MultiStackFragment() {
 
 fun Fragment.withMainFragment(action: MainFragment.() -> Unit) {
     parentFragment
-            ?.let { it as? MainFragment }
-            ?.also(action)
+        ?.let { it as? MainFragment }
+        ?.also(action)
+}
+
+fun Fragment.withParentFragment(action: BaseFragment<*,*>.() -> Unit) {
+    parentFragment
+        ?.let { it as? BaseFragment<*,*> }
+        ?.also(action)
 }

@@ -1,6 +1,7 @@
 package wallgram.hd.wallpapers.model
 
 import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
@@ -17,5 +18,7 @@ data class Gallery(
         val promoted: Int,
         val originalWidth: Int,
         val originalHeight: Int,
-        val type: Int = 0 // 0 - Favorite, 1 - History
+        @Embedded
+        val links: Links,
+        var type: Int = 0 // 0 - Favorite, 1 - History
 ): Parcelable

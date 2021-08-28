@@ -1,8 +1,12 @@
 <resources>
+    <dimen name="cpb_stroke_width">4dp</dimen>
+
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="line_width_normal">2.0dip</dimen>
+
+    <dimen name="doneSize">25dp</dimen>
 
     <dimen name="roundedBottomSheetCornerRadius">16dp</dimen>
     <dimen name="roundedBottomSheetCornerRadiusTopPadding">8dp</dimen>

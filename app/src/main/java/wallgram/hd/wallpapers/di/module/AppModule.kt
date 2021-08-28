@@ -15,13 +15,10 @@ import wallgram.hd.wallpapers.PREFERENCES
 import wallgram.hd.wallpapers.data.local.Database
 import wallgram.hd.wallpapers.data.local.Database.Companion.DATABASE_NAME
 import wallgram.hd.wallpapers.data.local.dao.GalleryDao
-import wallgram.hd.wallpapers.data.local.dao.SubscriptionStatusDao
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.data.local.preference.SharedPreferencesImpl
-import wallgram.hd.wallpapers.data.repository.billing.LocalDataSource
 import wallgram.hd.wallpapers.util.Network
 import wallgram.hd.wallpapers.util.NetworkConnectivity
-import wallgram.hd.wallpapers.util.billing.BillingClientLifecycle
 import wallgram.hd.wallpapers.util.cache.CacheManager
 import wallgram.hd.wallpapers.util.cache.ICacheManager
 import java.util.concurrent.Executors
@@ -53,10 +50,6 @@ class AppModule {
     @Singleton
     fun provideCacheManager(): ICacheManager = CacheManager()
 
-    @Provides
-    @Singleton
-    fun provideBillingClientLifecycle(): BillingClientLifecycle = BillingClientLifecycle.getInstance(wallgram.hd.wallpapers.App.context)
-
     @Singleton
     @Provides
     fun provideRequestManager(
@@ -77,13 +70,5 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGalleryDao(database: Database): GalleryDao = database.galleryDao()
-
-    @Provides
-    @Singleton
-    fun provideLocalDataSource(database: Database): LocalDataSource = LocalDataSource(database)
-
-    @Provides
-    @Singleton
-    fun provideSubscriptionStatusDao(database: Database): SubscriptionStatusDao = database.subscriptionStatusDao()
 
 }

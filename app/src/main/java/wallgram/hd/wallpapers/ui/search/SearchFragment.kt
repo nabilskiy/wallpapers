@@ -38,10 +38,9 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
         }
     }
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-
-
+    override fun invalidate() {
+        super.invalidate()
+        binding.list.scrollToPosition(0)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

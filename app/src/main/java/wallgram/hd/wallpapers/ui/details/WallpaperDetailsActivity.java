@@ -5,7 +5,6 @@ import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,11 +37,9 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import wallgram.hd.wallpapers.App;
 import wallgram.hd.wallpapers.R;
 import wallgram.hd.wallpapers.databinding.ActivityWallpaperDetailsBinding;
 import wallgram.hd.wallpapers.model.Gallery;
-import wallgram.hd.wallpapers.ui.crop.CropFragment;
 import wallgram.hd.wallpapers.util.Constants;
 import wallgram.hd.wallpapers.util.LockScreenUtil;
 import wallgram.hd.wallpapers.views.OriginalWallpaperDialogFragment;
@@ -70,8 +66,6 @@ public class WallpaperDetailsActivity extends AppCompatActivity implements Wallp
         View view = binding.getRoot();
         setContentView(view);
         setSupportActionBar(binding.toolbar);
-
-
 
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -151,17 +145,12 @@ public class WallpaperDetailsActivity extends AppCompatActivity implements Wallp
     }
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(App.localeHelper.setLocale(base));
-    }
-
-    @Override
     public void onCropClick(Gallery galleryItem) {
-        getSupportFragmentManager().beginTransaction()
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .add(R.id.wallpaper_details_container, CropFragment.newInstance(galleryItem), CropFragment.TAG_FRAGMENT)
-                .addToBackStack(null)
-                .commit();
+//        getSupportFragmentManager().beginTransaction()
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                .add(R.id.wallpaper_details_container, CropFragment.newInstance(galleryItem), CropFragment.TAG_FRAGMENT)
+//                .addToBackStack(null)
+//                .commit();
     }
 
     @Override
@@ -195,11 +184,11 @@ public class WallpaperDetailsActivity extends AppCompatActivity implements Wallp
     public void itemClicked(int position, String tag) {
         installType = position;
         switch (tag) {
-            case CropFragment.TAG_FRAGMENT:
-                CropFragment cropFragment = (CropFragment) getSupportFragmentManager().findFragmentByTag(CropFragment.TAG_FRAGMENT);
-//                if (cropFragment != null)
-//                    cropFragment.saveBitmap();
-                break;
+//            case CropFragment.TAG_FRAGMENT:
+//                CropFragment cropFragment = (CropFragment) getSupportFragmentManager().findFragmentByTag(CropFragment.TAG_FRAGMENT);
+////                if (cropFragment != null)
+////                    cropFragment.saveBitmap();
+//                break;
             case WallpaperDetailsFragment.TAG_FRAGMENT:
                 WallpaperDetailsFragment detailsFragment = (WallpaperDetailsFragment) getSupportFragmentManager().findFragmentByTag(WallpaperDetailsFragment.TAG_FRAGMENT);
 //                if (detailsFragment != null)

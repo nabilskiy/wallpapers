@@ -26,7 +26,7 @@ class WallpaperItemAdapter(private val onItemClicked: ((Gallery) -> Unit)) : Pag
         fun bind(item: Gallery) {
             with(binding) {
                 Glide.with(root.context).load(item.original)
-                        .thumbnail(Glide.with(root.context).load(item.preview))
+                        .thumbnail(Glide.with(root.context).load(item.preview).centerCrop())
                         .apply(RequestOptions().skipMemoryCache(true))
                         .listener(object: RequestListener<Drawable> {
                             override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
@@ -39,8 +39,8 @@ class WallpaperItemAdapter(private val onItemClicked: ((Gallery) -> Unit)) : Pag
                                 return false
                             }
                         })
-                        .apply(RequestOptions().format(DecodeFormat.PREFER_RGB_565))
-                        .transition(DrawableTransitionOptions.withCrossFade(100))
+                    .apply(RequestOptions().format(DecodeFormat.PREFER_RGB_565))
+                    .transition(DrawableTransitionOptions.withCrossFade(100))
                         .into(img)
 
                 root.setOnClickListener {

@@ -4,7 +4,7 @@ data class Pic(
 
         val id: Int,
         val category: Category?,
-        val user: User?,
+        val user: User? = null,
         val meta: PicMeta,
         val promoted: Int,
         val published: String,

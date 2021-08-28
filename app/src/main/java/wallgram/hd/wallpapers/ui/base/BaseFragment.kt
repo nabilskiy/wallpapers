@@ -52,4 +52,8 @@ abstract class BaseFragment<V : ViewModel, B : ViewBinding>(
         super.onCreate(savedInstanceState)
         viewModel = viewModelFactory.create(getViewModel())
     }
+
+    open fun invalidate() {
+
+    }
 }

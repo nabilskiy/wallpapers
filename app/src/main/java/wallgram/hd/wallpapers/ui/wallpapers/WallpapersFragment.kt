@@ -11,6 +11,7 @@ import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.databinding.FragmentWallpaperBinding
 import wallgram.hd.wallpapers.databinding.FragmentWallpapersBinding
+import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.ui.main.MainActivity
 import wallgram.hd.wallpapers.util.*
@@ -19,6 +20,7 @@ import wallgram.hd.wallpapers.util.modo.externalForward
 private const val CATEGORY_ID = "category_id"
 private const val TYPE_ID = "type_id"
 private const val SORT_TYPE = "sort_type"
+private const val FEED_REQUEST = "feed_request"
 
 class WallpapersFragment : BaseFragment<WallpapersViewModel, FragmentWallpapersBinding>(
     FragmentWallpapersBinding::inflate
@@ -31,56 +33,33 @@ class WallpapersFragment : BaseFragment<WallpapersViewModel, FragmentWallpapersB
     }
 
     companion object {
-
-        fun newInstance(type: WallType, category: Int, sort: String): WallpapersFragment =
+        fun newInstance(feedRequest: FeedRequest): WallpapersFragment =
             WallpapersFragment().withArgs(
-                TYPE_ID to type,
-                CATEGORY_ID to category,
-                SORT_TYPE to sort
-            )
-
-        fun newInstance(sort: String): WallpapersFragment =
-            WallpapersFragment().withArgs(
-                SORT_TYPE to sort
+                FEED_REQUEST to feedRequest
             )
     }
 
-    private val category: Int by args(CATEGORY_ID, -1)
-    private val sort: String by args(SORT_TYPE, "")
-    private val type: WallType by args(TYPE_ID)
+    private val feedRequest: FeedRequest by args(FEED_REQUEST)
+
+    override fun invalidate() {
+        super.invalidate()
+        binding.list.scrollToPosition(0)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        feedRequest.apply {
+            resolution = requireContext().getResolution()
+        }
+        viewModel.getLiveData(feedRequest)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        if(type == WallType.ALL)
-//        when(sort){
-//            "date" -> if(vM.dateLiveData.value == null) vM.getLiveData(type,category,sort)
-//            "popular" -> if(vM.popularLiveData.value == null) vM.getLiveData(type,category,sort)
-//            "random" -> if(vM.randomLiveData.value == null) vM.getLiveData(type,category,sort)
-//            else -> if(vM.wallpapersLiveData.value == null) vM.getLiveData(type,category,sort)
-//        }
-
-
-        viewModel.getLiveData(type, category, sort, requireContext().getResolution())
-
         viewModel.wallpapersLiveData.observe(viewLifecycleOwner, {
             wallpapersAdapter.submitData(lifecycle = lifecycle, it)
         })
-
-//        when (sort) {
-//            "date" -> vM.dateLiveData.observe(viewLifecycleOwner, {
-//                wallpapersAdapter.submitData(lifecycle = lifecycle, it)
-//            })
-//            "popular" -> vM.popularLiveData.observe(viewLifecycleOwner, {
-//                wallpapersAdapter.submitData(lifecycle = lifecycle, it)
-//            })
-//            "random" -> vM.randomLiveData.observe(viewLifecycleOwner, {
-//                wallpapersAdapter.submitData(lifecycle = lifecycle, it)
-//            })
-//            else -> vM.wallpapersLiveData.observe(viewLifecycleOwner, {
-//                wallpapersAdapter.submitData(lifecycle = lifecycle, it)
-//            })
-//        }
 
         val concatAdapter = wallpapersAdapter.withLoadStateHeaderAndFooter(
             header = ReposLoadStateAdapter { wallpapersAdapter.retry() },

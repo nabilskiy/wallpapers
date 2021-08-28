@@ -6,15 +6,13 @@ import androidx.room.TypeConverters
 import wallgram.hd.wallpapers.data.local.Database.Companion.DATABASE_VERSION
 import wallgram.hd.wallpapers.data.local.converters.DateConverter
 import wallgram.hd.wallpapers.data.local.dao.GalleryDao
-import wallgram.hd.wallpapers.data.local.dao.SubscriptionStatusDao
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.SubscriptionStatus
 
 
 @Database(
         entities = [
-            Gallery::class,
-            SubscriptionStatus::class
+            Gallery::class
         ],
         version = DATABASE_VERSION,
         exportSchema = false
@@ -23,10 +21,9 @@ import wallgram.hd.wallpapers.model.SubscriptionStatus
 abstract class Database : RoomDatabase() {
 
     companion object {
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
         const val DATABASE_NAME = "akspic.db"
     }
 
     abstract fun galleryDao(): GalleryDao
-    abstract fun subscriptionStatusDao(): SubscriptionStatusDao
 }

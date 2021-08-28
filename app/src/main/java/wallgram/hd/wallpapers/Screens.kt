@@ -22,6 +22,7 @@ import wallgram.hd.wallpapers.util.modo.ExternalScreen
 import wallgram.hd.wallpapers.util.modo.MultiAppScreen
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
+import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
 import wallgram.hd.wallpapers.ui.settings.language.LanguageFragment
 
@@ -80,18 +81,18 @@ object Screens {
 
     @Parcelize
     class Wallpaper(private val position: Int,
-                    private val pic: Int) : AppScreen("Wallpaper") {
+                    private val pic: Int) : AppScreen("Wallpaper", replacePreviousScreen = true) {
         override fun create(): Fragment = WallpaperFragment.create(position, pic)
     }
 
     @Parcelize
-    class CategoriesList(private val category: @RawValue SubCategory, private val type: WallType) : AppScreen("CategoriesList") {
-        override fun create(): Fragment = CategoriesListFragment.create(category = category, type = type)
+    class CategoriesList(private val feedRequest: @RawValue FeedRequest): AppScreen("CategoriesList"){
+        override fun create() = CategoriesListFragment.create(feedRequest)
     }
 
     @Parcelize
-    class Crop(private val gallery: Gallery): AppScreen("Crop"){
-        override fun create(): Fragment = CropFragment.create(gallery = gallery)
+    class Crop(private val landscape: String): AppScreen("Crop"){
+        override fun create(): Fragment = CropFragment.create(landscape)
     }
 
     @Parcelize

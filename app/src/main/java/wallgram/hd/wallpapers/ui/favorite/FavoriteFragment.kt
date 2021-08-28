@@ -15,35 +15,47 @@ import wallgram.hd.wallpapers.ui.categories.CategoriesListAdapter
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.ui.main.MainFragment
 import wallgram.hd.wallpapers.ui.wallpapers.*
-import wallgram.hd.wallpapers.util.args
-import wallgram.hd.wallpapers.util.dp
 import wallgram.hd.wallpapers.util.modo.externalForward
 import wallgram.hd.wallpapers.util.modo.forward
-import wallgram.hd.wallpapers.util.withArgs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.ColorsItemDecoration
 import wallgram.hd.wallpapers.ui.FeedItemsAdapter
-import wallgram.hd.wallpapers.util.SimpleItemDecoration
+import wallgram.hd.wallpapers.util.*
 import wallgram.hd.wallpapers.util.modo.selectStack
 
 
 class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding>(
-        FragmentFavoriteBinding::inflate
+    FragmentFavoriteBinding::inflate
 ) {
 
     companion object {
         private const val ARG_TYPE = "arg_type"
         fun create(type: WallType) = FavoriteFragment().withArgs(
-                ARG_TYPE to type
+            ARG_TYPE to type
         )
+    }
+
+    override fun invalidate() {
+        super.invalidate()
+        if (favoritesAdapter.currentList.isEmpty()) {
+            binding.emptyView.appbar.setExpanded(true, true)
+            binding.emptyView.viewPager.findCurrentFragment(childFragmentManager)?.let {
+                (it as BaseFragment<*, *>).invalidate()
+            }
+        }
+        else{
+            binding.favoritesView.nestedScrollView.smoothScrollTo(0,0)
+        }
+
     }
 
     private val type: WallType by args(ARG_TYPE, WallType.FAVORITE)
 
     private val favoritesAdapter: FavoritesAdapter by lazy {
-        FavoritesAdapter(onItemClicked = {position, id ->
+        FavoritesAdapter(onItemClicked = { position, id ->
             viewModel.itemClicked(position, id)
         }, onItemDelete = {
             viewModel.deleteItem(it)
@@ -52,7 +64,15 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
 
     private val categoriesAdapter: CategoriesListAdapter by lazy {
         CategoriesListAdapter(onItemClicked = {
-            viewModel.onItemClicked(Screens.CategoriesList(it, type = WallType.CATEGORY))
+            viewModel.onItemClicked(
+                Screens.CategoriesList(
+                    FeedRequest(
+                        type = WallType.CATEGORY,
+                        category = it.id,
+                        categoryName = it.name
+                    )
+                )
+            )
         }, tag = MainFragment::class.java.simpleName)
     }
 
@@ -62,9 +82,17 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
         }
     }
 
-    private val tagsAdapter: TagsAdapter by lazy{
-        TagsAdapter{
-            viewModel.onItemClicked(Screens.CategoriesList(type = WallType.TAG, category = it))
+    private val tagsAdapter: TagsAdapter by lazy {
+        TagsAdapter {
+            viewModel.onItemClicked(
+                Screens.CategoriesList(
+                    FeedRequest(
+                        type = WallType.TAG,
+                        category = it.id,
+                        categoryName = it.name
+                    )
+                )
+            )
         }
     }
 
@@ -100,7 +128,8 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
             }
 
             emptyView.listCategory.apply {
-                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 addItemDecoration(ColorsItemDecoration())
                 adapter = categoriesAdapter
             }
@@ -110,10 +139,15 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
                 adapter = FeedItemsAdapter(this@FavoriteFragment)
             }
 
-            TabLayoutMediator(emptyView.tabLayout, emptyView.viewPager) { tab: TabLayout.Tab, position: Int -> tab.text = resources.getStringArray(R.array.feed_list)[position] }.attach()
+            TabLayoutMediator(
+                emptyView.tabLayout,
+                emptyView.viewPager
+            ) { tab: TabLayout.Tab, position: Int ->
+                tab.text = resources.getStringArray(R.array.feed_list)[position]
+            }.attach()
 
-            favoritesView.allBtn.setOnClickListener{
-                viewModel.onItemClicked(Screens.CategoriesList(type = WallType.POPULAR, category = Category()))
+            favoritesView.allBtn.setOnClickListener {
+                viewModel.onItemClicked(Screens.CategoriesList(FeedRequest(WallType.POPULAR)))
             }
 
             favoritesView.list.apply {
@@ -129,7 +163,8 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
             }
 
             favoritesView.popularList.apply {
-                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 addItemDecoration(PopularItemDecoration())
                 adapter = popularAdapter
             }
@@ -138,27 +173,26 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
     }
 
     private fun clearAll() {
-        if(favoritesAdapter.itemCount > 0){
+        if (favoritesAdapter.itemCount > 0) {
             MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(resources.getString(R.string.clear))
-                    .setMessage(resources.getString(R.string.clear_confirm))
-                    .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton(resources.getString(R.string.ok_btn)) { dialog, _ ->
-                        viewModel.clearAll(type)
-                        dialog.dismiss()
-                    }
-                    .show()
+                .setTitle(resources.getString(R.string.clear))
+                .setMessage(resources.getString(R.string.clear_confirm))
+                .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(resources.getString(R.string.ok_btn)) { dialog, _ ->
+                    viewModel.clearAll(type)
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 
-    private fun setContentView(isEmpty: Boolean){
-        if(isEmpty){
+    private fun setContentView(isEmpty: Boolean) {
+        if (isEmpty) {
             subscibeOnEmpty()
             viewModel.getCategories()
-        }
-        else{
+        } else {
             subscribeOnNotEmpty()
             viewModel.getTags()
             viewModel.getPopular()
@@ -189,7 +223,7 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
         }
     }
 
-    private fun subscribeOnNotEmpty(){
+    private fun subscribeOnNotEmpty() {
         viewModel.tagsLiveData.observe(viewLifecycleOwner, { status ->
             when (status) {
                 is Resource.Loading -> {

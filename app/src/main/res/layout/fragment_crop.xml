@@ -1,30 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<wallgram.hd.wallpapers.views.WindowInsetsRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".ui.crop.CropFragment"
-    android:fitsSystemWindows="true"
-    android:clickable="true"
-    android:focusable="true">
+    tools:context=".ui.wallpapers.WallpapersFragment">
 
-    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-        android:id="@+id/crop_view"
-        android:fitsSystemWindows="true"
+    <wallgram.hd.wallpapers.views.biv.view.BigImageView
+        android:id="@+id/mBigImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:optimizeDisplay="true"
+        app:initScaleType="centerCrop" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B304030C"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/filters_menu"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="#BDBDBD">
+
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:text="@string/crop_image_key"
+            android:textColor="#E6FFFFFF"
+            android:textSize="20sp" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:theme="@style/CircularProgress" />
 
-    <include
+   <!-- <include
         android:id="@+id/error_layout"
         layout="@layout/view_error"
-        android:visibility="gone"/>
+        android:visibility="gone"/>-->
 
-</FrameLayout>
+</wallgram.hd.wallpapers.views.WindowInsetsRelativeLayout>

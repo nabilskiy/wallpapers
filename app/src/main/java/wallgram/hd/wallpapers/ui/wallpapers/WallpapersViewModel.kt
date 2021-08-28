@@ -32,13 +32,13 @@ class WallpapersViewModel @Inject constructor(
         message.value = text
     }
 
-    fun getLiveData(type: WallType, category: Int, sort: String, resolution: String) {
+
+    fun getLiveData(feedRequest: FeedRequest) {
         viewModelScope.launch {
             Pager(PagingConfig(27, enablePlaceholders = false)) {
-                FeedPagingSource(FeedRequest(type = type, category = category, sort = sort, resolution = resolution), serviceGenerator)
+                FeedPagingSource(feedRequest, serviceGenerator)
             }.flow.cachedIn(viewModelScope).collect {
                  wallpapersLiveDataPrivate.value = it
-
             }
         }
     }

@@ -1,77 +1,83 @@
 package wallgram.hd.wallpapers.ui.components.crop
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import wallgram.hd.wallpapers.databinding.FragmentCropBinding
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.util.Common
 import wallgram.hd.wallpapers.util.args
-import wallgram.hd.wallpapers.util.getResolution
 import wallgram.hd.wallpapers.util.withArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.util.getResolution
+import wallgram.hd.wallpapers.views.biv.BigImageViewer
+import wallgram.hd.wallpapers.views.biv.loader.glide.GlideImageLoader
+import wallgram.hd.wallpapers.views.biv.view.GlideImageViewFactory
 
 class CropFragment : BaseFragment<CropViewModel, FragmentCropBinding>(
-        FragmentCropBinding::inflate
+    FragmentCropBinding::inflate
 ) {
 
     companion object {
-        private const val ARG_GALLERY = "arg_gallery"
-        fun create(gallery: Gallery) = CropFragment().withArgs(
-                ARG_GALLERY to gallery
+        private const val ARG_LANDSCAPE = "arg_landscape"
+        fun create(landscape: String) = CropFragment().withArgs(
+            ARG_LANDSCAPE to landscape
         )
     }
 
-    private val item: Gallery by args(ARG_GALLERY)
+    private val landscapeLink: String by args(ARG_LANDSCAPE)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        BigImageViewer.initialize(GlideImageLoader.with(requireContext()))
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getPic(item.id, requireContext().getResolution(), "ru")
-
-        viewModel.picLiveData.observe(viewLifecycleOwner, {
-            it.data?.let { pic ->
-                Glide.with(requireContext()).asBitmap().load(pic.links.landscape
-                        ?: pic.links.source)
-                        .into(object : CustomViewTarget<SubsamplingScaleImageView, Bitmap>(binding.cropView) {
-                            override fun onLoadFailed(errorDrawable: Drawable?) {
-                                binding.progressBar.isVisible = false
-                            }
-
-                            override fun onResourceCleared(placeholder: Drawable?) {
-                                // clear all resources
-                            }
-
-                            override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
-                                binding.progressBar.isVisible = false
-                                binding.cropView.setImage(ImageSource.bitmap(resource))
-
-                                val f2 = (wallgram.hd.wallpapers.util.Common.getHeight(activity) / binding.cropView.sHeight).toFloat()
-                                val f3 = (wallgram.hd.wallpapers.util.Common.getWidth(activity) / binding.cropView.sWidth).toFloat()
-
-                                var f1 = f2
-                                if (f3 > f2) {
-                                    f1 = f3
-                                }
-
-                                binding.cropView.setScaleAndCenter(f1, PointF(wallgram.hd.wallpapers.util.Common.getHeight(activity) * pic.focus[0], 0.0f))
-                                binding.cropView.setMinimumDpi(50)
-                                binding.cropView.setMinimumScaleType(SubsamplingScaleImageView.SCALE_TYPE_CENTER_CROP)
-                            }
-                        })
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_save -> {
+                    if (ActivityCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        false
+                    }
+                    binding.mBigImage.saveImageIntoGallery()
+                }
             }
-        })
+            true
+        }
 
+        binding.mBigImage.apply {
+            setImageViewFactory(GlideImageViewFactory())
+            showImage(Uri.parse(landscapeLink))
 
+        }
     }
+
 
     override fun getViewModel(): Class<CropViewModel> = CropViewModel::class.java
 }

@@ -24,10 +24,17 @@ fun <T> debounce(
     }
 }
 
-fun Context.getResolution(): String{
-    val outMetrics = DisplayMetrics()
-   if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) display?.getRealMetrics(outMetrics) else
-        (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(outMetrics)
+//fun Context.getResolution(): String{
+//    val outMetrics = DisplayMetrics()
+//   if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) display?.getRealMetrics(outMetrics) else
+//        (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(outMetrics)
+//
+//    return "${outMetrics.widthPixels}x${outMetrics.heightPixels}"
+//}
 
-    return "${outMetrics.widthPixels}x${outMetrics.heightPixels}"
+fun Context.getResolution(): String{
+    val metrics = DisplayMetrics()
+    val manager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    manager.defaultDisplay?.getMetrics(metrics)
+    return metrics.widthPixels.toString() + "x" + metrics.heightPixels
 }

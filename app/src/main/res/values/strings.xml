@@ -54,9 +54,9 @@
 <!--    </string-array>-->
 
     <string-array name="feed_list">
-        <item>Новые</item>
-        <item>Популярные</item>
-        <item>Случайные</item>
+        <item>@string/news_title</item>
+        <item>@string/popular_title</item>
+        <item>@string/random_title</item>
     </string-array>
 
     <string-array name="favorite_list">
