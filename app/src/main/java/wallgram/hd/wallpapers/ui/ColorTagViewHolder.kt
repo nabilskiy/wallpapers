@@ -9,12 +9,12 @@ class ColorTagViewHolder(private val itemBinding: ItemColorTagBinding) :
     RecyclerView.ViewHolder(
             itemBinding.root
     ) {
-    fun bind(item: Int, onItemClicked: (Int) -> Unit) {
+    fun bind(item: Int, onItemClicked: (Int, Int) -> Unit) {
         itemBinding.apply {
             DrawableCompat.setTint(root.background, item)
 
             root.setOnClickListener {
-                onItemClicked.invoke(item)
+                onItemClicked.invoke(item, bindingAdapterPosition)
             }
         }
     }

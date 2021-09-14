@@ -46,12 +46,12 @@
         <item>汉语</item>
     </string-array>
 
-<!--    <string-array name="feed_list">-->
-<!--        <item>@string/category_title</item>-->
-<!--        <item>@string/news_title</item>-->
-<!--        <item>@string/popular_title</item>-->
-<!--        <item>@string/random_title</item>-->
-<!--    </string-array>-->
+    <!--    <string-array name="feed_list">-->
+    <!--        <item>@string/category_title</item>-->
+    <!--        <item>@string/news_title</item>-->
+    <!--        <item>@string/popular_title</item>-->
+    <!--        <item>@string/random_title</item>-->
+    <!--    </string-array>-->
 
     <string-array name="feed_list">
         <item>@string/news_title</item>
@@ -182,5 +182,38 @@
     <string name="notification_paused_text">Download suspended</string>
     <string name="notification_completed_text">Download complete</string>
     <string name="notification_failed_text">Download failed</string>
+    <string name="error" translatable="false">Error</string>
+
+    <string name="red">Red</string>
+    <string name="orange">Orange</string>
+    <string name="yellow">Yellow</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="violet">Violet</string>
+    <string name="pink">Pink</string>
+    <string name="brown">Brown</string>
+    <string name="black">Black</string>
+    <string name="white">White</string>
+    <string name="gray">Gray</string>
+    <string name="turquoise">Turquoise</string>
+    <string name="gold">Gold</string>
+    <string name="silver">Silver</string>
+
+    <string-array name="colors_name">
+        <item>@string/red</item>
+        <item>@string/orange</item>
+        <item>@string/yellow</item>
+        <item>@string/gold</item>
+        <item>@string/green</item>
+        <item>@string/turquoise</item>
+        <item>@string/blue</item>
+        <item>@string/violet</item>
+        <item>@string/pink</item>
+        <item>@string/brown</item>
+        <item>@string/black</item>
+        <item>@string/white</item>
+        <item>@string/gray</item>
+        <item>@string/silver</item>
+    </string-array>
 
 </resources>

@@ -42,9 +42,7 @@ open class MainFragment : MultiStackFragment() {
 
     lateinit var viewModel: MainViewModel
 
-    private val manager: ReviewManager by lazy {
-        ReviewManagerFactory.create(requireContext())
-    }
+
 
     private var multiScreen: MultiScreen? = null
         set(value) {
@@ -145,17 +143,6 @@ open class MainFragment : MultiStackFragment() {
             }
         }
 
-    }
-
-    private fun showRateApp() {
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val reviewInfo = task.result
-            } else {
-                showRateAppFallbackDialog()
-            }
-        }
     }
 
     private fun showRateAppFallbackDialog() {

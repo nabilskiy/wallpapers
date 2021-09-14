@@ -19,7 +19,7 @@ open class ModoRender(
     protected val containerId: Int,
     protected val exitAction: () -> Unit
 ) : NavigationRender {
-    internal var currentState: NavigationState
+    public var currentState: NavigationState
         private set
 
     constructor(
@@ -53,8 +53,7 @@ open class ModoRender(
         val currentScreen = currentState.chain.lastOrNull()
         if (currentScreen is MultiScreen) {
             fragmentManager.executePendingTransactions()
-            (fragmentManager.findFragmentById(containerId) as MultiStackFragment)
-                .applyMultiState(currentScreen)
+            (fragmentManager.findFragmentById(containerId) as MultiStackFragment?)?.applyMultiState(currentScreen)
         }
     }
 

@@ -11,6 +11,8 @@
     <color name="colorYellowDark">#d2b803</color>
     <color name="colorGrayText">#929498</color>
 
+    <color name="colorChipBackground">#1A04030C</color>
+
     <color name="colorBackground">#232035</color>
 
     <color name="blue_grey_600">#546E7A</color>
@@ -41,21 +43,20 @@
     <color name="gnt_gray">#808080</color>
 
 
-    <color name="color_tag_1">#44ACED</color>
-    <color name="color_tag_2">#7E58C0</color>
-    <color name="color_tag_3">#EF6593</color>
-    <color name="color_tag_4">#FC5759</color>
-    <color name="color_tag_5">#D0775F</color>
-    <color name="color_tag_6">#ED6F21</color>
-    <color name="color_tag_7">#FE9127</color>
-    <color name="color_tag_8">#F9C140</color>
-    <color name="color_tag_9">#82B456</color>
-    <color name="color_tag_10">#469F61</color>
-    <color name="color_tag_11">#0F9587</color>
-    <color name="color_tag_12">#0D818E</color>
-    <color name="color_tag_13">#0D508E</color>
-    <color name="color_tag_14">#0D228E</color>
-    <color name="color_tag_15">#1C1C1C</color>
+    <color name="color_tag_1">#f44336</color>
+    <color name="color_tag_2">#ffa500</color>
+    <color name="color_tag_3">#ffeb3b</color>
+    <color name="color_tag_4">#FFD700</color>
+    <color name="color_tag_5">#4caf50</color>
+    <color name="color_tag_6">#009688</color>
+    <color name="color_tag_7">#2196f3</color>
+    <color name="color_tag_8">#673ab7</color>
+    <color name="color_tag_9">#e91e63</color>
+    <color name="color_tag_10">#795548</color>
+    <color name="color_tag_11">#000000</color>
+    <color name="color_tag_12">#ffffff</color>
+    <color name="color_tag_13">#808080</color>
+    <color name="color_tag_14">#C0C0C0</color>
 
     <array name="color_tags">
         <item>@color/color_tag_1</item>
@@ -72,7 +73,6 @@
         <item>@color/color_tag_12</item>
         <item>@color/color_tag_13</item>
         <item>@color/color_tag_14</item>
-        <item>@color/color_tag_15</item>
     </array>
 
     <color name="cpb_grey">#ffdedede</color>

@@ -11,10 +11,19 @@ interface AkspicService {
         @Query("sort") sort: String,
         @Query("page") page: Int,
         @Query("resolution") resolution: String,
+        @Query("lang") lang: String
+    ): Response<ServerResponse<Gallery>>
+
+    @GET("gallery?amount=27&safe=1")
+    suspend fun getWallpapersItemsFromColor(
+        @Query("sort") sort: String,
+        @Query("page") page: Int,
+        @Query("resolution") resolution: String,
         @Query("lang") lang: String,
         @Query("primary_color[r]") r: String? = null,
         @Query("primary_color[g]") g: String? = null,
         @Query("primary_color[b]") b: String? = null,
+        @Query("primary_color_threshold") threshold: Int = 40
     ): Response<ServerResponse<Gallery>>
 
     @GET("tags?amount=10")

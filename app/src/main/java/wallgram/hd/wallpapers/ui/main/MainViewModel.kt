@@ -60,11 +60,11 @@ class MainViewModel @Inject constructor(
         modo.forward(Screens.CategoriesList(FeedRequest(type = type, category = it.id, categoryName = it.name)))
     }
 
-    fun onItemClicked(color: Int, type: WallType) {
+    fun onItemClicked(color: Int, title: String, type: WallType) {
         val r = color shr 16 and 0xFF
         val g = color shr 8 and 0xFF
         val b = color shr 0 and 0xFF
-        modo.forward(Screens.CategoriesList(FeedRequest(type = type, r = r.toString(), g = g.toString(), b = b.toString())))
+        modo.forward(Screens.CategoriesList(FeedRequest(type = type, categoryName = title, r = r.toString(), g = g.toString(), b = b.toString())))
     }
 
     fun onAllCategoryClicked() {

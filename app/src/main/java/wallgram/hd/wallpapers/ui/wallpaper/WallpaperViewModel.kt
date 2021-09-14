@@ -17,8 +17,10 @@ import wallgram.hd.wallpapers.data.remote.ServiceGenerator
 import wallgram.hd.wallpapers.data.repository.DataRepositorySource
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.Pic
+import wallgram.hd.wallpapers.model.Tag
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
+import wallgram.hd.wallpapers.ui.wallpapers.WallType
 import wallgram.hd.wallpapers.util.cache.CacheManager
 import wallgram.hd.wallpapers.util.cache.ICacheManager
 import wallgram.hd.wallpapers.util.modo.back
@@ -74,6 +76,7 @@ class WallpaperViewModel @Inject constructor(
     }
 
     fun getPic(id: Int, res: String){
+        picLiveDataPrivate.value = Resource.Loading()
         viewModelScope.launch {
             dataRepository.getPic(id, res, "ru").collect{
                 picLiveDataPrivate.value = it
@@ -93,6 +96,14 @@ class WallpaperViewModel @Inject constructor(
     fun itemClicked(position: Int, id: Int) {
         cacheManager.wallpapersData = similarLiveDataPrivate
         modo.externalForward(Screens.Wallpaper(position, id))
+    }
+
+    fun clearInformation() {
+        picLiveDataPrivate.value = Resource.DataError(0)
+    }
+
+    fun onTagClicked(tag: Tag) {
+        modo.forward(Screens.CategoriesList(FeedRequest(type = WallType.TAG, category = tag.id, categoryName = tag.name)))
     }
 
 }

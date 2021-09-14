@@ -181,7 +181,7 @@ open class DownloadTask(
     /**
      * @param interval 更新进度间隔时间，单位ms
      */
-    fun state(interval: Long = 200): Flow<State> {
+    fun state(interval: Long = 100): Flow<State> {
         return downloadStateFlow.combine(progress(interval, ensureLast = false)) { l, r -> l.apply { progress = r } }
     }
 

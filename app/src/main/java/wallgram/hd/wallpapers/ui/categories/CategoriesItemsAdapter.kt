@@ -11,9 +11,9 @@ class CategoriesItemsAdapter(fa: Fragment, val feedRequest: FeedRequest) : Fragm
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> WallpapersFragment.newInstance(feedRequest = feedRequest.apply { sort = "date" })
-            1 -> WallpapersFragment.newInstance(feedRequest = feedRequest.apply { sort = "popular" })
-            else -> WallpapersFragment.newInstance(feedRequest = feedRequest.apply { sort = "random" })
+            0 -> WallpapersFragment.newInstance(feedRequest.copy(sort="date"))
+            1 -> WallpapersFragment.newInstance(feedRequest.copy(sort="popular"))
+            else -> WallpapersFragment.newInstance(feedRequest.copy(sort = "random"))
         }
     }
 }

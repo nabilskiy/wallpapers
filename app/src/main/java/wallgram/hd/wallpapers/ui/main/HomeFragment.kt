@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import wallgram.hd.wallpapers.App
@@ -48,8 +49,9 @@ class HomeFragment : BaseFragment<MainViewModel, FragmentHomeBinding>(
     }
 
     private val colorsAdapter: ColorTagAdapter by lazy {
-        ColorTagAdapter(onItemClicked = {
-            viewModel.onItemClicked(it, WallType.COLOR)
+        ColorTagAdapter(onItemClicked = { item, position ->
+            val title = resources.getStringArray(R.array.colors_name)[position]
+            viewModel.onItemClicked(item, title, WallType.COLOR)
         })
     }
 

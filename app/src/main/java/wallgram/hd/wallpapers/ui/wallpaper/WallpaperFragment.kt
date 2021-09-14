@@ -5,29 +5,34 @@ import android.animation.AnimatorListenerAdapter
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.os.Environment
+import kotlinx.coroutines.*
 import android.os.Handler
+import android.text.InputFilter
+import android.text.TextUtils
 import android.util.Log
+import android.view.Gravity
 import android.view.View
-import android.widget.Button
-import android.widget.GridLayout
+import android.view.animation.TranslateAnimation
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.databinding.FragmentWallpaperBinding
 import wallgram.hd.wallpapers.ui.base.BaseFragment
-import wallgram.hd.wallpapers.ui.main.MainActivity
 import wallgram.hd.wallpapers.ui.wallpapers.*
 import wallgram.hd.wallpapers.util.*
-import wallgram.hd.wallpapers.util.modo.forward
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.chip.Chip
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import wallgram.hd.wallpapers.data.Resource
@@ -36,8 +41,8 @@ import wallgram.hd.wallpapers.ui.details.DownloadDialogFragment
 import wallgram.hd.wallpapers.ui.details.InstallDialogFragment
 import wallgram.hd.wallpapers.util.downloadx.State
 import wallgram.hd.wallpapers.util.downloadx.download
-import wallgram.hd.wallpapers.util.modo.back
 import wallgram.hd.wallpapers.views.progressbutton.*
+import java.io.File
 
 
 class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBinding>(
@@ -55,6 +60,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
     private val wallpapersAdapter: WallpaperItemAdapter by lazy {
         WallpaperItemAdapter {
+         //   Toast.makeText(requireContext(), "CLICK", Toast.LENGTH_SHORT).show()
 //            modo.externalForward(Screens.Wallpaper())
         }
     }
@@ -66,9 +72,11 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
     private val similarAdapter: WallpapersAdapter by lazy {
         WallpapersAdapter { position, id ->
-            //viewModel.itemClicked(position, id)
+            viewModel.itemClicked(position, id)
         }
     }
+
+    private var isTagsVisible = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -108,12 +116,64 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 similarAdapter.submitData(lifecycle = lifecycle, it)
             }
 
+            toolbar.menu.getItem(2).actionView.findViewById<ImageView>(R.id.tag_icon)
+                ?.setOnClickListener {
+                    if (isTagsVisible) hideTags() else showTags()
+                }
+
             viewModel.picLiveData.observe(viewLifecycleOwner) {
                 when (it) {
+                    is Resource.Loading -> {
+                        updateToolbar()
+                    }
                     is Resource.Success -> {
+                        toolbar.menu.getItem(2).actionView?.findViewById<ProgressBar>(R.id.tag_progress_bar)?.isVisible =
+                            false
+                        toolbar.menu.getItem(2).actionView?.findViewById<ImageView>(R.id.tag_icon)?.isVisible =
+                            true
+
+                        it.data?.let {
+                            if(isTagsVisible){
+                                isTagsVisible = false
+                                return@observe
+                            }
+
+                            chipGroup.removeAllViews()
+
+                            it.tags.forEach { tag ->
+
+                                val textView = TextView(requireContext()).apply {
+                                    text = tag.name
+                                    ellipsize = TextUtils.TruncateAt.END
+                                    maxLines = 1
+                                    maxLength(15)
+                                    setBackgroundResource(R.drawable.rounded_corner)
+                                    setTextColor(
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            R.color.colorWhite
+                                        )
+                                    )
+                                    includeFontPadding = false
+                                    textSize = 14F
+                                    typeface = ResourcesCompat.getFont(
+                                        requireContext(),
+                                        R.font.roboto_medium
+                                    )
+                                    setOnClickListener {
+                                        viewModel.onTagClicked(tag)
+                                    }
+                                }
+                                chipGroup.addView(textView)
+                            }
+
+                            showTagsView()
+                        }
+
 
                     }
                     else -> {
+                        hideTags()
                     }
 
                 }
@@ -162,6 +222,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                     // checkFavorite(position)
                     val item = wallpapersAdapter.peek(position)
                     item?.let {
+                        viewModel.clearInformation()
                         viewModel.isFavorite(it)
                         viewModel.getLiveData(
                             FeedRequest(
@@ -174,12 +235,14 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 }
             })
 
+            list.setOnClickListener {
+                Log.d("CLICK", "OK")
+            }
+
             viewModel.favoriteLiveData.observe(viewLifecycleOwner, {
                 toolbar.menu.getItem(1)
                     .setIcon(if (it) R.drawable.ic_fav_fill else R.drawable.ic_fav_outlined)
             })
-
-
 
             installBtn.setOnClickListener {
                 InstallDialogFragment().show(
@@ -229,7 +292,14 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
              }*/
 
         }
+    }
 
+    private fun updateToolbar() {
+        binding.toolbar.menu.getItem(2).actionView?.findViewById<ImageView>(R.id.tag_icon)?.isVisible =
+            false
+
+        binding.toolbar.menu.getItem(2).actionView?.findViewById<ProgressBar>(R.id.tag_progress_bar)?.isVisible =
+            true
 
     }
 
@@ -237,36 +307,42 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         binding.toolbar.menu.getItem(0).isVisible = landscape != null
     }
 
-    private fun showAppBar() {
-
-    }
 
     private fun showTags() {
-        with(binding.chipGroup) {
-            visibility = View.VISIBLE
-            alpha = 0.0f
-
-            animate()
-                .translationX(0f)
-                .alpha(1.0f)
-                .setListener(null)
+        if (viewModel.picLiveData.value is Resource.Success) {
+            showTagsView()
+            return
         }
+        val item = wallpapersAdapter.peek(binding.list.currentItem)
+        item?.let {
+            viewModel.getPic(it.id, requireContext().getResolution())
+        }
+    }
 
+    private fun showTagsView() {
+        if(binding.chipGroup.alpha == 1f)
+            return
+
+        lifecycleScope.launch {
+            val anim1 = async { binding.chipGroup.alpha(0f, 1f) }
+            val anim2 =
+                async { binding.chipGroup.translationY(0f, binding.toolbar.height.toFloat()) }
+            awaitAll(anim1, anim2)
+        }
+        isTagsVisible = true
     }
 
     private fun hideTags() {
-        with(binding.chipGroup) {
-            animate()
-                .translationX(-width.toFloat())
-                .alpha(0.0f)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        super.onAnimationEnd(animation)
-                        visibility = View.GONE
-                    }
-                })
-        }
+        if(binding.chipGroup.alpha == 0f)
+            return
 
+        lifecycleScope.launch {
+            val anim1 = async { binding.chipGroup.alpha(1f, 0f) }
+            val anim2 =
+                async { binding.chipGroup.translationY(binding.toolbar.height.toFloat(), 0f) }
+            awaitAll(anim1, anim2)
+        }
+        isTagsVisible = false
     }
 
     private fun checkFavorite(position: Int) {
@@ -295,19 +371,20 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     override fun getViewModel(): Class<WallpaperViewModel> = WallpaperViewModel::class.java
 
     fun download(url: String) {
-        val downloadTask = lifecycleScope.download(url)
+        val downloadTask = lifecycleScope.download(
+            url
+        )
         downloadTask.state()
             .onEach {
-
                 when (it) {
                     is State.Downloading -> {
-                        if(!binding.downloadBtn.isProgressActive())
+                        if (!binding.downloadBtn.isProgressActive())
                             showLoading()
                     }
-                    is State.Succeed -> showDone()
-                    is State.Failed -> showDone()
-                    is State.Stopped -> showDone()
-                    is State.None -> showDone()
+                    is State.Succeed -> showDone(it)
+                    is State.Failed -> showDone(it)
+                    is State.Stopped -> showDone(it)
+                    is State.None -> showDone(it)
                 }
             }
             .launchIn(lifecycleScope)
@@ -325,9 +402,9 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         button.isEnabled = false
     }
 
-    private fun showDone() {
+    private fun showDone(state: State) {
         val animatedDrawable =
-            ContextCompat.getDrawable(requireContext(), R.drawable.animated_check)!!
+            ContextCompat.getDrawable(requireContext(), getDrawableFromState(state))!!
         val drawableSize = resources.getDimensionPixelSize(R.dimen.doneSize)
         animatedDrawable.setBounds(0, 0, drawableSize, drawableSize)
         val button = binding.downloadBtn
@@ -335,11 +412,25 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
             button.isEnabled = true
 
             button.showDrawable(animatedDrawable) {
-                buttonTextRes = R.string.ok_btn
+                buttonTextRes = getMessageFromState(state)
             }
             Handler().postDelayed({
                 button.hideDrawable(R.string.download)
             }, 2000)
-        }, 3000)
+        }, 500)
+    }
+
+    private fun getMessageFromState(state: State) = when (state) {
+        is State.Succeed, is State.Failed -> R.string.ok_btn
+        is State.Stopped -> R.string.error
+        is State.None -> R.string.error
+        else -> -1
+    }
+
+    private fun getDrawableFromState(state: State) = when (state) {
+        is State.Succeed, is State.Failed -> R.drawable.animated_check
+        is State.Stopped -> R.drawable.ic_round_error
+        is State.None -> R.drawable.ic_round_error
+        else -> -1
     }
 }

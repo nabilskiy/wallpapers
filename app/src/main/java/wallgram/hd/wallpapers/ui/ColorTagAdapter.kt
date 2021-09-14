@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import wallgram.hd.wallpapers.databinding.ItemColorTagBinding
 
-class ColorTagAdapter(private val onItemClicked: ((Int) -> Unit)) : ListAdapter<Int, ColorTagViewHolder>(DiffCallback()) {
+class ColorTagAdapter(private val onItemClicked: ((Int, Int) -> Unit)) : ListAdapter<Int, ColorTagViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorTagViewHolder {
         val itemBinding =

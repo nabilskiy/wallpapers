@@ -12,6 +12,21 @@
         android:layout_height="match_parent"
         android:orientation="horizontal" />
 
+    <wallgram.hd.wallpapers.views.FlowLayout
+        android:id="@+id/chip_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:flChildSpacing="8dp"
+        android:alpha="0"
+        android:visibility="visible"
+        app:flRowSpacing="8dp"
+        app:flMaxRows="2"/>
+
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -33,33 +48,9 @@
             android:text="@string/similar_wallpapers"
             android:textColor="#E6FFFFFF"
             android:textSize="20sp" />
+
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <com.google.android.flexbox.FlexboxLayout
-        android:id="@+id/chip_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_below="@id/toolbar"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone"
-        app:alignContent="stretch"
-        app:alignItems="stretch"
-        app:flexWrap="wrap"
-        app:maxLine="2">
-
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Привет"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp"
-            app:chipBackgroundColor="#B304030C"
-            app:textEndPadding="12dp"
-            app:textStartPadding="12dp" />
-    </com.google.android.flexbox.FlexboxLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

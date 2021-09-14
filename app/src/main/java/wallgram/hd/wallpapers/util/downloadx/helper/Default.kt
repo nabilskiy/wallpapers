@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.util.downloadx.helper
 
+import android.os.Environment
 import zlc.season.claritypotion.ClarityPotion
 
 object Default {
@@ -7,6 +8,8 @@ object Default {
      * 默认的保存路径
      */
     val DEFAULT_SAVE_PATH = ClarityPotion.clarityPotion.filesDir.path
+
+  //  val DEFAULT_SAVE_PATH = Environment.getExternalStorageDirectory().absolutePath + "/Pictures/Wallgram/"
 
     /**
      * 默认的分片大小

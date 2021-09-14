@@ -17,6 +17,8 @@ import wallgram.hd.wallpapers.ui.main.MainViewModel
 import wallgram.hd.wallpapers.util.FileUtils
 import wallgram.hd.wallpapers.util.dp
 import com.bumptech.glide.Glide
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,6 +41,10 @@ class SettingsFragment : BaseFragment<MainViewModel, FragmentSettingsBinding>(
         FileUtils()
     }
 
+    private val manager: ReviewManager by lazy {
+        ReviewManagerFactory.create(requireContext())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(binding) {
             clearBtn.setOnClickListener { clearCacheImages() }
@@ -52,7 +58,7 @@ class SettingsFragment : BaseFragment<MainViewModel, FragmentSettingsBinding>(
 
             }
             subscribeItem.setOnClickListener { viewModel.onItemClicked(Screens.Subscription()) }
-            reviewItem.setOnClickListener { }
+            reviewItem.setOnClickListener { onReviewClicked() }
             siteItem.setOnClickListener { viewModel.onItemClicked(Screens.Browser(Common.getSiteUrl())) }
             langItem.setOnClickListener { viewModel.onItemClicked(Screens.Language()) }
 
@@ -63,6 +69,23 @@ class SettingsFragment : BaseFragment<MainViewModel, FragmentSettingsBinding>(
                         fileUtils.getFileSize(fileUtils.getFolderSize(requireContext().cacheDir))
                     )
                 }
+            }
+        }
+    }
+
+    private fun onReviewClicked() {
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val reviewInfo = request.result
+                val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+
+                flow.addOnCompleteListener {
+
+                    // Обрабатываем завершение сценария оценки
+
+                }
+            } else {
             }
         }
     }

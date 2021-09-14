@@ -18,7 +18,7 @@
         android:id="@+id/action_info"
         android:title="Описание"
         android:orderInCategory="3"
-        android:icon="@drawable/ic_information"
+        app:actionLayout="@layout/view_action_progress"
         app:showAsAction="always" />
 
 

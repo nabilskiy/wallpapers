@@ -35,7 +35,7 @@ class FeedPagingSource(var feedRequest: FeedRequest,
                 WallType.TAG -> service.getWallpapersFromTag(feedRequest.category, feedRequest.sort, position, feedRequest.resolution, feedRequest.lang)
                 WallType.SEARCH -> service.search(feedRequest.search, position, feedRequest.resolution, feedRequest.lang)
                 WallType.SIMILAR -> service.getSimilar(feedRequest.category, feedRequest.resolution, feedRequest.lang, position)
-                WallType.COLOR -> service.getWallpapersItems(feedRequest.sort, position, feedRequest.resolution, feedRequest.lang, r = feedRequest.r, g = feedRequest.g, b = feedRequest.b)
+                WallType.COLOR -> service.getWallpapersItemsFromColor(feedRequest.sort, position, feedRequest.resolution, feedRequest.lang, r = feedRequest.r, g = feedRequest.g, b = feedRequest.b)
                 else -> service.getWallpapersItems(feedRequest.sort, position, feedRequest.resolution, feedRequest.lang)
             }
 

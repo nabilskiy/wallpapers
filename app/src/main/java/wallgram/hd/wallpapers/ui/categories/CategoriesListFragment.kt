@@ -46,15 +46,12 @@ class CategoriesListFragment : BaseFragment<FeedViewModel, FragmentCategoriesIte
 
         with(binding) {
 
-            if (feedRequest.type == WallType.COLOR) {
+            if (feedRequest.categoryName.isBlank()) {
                 titleText.isVisible = false
-            } else {
-                if (feedRequest.categoryName.isBlank()) {
-                    titleText.isVisible = false
-                    (titleText.layoutParams as AppBarLayout.LayoutParams)
-                        .scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
-                }
+                (titleText.layoutParams as AppBarLayout.LayoutParams)
+                    .scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
             }
+
 
             titleText.text = feedRequest.categoryName.capitalize()
             viewPager.apply {

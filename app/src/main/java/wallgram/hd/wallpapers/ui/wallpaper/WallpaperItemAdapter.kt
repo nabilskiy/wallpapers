@@ -39,11 +39,10 @@ class WallpaperItemAdapter(private val onItemClicked: ((Gallery) -> Unit)) : Pag
                                 return false
                             }
                         })
-                    .apply(RequestOptions().format(DecodeFormat.PREFER_RGB_565))
                     .transition(DrawableTransitionOptions.withCrossFade(100))
                         .into(img)
 
-                root.setOnClickListener {
+                img.setOnClickListener {
                     onItemClicked(item)
                 }
             }

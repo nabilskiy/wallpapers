@@ -125,5 +125,6 @@
     <string name="original">Original size</string>
     <string name="install_wallpaper">Set</string>
     <string name="download">Download</string>
+    <string name="error">Error</string>
 
 </resources>
