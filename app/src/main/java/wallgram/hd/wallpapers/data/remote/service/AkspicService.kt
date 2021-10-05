@@ -23,7 +23,7 @@ interface AkspicService {
         @Query("primary_color[r]") r: String? = null,
         @Query("primary_color[g]") g: String? = null,
         @Query("primary_color[b]") b: String? = null,
-        @Query("primary_color_threshold") threshold: Int = 40
+        @Query("primary_color_threshold") threshold: Int = 45
     ): Response<ServerResponse<Gallery>>
 
     @GET("tags?amount=10")

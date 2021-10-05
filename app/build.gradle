@@ -10,10 +10,12 @@ android {
         applicationId "wallgram.hd.wallpapers"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 1
-        versionName "1"
+        versionCode 4
+        versionName "4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField("String", "BILLING_KEY", BILLING_KEY)
     }
     buildTypes {
         release {
@@ -58,7 +60,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.google.code.gson:gson:2.8.7'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.google.android.gms:play-services-ads:20.2.0'
@@ -66,7 +67,6 @@ dependencies {
     implementation 'com.google.android.play:core-ktx:1.8.1'
     implementation 'com.google.firebase:firebase-core:19.0.0'
     //custom view packages
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.12.0"
 
@@ -80,13 +80,6 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
 
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
-    //rxjava, retrofit2
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxkotlin:2.4.0'
-
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
 
     // Retrofit2
     def retrofit2_version = "2.9.0"
@@ -96,7 +89,7 @@ dependencies {
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.12.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
 
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.20"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.30"
     implementation "androidx.annotation:annotation:1.2.0"
 
     implementation 'joda-time:joda-time:2.10.10'

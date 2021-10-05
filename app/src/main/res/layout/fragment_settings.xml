@@ -79,7 +79,7 @@
             android:layout_below="@id/border_1"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
-            android:text="Кэш приложения" />
+            android:text="@string/cache" />
 
         <TextView
             android:id="@+id/cache_value"
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/cache_title"
             android:fontFamily="@font/roboto_regular"
-            android:text="Размер кэша"
+            android:text="@string/cache_size"
             android:textColor="#66FFFFFF"
             android:textSize="12sp" />
 
@@ -104,7 +104,7 @@
             android:paddingEnd="16dp"
             android:paddingBottom="8dp"
             android:stateListAnimator="@null"
-            android:text="Очистить кэш"
+            android:text="@string/clear_cache_title"
             android:textAllCaps="false"
             android:textColor="#BAFFFFFF"
             android:textSize="12sp"

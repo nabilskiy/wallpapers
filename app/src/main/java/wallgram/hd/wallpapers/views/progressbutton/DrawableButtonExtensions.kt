@@ -145,7 +145,7 @@ internal fun TextView.showDrawable(
         val res = context.resources
         val buttonTextValue = buttonTextRes?.let { context.getString(it) } ?: buttonText
         val textMarginValue = textMarginRes?.let { res.getDimensionPixelSize(it) } ?: textMarginPx
-        showDrawable(drawable, buttonTextValue, gravity, textMarginValue)
+        showDrawable(drawable, buttonTextValue, DrawableButton.GRAVITY_TEXT_START, textMarginValue)
     }
 }
 

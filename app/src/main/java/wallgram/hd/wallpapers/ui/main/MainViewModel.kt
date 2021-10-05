@@ -49,7 +49,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             suggestLiveDataPrivate.value = Resource.Loading()
 
-            dataRepository.getSuggest(search, "ru").collect {
+            dataRepository.getSuggest(search).collect {
                 suggestLiveDataPrivate.value = it
             }
 

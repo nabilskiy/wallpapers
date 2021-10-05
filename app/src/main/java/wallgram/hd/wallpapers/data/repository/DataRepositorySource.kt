@@ -11,8 +11,8 @@ interface DataRepositorySource {
     suspend fun getTags(isTop: Int): Flow<Resource<ServerResponse<Tag>>>
 
     suspend fun getWallpapers(sort: String): Flow<Resource<ServerResponse<Gallery>>>
-    suspend fun getSuggest(search: String, lang: String): Flow<Resource<List<String>>>
-    suspend fun getPic(id: Int, res: String, lang: String): Flow<Resource<Pic>>
+    suspend fun getSuggest(search: String): Flow<Resource<List<String>>>
+    suspend fun getPic(id: Int, res: String): Flow<Resource<Pic>>
 
     suspend fun getSavedItems(type: Int): Flow<List<Gallery>>
 

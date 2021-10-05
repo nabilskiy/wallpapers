@@ -21,6 +21,7 @@ import wallgram.hd.wallpapers.util.Network
 import wallgram.hd.wallpapers.util.NetworkConnectivity
 import wallgram.hd.wallpapers.util.cache.CacheManager
 import wallgram.hd.wallpapers.util.cache.ICacheManager
+import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import java.util.concurrent.Executors
 
 import javax.inject.Singleton
@@ -57,6 +58,10 @@ class AppModule {
     ): RequestManager {
         return Glide.with(application)
     }
+
+    @Provides
+    @Singleton
+    fun provideLocalizationDelegate(): LocalizationApplicationDelegate = LocalizationApplicationDelegate()
 
     @Provides
     @Singleton

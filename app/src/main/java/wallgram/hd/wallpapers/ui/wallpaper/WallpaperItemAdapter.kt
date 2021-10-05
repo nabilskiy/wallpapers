@@ -2,6 +2,7 @@ package wallgram.hd.wallpapers.ui.wallpaper
 
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
@@ -17,34 +18,46 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import wallgram.hd.wallpapers.databinding.ItemPhotoBinding
+import wallgram.hd.wallpapers.ui.wallpapers.WallpapersAdapter
 
-class WallpaperItemAdapter(private val onItemClicked: ((Gallery) -> Unit)) : PagingDataAdapter<Gallery, WallpaperItemAdapter.ViewHolder>(DiffCallback()) {
+class WallpaperItemAdapter(private val onItemClicked: ((MotionEvent) -> Unit)) :
+    PagingDataAdapter<Gallery, WallpaperItemAdapter.ViewHolder>(DiffCallback()) {
 
 
-    inner class ViewHolder(private val binding: ItemPagerImageBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemPagerImageBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Gallery) {
             with(binding) {
                 Glide.with(root.context).load(item.original)
-                        .thumbnail(Glide.with(root.context).load(item.preview).centerCrop())
-                        .apply(RequestOptions().skipMemoryCache(true))
-                        .listener(object: RequestListener<Drawable> {
-                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                                binding.progressBar.isVisible = false
-                                return false
-                            }
+                    .thumbnail(Glide.with(root.context).load(item.preview).centerCrop())
+                    .apply(RequestOptions().skipMemoryCache(true))
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            binding.progressBar.isVisible = false
+                            return false
+                        }
 
-                            override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                binding.progressBar.isVisible = false
-                                return false
-                            }
-                        })
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            binding.progressBar.isVisible = false
+                            return false
+                        }
+                    })
                     .transition(DrawableTransitionOptions.withCrossFade(100))
-                        .into(img)
+                    .into(img)
 
-                img.setOnClickListener {
-                    onItemClicked(item)
-                }
             }
         }
     }
@@ -62,12 +75,25 @@ class WallpaperItemAdapter(private val onItemClicked: ((Gallery) -> Unit)) : Pag
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val gallery = getItem(position)
-        gallery?.let{
+        gallery?.let {
             holder.bind(it)
         }
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(ItemPagerImageBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding =
+            ItemPagerImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val viewHolder = ViewHolder(binding)
+        binding.img.setOnTouchListener { view, motionEvent ->
+            val position = viewHolder.bindingAdapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onItemClicked(motionEvent)
+            }
+         true
+        }
+        return viewHolder
+    }
+
 
 }

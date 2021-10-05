@@ -3,6 +3,7 @@ package wallgram.hd.wallpapers.ui.settings.language
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.RadioGroup
 import androidx.core.view.forEach
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.data.local.preference.LANGUAGE
@@ -15,6 +16,7 @@ import wallgram.hd.wallpapers.ui.components.crop.CropFragment
 import wallgram.hd.wallpapers.ui.main.MainActivity
 import wallgram.hd.wallpapers.ui.settings.SettingsViewModel
 import wallgram.hd.wallpapers.util.dp
+import wallgram.hd.wallpapers.util.setCustomChecked
 import wallgram.hd.wallpapers.util.withArgs
 import java.util.*
 import javax.inject.Inject
@@ -34,62 +36,60 @@ class LanguageFragment : BaseFragment<SettingsViewModel, FragmentLanguageBinding
         viewModel.onBackClicked()
     }
 
+    private val listener = RadioGroup.OnCheckedChangeListener { _, i -> selectLanguage(i) }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // setLanguage()
+        if (savedInstanceState == null)
+            checkCurrentLanguage()
 
         with(binding) {
             toolbar.setNavigationOnClickListener { viewModel.onBackClicked() }
-            langGroup.setOnCheckedChangeListener { _, i ->
-                //  selectLanguage(i)
-
-                when (i) {
-                    R.id.russia_item -> (requireActivity() as BaseActivity<*, *>).setLanguage("ru")
-                    R.id.english_item -> (requireActivity() as BaseActivity<*, *>).setLanguage("en")
-                    R.id.deutsch_item -> (requireActivity() as BaseActivity<*, *>).setLanguage("de")
-                }
-
-            }
+            langGroup.setOnCheckedChangeListener(listener)
         }
 
+    }
+
+    private fun checkCurrentLanguage() {
+        val id = when ((requireActivity() as BaseActivity<*, *>).getCurrentLanguage().language) {
+            "en" -> R.id.english_item
+            "es" -> R.id.espanol_item
+            "zh" -> R.id.china_item
+            "de" -> R.id.deutsch_item
+            "fr" -> R.id.fr_item
+            "uk" -> R.id.ukraine_item
+            "pt" -> R.id.pt_item
+            "ru" -> R.id.russia_item
+            else -> R.id.english_item
+        }
+        binding.langGroup.setCustomChecked(id, listener)
+        binding.langGroup.forEach {
+            if (it.id == binding.langGroup.checkedRadioButtonId)
+                it.setPadding(27.dp, 0, 0, 0)
+            else it.setPadding(44.dp, 0, 0, 0)
+        }
     }
 
     private fun selectLanguage(i: Int) {
-//        var lang = preferences.getString(LANGUAGE, Locale.getDefault().language)
-//        when(i){
-//            R.id.russia_item -> lang = "ru"
-//            R.id.english_item -> lang = "en"
-//            R.id.deutsch_item -> lang = "de"
-//            R.id.espanol_item -> lang = "es"
-//            R.id.china_item -> lang = "zh"
-//        }
-//        binding.langGroup.forEach {
-//            if(it.id == binding.langGroup.checkedRadioButtonId)
-//                it.setPadding(24.dp, 0,0,0)
-//            else it.setPadding(42.dp, 0,0,0)
-//        }
-//        preferences.save(LANGUAGE, lang)
-
-    }
-
-    private fun setLanguage() {
-        val lang = preferences.getString(LANGUAGE, Locale.getDefault().language)
-        with(binding) {
-            when (lang) {
-                "en" -> langGroup.check(R.id.english_item)
-                "ru" -> langGroup.check(R.id.russia_item)
-                "de" -> langGroup.check(R.id.deutsch_item)
-                "es" -> langGroup.check(R.id.espanol_item)
-                "zh" -> langGroup.check(R.id.china_item)
-            }
-            langGroup.forEach {
-                if (it.id == langGroup.checkedRadioButtonId)
-                    it.setPadding(24.dp, 0, 0, 0)
-                else it.setPadding(42.dp, 0, 0, 0)
-            }
+        val lang = when (i) {
+            R.id.russia_item -> "ru"
+            R.id.english_item -> "en"
+            R.id.deutsch_item -> "de"
+            R.id.espanol_item -> "es"
+            R.id.fr_item -> "fr"
+            R.id.pt_item -> "pt"
+            R.id.ukraine_item -> "uk"
+            R.id.china_item -> "zh"
+            else -> "en"
         }
+        (requireActivity() as BaseActivity<*, *>).setLanguage(lang)
 
+        binding.langGroup.forEach {
+            if (it.id == binding.langGroup.checkedRadioButtonId)
+                it.setPadding(27.dp, 0, 0, 0)
+            else it.setPadding(44.dp, 0, 0, 0)
+        }
     }
 
     override fun getViewModel(): Class<SettingsViewModel> = SettingsViewModel::class.java

@@ -7,7 +7,6 @@ import wallgram.hd.wallpapers.data.local.Database.Companion.DATABASE_VERSION
 import wallgram.hd.wallpapers.data.local.converters.DateConverter
 import wallgram.hd.wallpapers.data.local.dao.GalleryDao
 import wallgram.hd.wallpapers.model.Gallery
-import wallgram.hd.wallpapers.model.SubscriptionStatus
 
 
 @Database(

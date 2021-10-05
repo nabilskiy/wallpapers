@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="62dp"
-            android:text="Лучшие обои для"
+            android:text="@string/best_wallpaper"
             android:fontFamily="@font/roboto_regular"
             android:textAlignment="center"
             android:textAllCaps="true"
@@ -46,7 +46,7 @@
             android:layout_marginEnd="48dp"
             android:textAlignment="center"
             android:fontFamily="@font/comfortaa_bold"
-            android:text="Samsung Galaxy S6 edge plus"
+            tools:text="Samsung Galaxy S6 edge plus"
             android:textColor="#E6FFFFFF"
             android:textSize="24sp" />
 
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="1440 x 2560"
+            tools:text="1440 x 2560"
             android:fontFamily="@font/roboto_regular"
             android:textAlignment="center"
             android:textColor="#E6FFFFFF"
@@ -86,7 +86,7 @@
             android:textAllCaps="false"
             app:backgroundTint="@color/color_secondary"
             android:textColor="#E6000000"
-            android:text="Продолжить" />
+            android:text="@string/continue_key" />
 
         <TextView
             android:id="@+id/user_agreement"

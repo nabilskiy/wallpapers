@@ -77,6 +77,7 @@ class WallpapersFragment : BaseFragment<WallpapersViewModel, FragmentWallpapersB
                     spanSizeLookup = ConcatSpanSizeLookup(3) { concatAdapter.adapters }
                 }
                 addItemDecoration(ConcatItemDecoration { concatAdapter.adapters })
+                itemAnimator = null
                 //  addItemDecoration(ItemOffsetDecoration())
                 adapter = concatAdapter
             }

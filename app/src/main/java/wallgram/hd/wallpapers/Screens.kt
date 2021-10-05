@@ -28,7 +28,6 @@ import wallgram.hd.wallpapers.ui.settings.language.LanguageFragment
 
 object Screens {
 
-
     @Parcelize
     class Main : AppScreen("Main") {
         override fun create(): Fragment = MainFragment()
@@ -81,8 +80,9 @@ object Screens {
 
     @Parcelize
     class Wallpaper(private val position: Int,
-                    private val pic: Int) : AppScreen("Wallpaper", replacePreviousScreen = true) {
-        override fun create(): Fragment = WallpaperFragment.create(position, pic)
+                    private val pic: Int,
+                    private val type: WallType = WallType.ALL) : AppScreen(pic.toString(), replacePreviousScreen = true) {
+        override fun create(): Fragment = WallpaperFragment.create(type, position, pic)
     }
 
     @Parcelize

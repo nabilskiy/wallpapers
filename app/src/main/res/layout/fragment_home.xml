@@ -45,7 +45,7 @@
                     android:layout_height="56dp"
                     android:background="@drawable/search_field_background"
                     android:fontFamily="@font/roboto_regular"
-                    android:hint="@string/action_search"
+                    android:hint="@string/search"
                     android:imeOptions="actionSearch"
                     android:maxLines="1"
                     android:paddingStart="16dp"
@@ -67,7 +67,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="@string/category_title"
+                android:text="@string/category"
                 android:textColor="#E6FFFFFF"
                 android:textSize="20sp" />
 
@@ -84,7 +84,7 @@
                 android:layout_alignTop="@id/categories_text"
                 android:layout_alignBottom="@id/categories_text"
                 android:padding="0dp"
-                android:text="Все"
+                android:text="@string/all"
                 android:letterSpacing="0.01"
                 android:textAllCaps="false"
                 android:textColor="#8690F1"
@@ -107,7 +107,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Цвет"
+                android:text="@string/color"
                 android:textColor="#E6FFFFFF"
                 android:textSize="20sp" />
 

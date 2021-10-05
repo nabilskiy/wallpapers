@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import wallgram.hd.wallpapers.di.component.DaggerAppComponent
 import com.bumptech.glide.Glide
 import wallgram.hd.wallpapers.util.modo.Modo
 import wallgram.hd.wallpapers.util.modo.MultiReducer
@@ -14,7 +13,7 @@ import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import io.reactivex.plugins.RxJavaPlugins
+import wallgram.hd.wallpapers.di.component.DaggerAppComponent
 import wallgram.hd.wallpapers.util.localization.LanguageSetting.getDefaultLanguage
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import java.util.*
@@ -32,7 +31,6 @@ open class App : Application(), HasAndroidInjector {
     override fun onCreate() {
         modo = Modo(LogReducer(AppReducer(this, MultiReducer())))
         super.onCreate()
-        RxJavaPlugins.setErrorHandler { throwable: Throwable? -> }
 
         MobileAds.initialize(this)
         MobileAds.setAppMuted(true)

@@ -7,4 +7,7 @@ import wallgram.hd.wallpapers.model.Gallery
 class CacheManager : ICacheManager {
     override var wallpapersData: MutableLiveData<PagingData<Gallery>> =
         MutableLiveData<PagingData<Gallery>>()
+
+    override var similarData: MutableLiveData<PagingData<Gallery>> =
+        MutableLiveData<PagingData<Gallery>>()
 }

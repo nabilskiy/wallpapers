@@ -18,6 +18,8 @@ import android.util.Log
 import com.android.billingclient.api.BillingClientStateListener
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
+import android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
 import android.widget.RatingBar
 import com.google.android.material.textfield.TextInputLayout
 import android.widget.RatingBar.OnRatingBarChangeListener
@@ -32,8 +34,6 @@ import wallgram.hd.wallpapers.databinding.ActivityMainBinding
 import wallgram.hd.wallpapers.ui.base.BaseActivity
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import wallgram.hd.wallpapers.util.modo.*
-
-import com.github.terrakok.cicerone.*
 import wallgram.hd.wallpapers.App
 import java.util.*
 import javax.inject.Inject
@@ -65,8 +65,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
 
                 window.statusBarColor = ContextCompat.getColor(
                     this@MainActivity,
-                    if (state.chain.last() is Screens.Wallpaper) R.color.color_status_bar else R.color.colorPrimaryDark
+                    if (state.chain.last() is Screens.Wallpaper || state.chain.last() is Screens.Crop) R.color.color_status_bar else R.color.colorPrimaryDark
                 )
+
+                if(state.chain.last() is Screens.Wallpaper || state.chain.last() is Screens.Crop)
+                    window.setFlags(FLAG_TRANSLUCENT_NAVIGATION, FLAG_TRANSLUCENT_NAVIGATION)
+                else window.clearFlags(FLAG_TRANSLUCENT_NAVIGATION)
+
                 val stateStr =
                     "‣root\n${getNavigationStateString("⦙  ", state).trimEnd()}  ᐊ current screen"
                 Log.d("STATE", stateStr)
@@ -237,7 +242,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
     }
 
     override fun onBackPressed() {
-
         val screen = (modoRender.currentState.chain[modoRender.currentState.chain.lastIndex])
         if(screen is MultiScreen){
             if(screen.stacks[screen.selectedStack].chain.size == 1)

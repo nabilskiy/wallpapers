@@ -1,4 +1,4 @@
-package com.akexorcist.localizationactivity.core
+package wallgram.hd.wallpapers.util.localization
 
 import android.app.Activity
 import android.content.Context
@@ -8,9 +8,6 @@ import android.content.res.Resources
 import android.os.BadParcelableException
 import android.os.Handler
 import android.os.Looper
-import wallgram.hd.wallpapers.util.localization.LanguageSetting
-import wallgram.hd.wallpapers.util.localization.LocalizationUtility
-import wallgram.hd.wallpapers.util.localization.OnLocaleChangedListener
 import java.util.*
 
 open class LocalizationActivityDelegate(val activity: Activity) {

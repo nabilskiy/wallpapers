@@ -24,7 +24,7 @@ class DataRepository @Inject constructor(
 
     override suspend fun getTags(isTop: Int): Flow<Resource<ServerResponse<Tag>>> {
         return flow {
-            emit(remoteRepository.getTags(isTop, "ru"))
+            emit(remoteRepository.getTags(isTop))
         }.flowOn(ioDispatcher)
     }
 
@@ -34,15 +34,15 @@ class DataRepository @Inject constructor(
         }.flowOn(ioDispatcher)
     }
 
-    override suspend fun getSuggest(search: String, lang: String): Flow<Resource<List<String>>> {
+    override suspend fun getSuggest(search: String): Flow<Resource<List<String>>> {
         return flow {
-            emit(remoteRepository.getSuggest(search, lang))
+            emit(remoteRepository.getSuggest(search))
         }.flowOn(ioDispatcher)
     }
 
-    override suspend fun getPic(id: Int, res: String, lang: String): Flow<Resource<Pic>> {
+    override suspend fun getPic(id: Int, res: String): Flow<Resource<Pic>> {
         return flow{
-            emit(remoteRepository.getPic(id, res, lang))
+            emit(remoteRepository.getPic(id, res))
         }.flowOn(ioDispatcher)
     }
 

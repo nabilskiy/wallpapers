@@ -1,27 +1,23 @@
 package wallgram.hd.wallpapers.ui.wallpaper
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import kotlinx.coroutines.*
 import android.os.Handler
-import android.text.InputFilter
 import android.text.TextUtils
-import android.util.Log
-import android.view.Gravity
+import android.view.GestureDetector
+import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.MotionEvent
 import android.view.View
-import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
+import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,7 +28,6 @@ import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.ui.wallpapers.*
 import wallgram.hd.wallpapers.util.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.chip.Chip
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import wallgram.hd.wallpapers.data.Resource
@@ -42,7 +37,7 @@ import wallgram.hd.wallpapers.ui.details.InstallDialogFragment
 import wallgram.hd.wallpapers.util.downloadx.State
 import wallgram.hd.wallpapers.util.downloadx.download
 import wallgram.hd.wallpapers.views.progressbutton.*
-import java.io.File
+import kotlin.math.atan2
 
 
 class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBinding>(
@@ -52,29 +47,43 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     companion object {
         private const val ARG_POSITION = "arg_position"
         private const val ARG_PIC = "arg_pic"
-        fun create(position: Int, pic: Int) = WallpaperFragment().withArgs(
+        private const val ARG_TYPE = "arg_type"
+        fun create(type: WallType, position: Int, pic: Int) = WallpaperFragment().withArgs(
             ARG_POSITION to position,
-            ARG_PIC to pic
+            ARG_PIC to pic,
+            ARG_TYPE to type
         )
     }
 
     private val wallpapersAdapter: WallpaperItemAdapter by lazy {
         WallpaperItemAdapter {
-         //   Toast.makeText(requireContext(), "CLICK", Toast.LENGTH_SHORT).show()
-//            modo.externalForward(Screens.Wallpaper())
+            gestureDetector.onTouchEvent(it)
         }
     }
+
+    private lateinit var gestureDetector: GestureDetector
 
     private val cornerRadius = 12.dp.toFloat()
 
     private val position: Int by args(ARG_POSITION, 0)
     private val pic: Int by args(ARG_PIC, 0)
+    private val type: WallType by args(ARG_TYPE, WallType.ALL)
 
     private val similarAdapter: WallpapersAdapter by lazy {
         WallpapersAdapter { position, id ->
-            viewModel.itemClicked(position, id)
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+                viewModel.itemClicked(position, id)
+            else bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        gestureDetector =
+            GestureDetector(requireContext(), SwipeGestureDetector())
+    }
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
 
     private var isTagsVisible = false
 
@@ -84,15 +93,22 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         requireActivity().window.statusBarColor =
             ContextCompat.getColor(requireContext(), R.color.color_status_bar)
 
-        viewModel.wallpapersLiveData.observe(viewLifecycleOwner, {
-            wallpapersAdapter.submitData(lifecycle, it)
-            if (binding.list.currentItem == 0)
-                binding.list.setCurrentItem(position, false)
-        })
+        if (type == WallType.ALL)
+            viewModel.wallpapersLiveData.observe(viewLifecycleOwner, {
+                wallpapersAdapter.submitData(lifecycle, it)
+                if (binding.list.currentItem == 0)
+                    binding.list.setCurrentItem(position, false)
+            }) else if (type == WallType.SIMILAR) {
+            viewModel.similarData.observe(viewLifecycleOwner, {
+                wallpapersAdapter.submitData(lifecycle, it)
+                if (binding.list.currentItem == 0)
+                    binding.list.setCurrentItem(position, false)
+            })
+        }
 
         with(binding) {
 
-            val bottomSheetBehavior: BottomSheetBehavior<*> =
+            bottomSheetBehavior =
                 BottomSheetBehavior.from<View>(bottomSheet)
             bottomSheetBehavior.addBottomSheetCallback(object :
                 BottomSheetBehavior.BottomSheetCallback() {
@@ -113,8 +129,12 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
             viewModel.getLiveData(FeedRequest(type = WallType.SIMILAR, category = pic))
 
             viewModel.similarLiveData.observe(viewLifecycleOwner) {
+
                 similarAdapter.submitData(lifecycle = lifecycle, it)
             }
+
+            bottomSheetBehavior.peekHeight = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) 62.dp else 42.dp + getNavigationBarHeight()
+
 
             toolbar.menu.getItem(2).actionView.findViewById<ImageView>(R.id.tag_icon)
                 ?.setOnClickListener {
@@ -133,7 +153,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                             true
 
                         it.data?.let {
-                            if(isTagsVisible){
+                            if (isTagsVisible) {
                                 isTagsVisible = false
                                 return@observe
                             }
@@ -183,6 +203,16 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
 
+            buttonsContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
+                view.updatePadding(bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
+                windowInsetsCompat
+            }
+
+            toolbar.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
+                view.updatePadding(top = rect.top + windowInsetsCompat.systemWindowInsetTop)
+                windowInsetsCompat
+            }
+
             toolbar.setNavigationIcon(R.drawable.ic_back)
             toolbar.setNavigationOnClickListener {
                 if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
@@ -211,10 +241,12 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 layoutManager = GridLayoutManager(requireContext(), 3).apply {
                     spanSizeLookup = ConcatSpanSizeLookup(3) { concatAdapter.adapters }
                 }
+                itemAnimator = null
                 addItemDecoration(ConcatItemDecoration { concatAdapter.adapters })
                 adapter = concatAdapter
             }
 
+            list.reduceDragSensitivity()
 
             list.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -235,9 +267,6 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 }
             })
 
-            list.setOnClickListener {
-                Log.d("CLICK", "OK")
-            }
 
             viewModel.favoriteLiveData.observe(viewLifecycleOwner, {
                 toolbar.menu.getItem(1)
@@ -251,17 +280,19 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 )
             }
 
-            downloadBtn.attachTextChangeAnimator()
-            bindProgressButton(downloadBtn)
-
             downloadBtn.setOnClickListener {
-                val item = wallpapersAdapter.peek(binding.list.currentItem)
-                item?.let {
-                    DownloadDialogFragment.create(it.links).show(
-                        childFragmentManager,
-                        DownloadDialogFragment::class.java.simpleName
-                    )
-                }
+//                val item = wallpapersAdapter.peek(binding.list.currentItem)
+//                item?.let {
+//                    DownloadDialogFragment.create(it.links).show(
+//                        childFragmentManager,
+//                        DownloadDialogFragment::class.java.simpleName
+//                    )
+//                }
+
+            }
+
+            downloadBtn.run {
+               // setOnClickListener { morphDoneAndRevert(requireContext()) }
 
             }
 
@@ -307,6 +338,14 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         binding.toolbar.menu.getItem(0).isVisible = landscape != null
     }
 
+    private fun getNavigationBarHeight(): Int {
+        val resources: Resources = resources
+        val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+        return if (resourceId > 0) {
+            resources.getDimensionPixelSize(resourceId)
+        } else 0
+    }
+
 
     private fun showTags() {
         if (viewModel.picLiveData.value is Resource.Success) {
@@ -320,7 +359,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     }
 
     private fun showTagsView() {
-        if(binding.chipGroup.alpha == 1f)
+        if (binding.chipGroup.alpha == 1f)
             return
 
         lifecycleScope.launch {
@@ -333,7 +372,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     }
 
     private fun hideTags() {
-        if(binding.chipGroup.alpha == 0f)
+        if (binding.chipGroup.alpha == 0f)
             return
 
         lifecycleScope.launch {
@@ -344,6 +383,51 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         }
         isTagsVisible = false
     }
+
+    private fun hideAllViews() {
+        hideTags()
+        lifecycleScope.launch {
+            val anim1 = async { binding.downloadBtn.alpha(1f, 0f) }
+            val anim2 = async { binding.installBtn.alpha(1f, 0f) }
+            val anim3 =
+                async { binding.toolbar.translationY(0f, -binding.toolbar.height.toFloat()) }
+
+            awaitAll(anim1, anim2, anim3)
+        }
+
+        bottomSheetBehavior.isHideable = true
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        val window = requireActivity().window
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowInsetsControllerCompat(window, binding.root).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
+    }
+
+    private fun showAllViews() {
+        lifecycleScope.launch {
+            val anim1 = async { binding.downloadBtn.alpha(0f, 1f) }
+            val anim2 = async { binding.installBtn.alpha(0f, 1f) }
+            val anim3 =
+                async { binding.toolbar.translationY(-binding.toolbar.height.toFloat(), 0f) }
+
+            awaitAll(anim1, anim2, anim3)
+        }
+
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.isHideable = false
+
+        val window = requireActivity().window
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowInsetsControllerCompat(
+            window,
+            binding.root
+        ).show(WindowInsetsCompat.Type.systemBars())
+    }
+
 
     private fun checkFavorite(position: Int) {
         val item = wallpapersAdapter.peek(position)
@@ -356,8 +440,10 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         val item = wallpapersAdapter.peek(binding.list.currentItem)
         item?.let {
             val landscape = it.links.landscape
-            if (landscape != null)
+            if (landscape != null){
+                isTagsVisible = true
                 viewModel.onCropClicked(landscape)
+            }
         }
     }
 
@@ -376,49 +462,22 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         )
         downloadTask.state()
             .onEach {
-                when (it) {
-                    is State.Downloading -> {
-                        if (!binding.downloadBtn.isProgressActive())
-                            showLoading()
-                    }
-                    is State.Succeed -> showDone(it)
-                    is State.Failed -> showDone(it)
-                    is State.Stopped -> showDone(it)
-                    is State.None -> showDone(it)
-                }
+//                when (it) {
+//                    is State.Downloading -> {
+//                        if (!binding.downloadBtn.isProgressActive())
+//                            showLoading()
+//                    }
+//                    is State.Succeed -> showDone(it)
+//                    is State.Failed -> showDone(it)
+//                    is State.Stopped -> showDone(it)
+//                    is State.None -> showDone(it)
             }
+
             .launchIn(lifecycleScope)
 
         downloadTask.start()
     }
 
-    private fun showLoading() {
-        val button = binding.downloadBtn
-        button.showProgress {
-            buttonTextRes = R.string.loading_key
-            progressColor = Color.WHITE
-            gravity = DrawableButton.GRAVITY_TEXT_END
-        }
-        button.isEnabled = false
-    }
-
-    private fun showDone(state: State) {
-        val animatedDrawable =
-            ContextCompat.getDrawable(requireContext(), getDrawableFromState(state))!!
-        val drawableSize = resources.getDimensionPixelSize(R.dimen.doneSize)
-        animatedDrawable.setBounds(0, 0, drawableSize, drawableSize)
-        val button = binding.downloadBtn
-        Handler().postDelayed({
-            button.isEnabled = true
-
-            button.showDrawable(animatedDrawable) {
-                buttonTextRes = getMessageFromState(state)
-            }
-            Handler().postDelayed({
-                button.hideDrawable(R.string.download)
-            }, 2000)
-        }, 500)
-    }
 
     private fun getMessageFromState(state: State) = when (state) {
         is State.Succeed, is State.Failed -> R.string.ok_btn
@@ -432,5 +491,37 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         is State.Stopped -> R.drawable.ic_round_error
         is State.None -> R.drawable.ic_round_error
         else -> -1
+    }
+
+    inner class SwipeGestureDetector : SimpleOnGestureListener() {
+
+
+        override fun onDown(e: MotionEvent): Boolean {
+            return true
+        }
+
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            if (binding.downloadBtn.alpha == 1f)
+                hideAllViews()
+            else showAllViews()
+            return false
+        }
+
+        override fun onFling(
+            e1: MotionEvent,
+            e2: MotionEvent,
+            velocityX: Float,
+            velocityY: Float
+        ): Boolean {
+            val x1 = e1.x
+            val y1 = e1.y
+            val x2 = e2.x
+            val y2 = e2.y
+            val angle = Math.toDegrees(atan2((y1 - y2).toDouble(), (x2 - x1).toDouble()))
+            if (angle > 20 && angle <= 160) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+            return false
+        }
     }
 }

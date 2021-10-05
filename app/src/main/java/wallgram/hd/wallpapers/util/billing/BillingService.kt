@@ -10,12 +10,14 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@DelicateCoroutinesApi
 class BillingService(
     private val context: Context,
     private val nonConsumableKeys: List<String>,
     private val consumableKeys: List<String>,
     private val subscriptionSkuKeys: List<String>
-) : IBillingService(), PurchasesUpdatedListener, BillingClientStateListener, AcknowledgePurchaseResponseListener {
+) : IBillingService(), PurchasesUpdatedListener, BillingClientStateListener,
+    AcknowledgePurchaseResponseListener {
 
     private lateinit var mBillingClient: BillingClient
     private var decodedKey: String? = null
@@ -27,11 +29,11 @@ class BillingService(
     override fun init(key: String?) {
         decodedKey = key
 
-        mBillingClient = BillingClient.newBuilder(context).setListener(this).enablePendingPurchases().build()
+        mBillingClient =
+            BillingClient.newBuilder(context).setListener(this).enablePendingPurchases().build()
         mBillingClient.startConnection(this)
     }
 
-    @DelicateCoroutinesApi
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         log("onBillingSetupFinishedOkay: billingResult: $billingResult")
 
@@ -53,9 +55,11 @@ class BillingService(
      * New purchases will be provided to the PurchasesUpdatedListener.
      */
     private suspend fun queryPurchases() {
-        val inappResult: PurchasesResult = mBillingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
+        val inappResult: PurchasesResult =
+            mBillingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
         processPurchases(inappResult.purchasesList, isRestore = true)
-        val subsResult: PurchasesResult = mBillingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS)
+        val subsResult: PurchasesResult =
+            mBillingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS)
         processPurchases(subsResult.purchasesList, isRestore = true)
     }
 
@@ -98,7 +102,7 @@ class BillingService(
             activity.startActivity(intent)
             activity.finish()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.w(TAG, "Unsubscribing failed.")
         }
     }
 
@@ -109,7 +113,6 @@ class BillingService(
     /**
      * Called by the Billing Library when new purchases are detected.
      */
-    @DelicateCoroutinesApi
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
@@ -140,7 +143,7 @@ class BillingService(
     }
 
     private fun processPurchases(purchasesList: List<Purchase>?, isRestore: Boolean = false) {
-        if (purchasesList != null) {
+        if (!purchasesList.isNullOrEmpty()) {
             log("processPurchases: " + purchasesList.size + " purchase(s)")
             purchases@ for (purchase in purchasesList) {
                 if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && purchase.skus[0].isSkuReady()) {
@@ -156,21 +159,24 @@ class BillingService(
                             /**
                              * Consume the purchase
                              */
-                            if(consumableKeys.contains(purchase.skus[0])){
+                            if (consumableKeys.contains(purchase.skus[0])) {
                                 mBillingClient.consumeAsync(
-                                    ConsumeParams.newBuilder().setPurchaseToken(purchase.purchaseToken).build()
+                                    ConsumeParams.newBuilder()
+                                        .setPurchaseToken(purchase.purchaseToken).build()
                                 ) { billingResult, _ ->
                                     when (billingResult.responseCode) {
                                         BillingClient.BillingResponseCode.OK -> {
                                             productOwned(getPurchaseInfo(purchase), false)
                                         }
                                         else -> {
-                                            Log.d(TAG, "Handling consumables : Error during consumption attempt -> ${billingResult.debugMessage}")
+                                            Log.d(
+                                                TAG,
+                                                "Handling consumables : Error during consumption attempt -> ${billingResult.debugMessage}"
+                                            )
                                         }
                                     }
                                 }
-                            }
-                            else{
+                            } else {
                                 productOwned(getPurchaseInfo(purchase), isRestore)
                             }
                         }
@@ -188,7 +194,8 @@ class BillingService(
                 } else {
                     Log.e(
                         TAG, "processPurchases failed. purchase: $purchase " +
-                                "purchaseState: ${purchase.purchaseState} isSkuReady: ${purchase.skus[0].isSkuReady()}")
+                                "purchaseState: ${purchase.purchaseState} isSkuReady: ${purchase.skus[0].isSkuReady()}"
+                    )
                 }
             }
         } else {
@@ -197,7 +204,7 @@ class BillingService(
     }
 
     private fun getPurchaseInfo(purchase: Purchase): DataWrappers.PurchaseInfo {
-        return  DataWrappers.PurchaseInfo(
+        return DataWrappers.PurchaseInfo(
             getSkuInfo(skusDetails[purchase.skus[0]]!!),
             purchase.purchaseState,
             purchase.developerPayload,
@@ -217,22 +224,24 @@ class BillingService(
     private fun getSkuInfo(skuDetails: SkuDetails): DataWrappers.SkuInfo {
         return DataWrappers.SkuInfo(
             skuDetails.sku,
-            skuDetails.description,
-            skuDetails.freeTrialPeriod,
             skuDetails.iconUrl,
-            skuDetails.introductoryPrice,
-            skuDetails.introductoryPriceAmountMicros,
-            skuDetails.introductoryPriceCycles,
-            skuDetails.introductoryPricePeriod,
             skuDetails.originalJson,
-            skuDetails.originalPrice,
-            skuDetails.originalPriceAmountMicros,
-            skuDetails.price,
-            skuDetails.priceAmountMicros,
-            skuDetails.priceCurrencyCode,
-            skuDetails.subscriptionPeriod,
-            skuDetails.title,
-            skuDetails.type
+            skuDetails.type,
+            DataWrappers.SkuDetails(
+                skuDetails.title,
+                skuDetails.description,
+                skuDetails.freeTrialPeriod,
+                skuDetails.introductoryPrice,
+                skuDetails.introductoryPriceAmountMicros / 1000000.0,
+                skuDetails.introductoryPriceCycles,
+                skuDetails.introductoryPricePeriod,
+                skuDetails.originalPrice,
+                skuDetails.originalPriceAmountMicros / 1000000.0,
+                skuDetails.price,
+                skuDetails.priceAmountMicros / 1000000.0,
+                skuDetails.priceCurrencyCode,
+                skuDetails.subscriptionPeriod
+            )
         )
     }
 
@@ -257,11 +266,32 @@ class BillingService(
 
         mBillingClient.querySkuDetailsAsync(params.build()) { billingResult, skuDetailsList ->
             if (billingResult.isOk()) {
-                skuDetailsList?.forEach { skusDetails[it.sku] = it }
+                skuDetailsList?.forEach {
+                    skusDetails[it.sku] = it
+                }
 
                 skusDetails.mapNotNull { entry ->
-                    entry.value?.price?.let { entry.key to it }
-                }.let { updatePrices(it.toMap()) }
+                    entry.value?.let {
+                        entry.key to DataWrappers.SkuDetails(
+                            title = it.title,
+                            description = it.description,
+                            priceCurrencyCode = it.priceCurrencyCode,
+                            freeTrailPeriod = it.freeTrialPeriod,
+                            introductoryPrice = it.introductoryPrice,
+                            introductoryPriceAmount = it.introductoryPriceAmountMicros / 1000000.0,
+                            introductoryPriceCycles = it.introductoryPriceCycles,
+                            introductoryPricePeriod = it.introductoryPricePeriod,
+                            originalPrice = it.originalPrice,
+                            originalPriceAmount = it.originalPriceAmountMicros / 1000000.0,
+                            price = it.price,
+                            priceAmount = it.priceAmountMicros / 1000000.0,
+                            subscriptionPeriod = it.subscriptionPeriod,
+                        )
+                    }
+                }.let {
+                    if (it.isNotEmpty())
+                        updatePrices(it.toMap())
+                }
             }
             done()
         }

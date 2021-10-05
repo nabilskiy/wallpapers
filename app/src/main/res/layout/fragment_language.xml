@@ -73,11 +73,25 @@
             android:text="Испанский" />
 
         <RadioButton
+            android:id="@+id/fr_item"
+            style="@style/LanguageRadioStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Французский" />
+
+        <RadioButton
             android:id="@+id/china_item"
             style="@style/LanguageRadioStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Китайский" />
+
+        <RadioButton
+            android:id="@+id/pt_item"
+            style="@style/LanguageRadioStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Португальский" />
     </RadioGroup>
 
     <View

@@ -1,131 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Wallgram</string>
     <string name="action_settings">Настройки</string>
 
-    <string name="your_device">Ваше устройство</string>
     <string name="user_agreement">Запуская приложение, вы принимаете условия пользовательского соглашения</string>
-    <string name="menu_favorites">Избранное</string>
+    <string name="menu_favorites">Любимые</string>
     <string name="menu_history">История</string>
     <string name="menu_feedback">Оставить отзыв</string>
     <string name="menu_site">Официальный сайт</string>
-    <string name="menu_history_clear">Очистить историю</string>
-    <string name="action_search">Поиск</string>
-    <string name="category_title">Категории</string>
+    <string name="search">Найти обои</string>
+    <string name="category">Категории</string>
     <string name="news_title">Новые</string>
     <string name="popular_title">Популярные</string>
     <string name="random_title">Случайные</string>
-    <string name="image_applying">Установка изображения…</string>
-    <string name="wallpaper_installed">Обои установлены</string>
-    <string name="wrong_error">Что-то пошло не так…</string>
-    <string name="wallpaper_downloaded">Изображение загружено</string>
     <string name="wallpapers_adapted">Все обои адаптированы под ваш экран</string>
-    <string name="start_button">Начать</string>
     <string name="agreement_sub">пользовательского соглашения</string>
-    <string name="favorites_empty">Вы еще ничего не добавили</string>
-    <string name="history_empty">Список истории пуст</string>
-    <string name="internet_connection">Нет подключения к интернету</string>
+    <string name="favorites_empty">Ой, тут пока еще пусто.\n\nУ нас есть более 80 000 обоев — посмотрите, вам наверняка что-то понравится.</string>
     <string name="retry_button">Повторить</string>
     <string name="lang_title">Язык</string>
-    <string name="lang_choose">Выберите язык</string>
 
-    <string-array name="lang_entries">
-        <item>Русский</item>
-        <item>English</item>
-        <item>Español</item>
-        <item>Deutsch</item>
-        <item>Français</item>
-        <item>汉语</item>
-    </string-array>
-
-    <string-array name="lang_values">
-        <item>ru</item>
-        <item>en</item>
-        <item>es</item>
-        <item>de</item>
-        <item>fr</item>
-        <item>zh</item>
-    </string-array>
-
-    <string name="search_none">Ничего не найдено</string>
-    <string name="image_background">Фоновое изображение</string>
     <string name="image_logo">Логотип приложения</string>
     <string name="image">Изображение</string>
-    <string name="search_icon">Поиск</string>
-    <string name="favorites_icon">Избранное</string>
-    <string name="history_icon">История</string>
     <string name="similar_wallpapers">Похожие обои</string>
-    <string name="general_title">Общие</string>
     <string name="exit_toast">Нажмите еще раз для выхода</string>
     <string name="home_screen">Главный экран</string>
     <string name="lock_screen">Экран блокировки</string>
     <string name="both_screens">Оба экрана</string>
-    <string name="upload_gallery">Загрузить в галерею</string>
-    <string name="license_key">Лицензия: %1$s</string>
-    <string name="clear_history_confirm">Вы действительно хотите очистить историю?</string>
     <string name="clear">Очистить</string>
     <string name="cancel">Отмена</string>
     <string name="clear_cache_title">Очистить кэш</string>
     <string name="cache_size">Размер кэша: %1$s</string>
-    <string name="clear_cache_confirm">Вы уверены, что хотите очистить кэш?</string>
-    <string name="cache_cleared">Кэш очищен</string>
-    <string name="brightness_key">Яркость</string>
-    <string name="contrast_key">Контрастность</string>
-    <string name="saturation_key">Насыщенность</string>
-    <string name="editing_key">Редактирование</string>
-    <string name="filter_key">Фильтр</string>
-    <string name="edit_key">Редактировать</string>
-    <string name="exit_confirm_key">Изменения не сохранены. Вы уверены, что хотите выйти?</string>
-    <string name="exit_key">Выйти</string>
     <string name="crop_image_key">Обрезка изображения</string>
     <string name="action_subscription">Подписка</string>
-    <string name="ads_without_key">Без рекламы</string>
-    <string name="unlim_download_key">Неограниченное скачивание обоев</string>
-    <string name="install_key">Установить</string>
-    <string name="navigation_drawer_open">Открыть панель навигации</string>
-    <string name="navigation_drawer_close">Закрыть панель навигации</string>
-    <string name="sub_purchase">Подписка приобретена</string>
-    <string name="more_sixteen">На 16% выгоднее</string>
-    <string name="more_thirty">На 31% выгоднее</string>
+    <string name="save_50">Экономия 50%</string>
     <string name="continue_key">Продолжить</string>
-    <string name="free_days">получите 3 бесплатных дня</string>
-    <string name="sub_text">Подписка  на приложение автоматически продлевается, если не отключить автопродление раньше, чем за 24 часа до завершения текущего оплаченного периода. Автопродление купленной подписки можно отменить в Google Play в любой момент.</string>
-    <string name="sub_year">1 год</string>
-    <string name="sub_six">6 месяцев</string>
-    <string name="sub_one">1 месяц</string>
+    <string name="free_days">"И получи 3 бесплатных дня в подарок "</string>
+    <string name="sub_text">Подписка продлевается автоматически. Вы сможете отключить автопродление в любое время.\n\nX за X. Предоставляет доступ ко всем обоям без ограничений и рекламы. Платежи пользователя списываются с учетной записи Google Play при подтверждении оплаты. Подписки возобновляются автоматически, если пользователь не отменит подписку не позднее 24 часов до даты окончания действующего периода подписки. За обновление подписки взимается плата в течение 24 часов до даты окончания действующего периода подписки. Пользователи могут изменять и отменять подписки в настройках учетной записи Google Play.</string>
+    <string name="year">/ год</string>
+    <string name="month">/ месяц</string>
     <string name="error_msg">Не удалось загрузить обои</string>
-    <string name="error_msg_details">Не удалось загрузить данные</string>
-    <string name="error_msg_category">Не удалось загрузить категории</string>
-    <string name="tap_to_reload">Нажмите, чтобы повторить попытку</string>
-    <string name="error_msg_timeout">Сервер не отвечает</string>
-    <string name="error_msg_unkown">Неизвестная ошибка</string>
-    <string name="search_change_query">Попробуйте изменить ваш запрос</string>
-    <string name="loading_key">Загрузка</string>
 
-    <string name="feedback_title">Оставьте отзыв</string>
+    <string name="feedback_title">Оставить отзыв</string>
     <string name="rate_title">Оцените приложение</string>
     <string name="ok_btn">ОК</string>
     <string name="rate_neutral">Нет, спасибо</string>
     <string name="rate_later">Позже</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="email_error">Почтовые клиенты не установлены</string>
-    <string name="email_subject">Akspic_feedback</string>
-    <string name="ads_not_load">Реклама еще не загружена</string>
-    <string name="list_of_images">Список изображений</string>
 
-    <string name="enter_query">Введите запрос</string>
     <string name="privacy_policy">Политика конфиденциальности</string>
-    <string name="other_key">Другое</string>
-    <string name="menu_favorites_clear">Очистить избранное</string>
     <string name="clear_confirm">Вы действительно хотите очистить список изображений?</string>
-    <string name="back" >Назад</string>
-    <string name="ad_attribution">Ad</string>
     <string name="portrait">Портретная</string>
     <string name="landscape">Альбомная</string>
     <string name="original">Оригинал</string>
     <string name="install_wallpaper">Установить</string>
     <string name="download">Загрузить</string>
-    <string name="error">Ошибка</string>
 
     <string name="red">Красный</string>
     <string name="orange">Оранжевый</string>
@@ -139,6 +67,17 @@
     <string name="white">Белый</string>
     <string name="gray">Серый</string>
     <string name="turquoise">Бирюзовый</string>
-    <string name="gold">Золотой</string>
     <string name="silver">Серебряный</string>
+    <string name="all">Все</string>
+    <string name="color">Цвет</string>
+    <string name="best_wallpaper">ЛУЧШИЕ ОБОИ ДЛЯ</string>
+    <string name="cache">Кэш приложения</string>
+    <string name="choose_plan">Выберите тарифный план</string>
+    <string name="free">Бесплатно</string>
+    <string name="downloads_limit_10">До 10 скачиваний в сутки</string>
+    <string name="integrated_ads">Есть встроенная реклама</string>
+    <string name="current">Выбран</string>
+    <string name="pro">Без ограничений скачивания\nБез рекламы</string>
+    <string name="subscribe_now">Подпишись прямо сейчас</string>
+    <string name="home">Главная</string>
 </resources>

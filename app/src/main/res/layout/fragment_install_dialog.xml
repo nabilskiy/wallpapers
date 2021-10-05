@@ -30,7 +30,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="Главный экран"
+        android:text="@string/home_screen"
         android:textColor="#E6FFFFFF"
         android:textSize="16sp"
         app:drawableStartCompat="@drawable/ic_main_screen" />
@@ -52,7 +52,7 @@
         app:iconTint="#BDBDBD"
         app:iconPadding="12dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="Экран блокировки"
+        android:text="@string/lock_screen"
         android:textColor="#E6FFFFFF"
         android:textSize="16sp" />
 
@@ -73,7 +73,7 @@
         app:iconTint="#BDBDBD"
         app:iconPadding="12dp"
         android:fontFamily="@font/roboto_regular"
-        android:text="Оба экрана"
+        android:text="@string/both_screens"
         android:textColor="#E6FFFFFF"
         android:layout_marginBottom="32dp"
         android:textSize="16sp" />

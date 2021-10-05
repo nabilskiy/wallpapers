@@ -8,55 +8,26 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#5c5e65</color>
     <color name="colorYellow">#F5C901</color>
-    <color name="colorYellowDark">#d2b803</color>
     <color name="colorGrayText">#929498</color>
-
-    <color name="colorChipBackground">#1A04030C</color>
 
     <color name="colorBackground">#232035</color>
 
-    <color name="blue_grey_600">#546E7A</color>
-
-    <color name="grey_3">#f7f7f7</color>
-    <color name="grey_5">#f2f2f2</color>
-    <color name="grey_10">#e6e6e6</color>
-    <color name="grey_20">#cccccc</color>
-    <color name="grey_40">#999999</color>
     <color name="grey_60">#666666</color>
-    <color name="grey_80">#37474F</color>
-    <color name="grey_90">#263238</color>
-    <color name="grey_95">#1a1a1a</color>
-    <color name="grey_100_">#0d0d0d</color>
-
-    <color name="roundedBottomSheetPrimaryBackground">#FFFFFFFF</color>
-    <color name="roundedBottomSheetPrimaryNavigationBarColor">#FFFFFFFF</color>
-
-    <color name="placeholder_grey_20">#33AAADC4</color>
-
-    <color name="filter_label_normal">#8A8889</color>
-    <color name="filter_label_selected">#ffdf00</color>
-
-    <color name="gnt_test_background_color">#00F4F4F4</color>
-    <color name="gnt_white">#FFFFFF</color>
-    <color name="gnt_blue">#4285f4</color>
-    <color name="gnt_ad_green">#3A6728</color>
-    <color name="gnt_gray">#808080</color>
 
 
     <color name="color_tag_1">#f44336</color>
     <color name="color_tag_2">#ffa500</color>
     <color name="color_tag_3">#ffeb3b</color>
-    <color name="color_tag_4">#FFD700</color>
-    <color name="color_tag_5">#4caf50</color>
-    <color name="color_tag_6">#009688</color>
-    <color name="color_tag_7">#2196f3</color>
-    <color name="color_tag_8">#673ab7</color>
-    <color name="color_tag_9">#e91e63</color>
-    <color name="color_tag_10">#795548</color>
-    <color name="color_tag_11">#000000</color>
-    <color name="color_tag_12">#ffffff</color>
-    <color name="color_tag_13">#808080</color>
-    <color name="color_tag_14">#C0C0C0</color>
+    <color name="color_tag_4">#4caf50</color>
+    <color name="color_tag_5">#009688</color>
+    <color name="color_tag_6">#2196f3</color>
+    <color name="color_tag_7">#673ab7</color>
+    <color name="color_tag_8">#e91e63</color>
+    <color name="color_tag_9">#795548</color>
+    <color name="color_tag_10">#000000</color>
+    <color name="color_tag_11">#ffffff</color>
+    <color name="color_tag_12">#808080</color>
+    <color name="color_tag_13">#C0C0C0</color>
 
     <array name="color_tags">
         <item>@color/color_tag_1</item>
@@ -72,15 +43,6 @@
         <item>@color/color_tag_11</item>
         <item>@color/color_tag_12</item>
         <item>@color/color_tag_13</item>
-        <item>@color/color_tag_14</item>
     </array>
 
-    <color name="cpb_grey">#ffdedede</color>
-    <color name="cpb_blue">#ff0099cc</color>
-    <color name="cpb_blue_dark">#ff00719b</color>
-    <color name="cpb_red">#ffff4444</color>
-    <color name="cpb_red_dark">#ffcd3a3a</color>
-    <color name="cpb_green">#ff99cc00</color>
-    <color name="cpb_green_dark">#ff6d9b00</color>
-    <color name="cpb_white">@android:color/white</color>
 </resources>

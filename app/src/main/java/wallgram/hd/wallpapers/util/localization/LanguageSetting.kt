@@ -2,7 +2,12 @@ package wallgram.hd.wallpapers.util.localization
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
+import androidx.core.os.ConfigurationCompat
 import java.util.*
+import android.os.Build
+
+
+
 
 
 object LanguageSetting {
@@ -23,11 +28,19 @@ object LanguageSetting {
                 1 -> Locale(info[0])
                 2 -> Locale(info[0], info[1])
                 3 -> Locale(info[0], info[1], info[2])
-                else -> Locale.ENGLISH
+                else -> getCurrentLocale(context)
             }
         } ?: run {
-            Locale.ENGLISH
+            getCurrentLocale(context)
         }
+
+    fun getCurrentLocale(context: Context): Locale {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.resources.configuration.locales[0]
+        } else {
+            context.resources.configuration.locale
+        }
+    }
 
     @JvmStatic
     fun setLanguage(context: Context, locale: Locale) {

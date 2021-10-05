@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import wallgram.hd.wallpapers.App
@@ -24,9 +25,11 @@ import wallgram.hd.wallpapers.views.AgreementDialog
 import wallgram.hd.wallpapers.util.device.DeviceName
 import javax.inject.Inject
 
-class StartFragment : BaseFragment<StartViewModel, FragmentStartBinding>(FragmentStartBinding::inflate) {
+class StartFragment :
+    BaseFragment<StartViewModel, FragmentStartBinding>(FragmentStartBinding::inflate) {
 
     private val modo = wallgram.hd.wallpapers.App.modo
+
     @Inject
     lateinit var preferences: PreferenceContract
 
@@ -35,9 +38,21 @@ class StartFragment : BaseFragment<StartViewModel, FragmentStartBinding>(Fragmen
 
         setDeviceName()
         binding.purchaseButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-            else{
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                mPermissionResult.launch(
+                    arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                )
+                preferences.save(FIRST_LAUNCH, false)
+                modo.replace(Screens.MultiStack())
+            }
+            else {
                 preferences.save(FIRST_LAUNCH, false)
                 modo.replace(Screens.MultiStack())
             }
@@ -45,18 +60,20 @@ class StartFragment : BaseFragment<StartViewModel, FragmentStartBinding>(Fragmen
         setUserAgreement()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-      //  findNavController().navigate(R.id.action_startFragment_to_mainFragment)
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
+    private val mPermissionResult =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
 
+        }
 
     private fun setUserAgreement() {
-        clicking(binding.userAgreement, resources.getString(R.string.agreement_sub), object: ClickSpan.OnClickListener {
-            override fun onClick() {
-                wallgram.hd.wallpapers.views.AgreementDialog.display(childFragmentManager)
-            }
-        })
+        clicking(
+            binding.userAgreement,
+            resources.getString(R.string.agreement_sub),
+            object : ClickSpan.OnClickListener {
+                override fun onClick() {
+                    wallgram.hd.wallpapers.views.AgreementDialog.display(childFragmentManager)
+                }
+            })
     }
 
     private fun setDeviceName() {
@@ -75,8 +92,10 @@ class StartFragment : BaseFragment<StartViewModel, FragmentStartBinding>(Fragmen
     }
 
     companion object {
-        fun clicking(view: TextView, clickableText: String,
-                     listener: ClickSpan.OnClickListener) {
+        fun clicking(
+            view: TextView, clickableText: String,
+            listener: ClickSpan.OnClickListener
+        ) {
             val text = view.text
             val string = text.toString()
             val span = ClickSpan(listener)

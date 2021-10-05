@@ -66,6 +66,11 @@ public final class OneFieldCustomRadioButton extends BaseCustomRadioButton {
         return a.hasValue(index);
     }
 
+    public void setPrice(String price){
+        this.price = price;
+        populateViews();
+    }
+
     @Override
     protected void populateViews() {
         priceTextView.setText(price);
@@ -73,4 +78,3 @@ public final class OneFieldCustomRadioButton extends BaseCustomRadioButton {
         discountTextView.setText(discount);
     }
 }
-

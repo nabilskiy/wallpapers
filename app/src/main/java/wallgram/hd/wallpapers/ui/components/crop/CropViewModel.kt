@@ -9,6 +9,7 @@ import wallgram.hd.wallpapers.model.Pic
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import wallgram.hd.wallpapers.util.modo.back
 import javax.inject.Inject
 
 class CropViewModel @Inject constructor(
@@ -18,13 +19,18 @@ class CropViewModel @Inject constructor(
     private val picLiveDataPrivate = MutableLiveData<Resource<Pic>>()
     val picLiveData: LiveData<Resource<Pic>> get() = picLiveDataPrivate
 
-    fun getPic(id: Int, res: String, lang: String){
+    fun getPic(id: Int, res: String){
         viewModelScope.launch {
             picLiveDataPrivate.value = Resource.Loading()
 
-            dataRepository.getPic(id, res, lang).collect {
+            dataRepository.getPic(id, res).collect {
                 picLiveDataPrivate.value = it
             }
 
         }
-    }}
+    }
+
+    fun onBack() {
+        modo.back()
+    }
+}

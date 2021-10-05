@@ -30,11 +30,6 @@
         tools:replace="android:allowBackup"
         android:requestLegacyExternalStorage="true"
         tools:targetApi="m">
-        <activity
-            android:name=".ui.details.WallpaperDetailsActivity"
-            android:parentActivityName=".ui.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/DetailsActivityTheme" />
 
         <uses-library
             android:name="org.apache.http.legacy"

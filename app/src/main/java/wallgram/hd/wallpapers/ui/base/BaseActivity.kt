@@ -1,14 +1,12 @@
 package wallgram.hd.wallpapers.ui.base
 
 import android.content.Context
-import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import com.akexorcist.localizationactivity.core.LocalizationActivityDelegate
+import wallgram.hd.wallpapers.util.localization.LocalizationActivityDelegate
 import dagger.android.AndroidInjection
 import wallgram.hd.wallpapers.util.localization.OnLocaleChangedListener
 import java.util.*

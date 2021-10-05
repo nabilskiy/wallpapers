@@ -7,5 +7,6 @@ import wallgram.hd.wallpapers.model.Gallery
 interface ICacheManager {
 
     var wallpapersData: MutableLiveData<PagingData<Gallery>>
+    var similarData: MutableLiveData<PagingData<Gallery>>
 
 }

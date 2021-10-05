@@ -10,13 +10,43 @@
         <item name="colorOnError">#FFFFFF</item>
         <item name="colorSurface">@color/colorPrimary</item>
         <item name="colorOnSurface">@color/colorPrimary</item>
-        <item name="android:colorBackground">@color/colorPrimaryDark</item>
-        <item name="colorOnBackground">#212121</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">#232035</item>
+
+        <!--        <item name="android:statusBarColor">@color/colorPrimaryDark</item>-->
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
 
         <item name="materialAlertDialogTheme">@style/CustomAlertDialogTheme</item>
         <item name="alertDialogTheme">@style/DialogStyle</item>
 
+        <item name="android:statusBarColor">#1B1928</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
     </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+    <style name="CustomAlertDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">@color/color_secondary</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialogTitleText</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialogText</item>
+    </style>
+
+    <style name="DialogStyle" parent="@style/Theme.MaterialComponents.Dialog">
+        <item name="colorAccent">@color/color_secondary</item>
+        <item name="colorPrimary">@color/color_secondary</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="MaterialAlertDialogText" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="MaterialAlertDialogTitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
 
     <style name="AppTheme.BottomSheetDialogTheme" parent="BaseBottomSheetDialog">
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -37,87 +67,10 @@
         <item name="cornerSize">2dp</item>
     </style>
 
-    <style name="CustomAlertDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="colorPrimary">@color/color_secondary</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialogTitleText</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialogText</item>
-    </style>
-
-    <style name="DialogStyle" parent="@style/Theme.MaterialComponents.Dialog">
-        <item name="colorAccent">@color/color_secondary</item>
-        <item name="colorPrimary">@color/color_secondary</item>
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="MyMaterialTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-    </style>
-
-    <style name="AppTheme.Dark.Dialog" parent="Theme.AppCompat.Dialog">
-        <item name="colorAccent">@color/colorYellow</item>
-        <item name="android:textColorPrimary">@color/colorWhite</item>
-        <item name="android:background">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="MyRatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/colorYellow</item>
-    </style>
-
-    <style name="SeekBarColor" parent="Widget.AppCompat.SeekBar">
-        <item name="colorAccent">@color/colorYellow</item>
-    </style>
-
-    <style name="RatingDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="colorAccent">@color/colorWhite</item>
-        <item name="android:windowBackground">@color/color_secondary</item>
-    </style>
-
-    <style name="RatingBar" parent="Widget.AppCompat.RatingBar">
-        <item name="colorControlNormal">@color/colorPrimaryDark</item>
-        <item name="colorControlActivated">@color/colorYellow</item>
-        <item name="android:minHeight">48dip</item>
-        <item name="android:maxHeight">48dip</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">true</item>
-        <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/color_secondary</item>
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowBackground">@color/colorPrimaryDark</item>
-        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
-        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="TransparentStatusBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
-        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
-        <item name="android:windowBackground">@null</item>
-    </style>
 
     <style name="CircleImageView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">2dp</item>
-    </style>
-
-    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorYellow</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
     </style>
 
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
@@ -133,19 +86,6 @@
         <item name="colorAccent">@color/colorYellow</item>
     </style>
 
-    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/color_secondary</item>
-        <item name="textColorAlertDialogListItem">@color/colorWhite</item>
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
-
-        <item name="queryBackground">@android:color/transparent</item>
-        <item name="android:imeActionId">6</item>
-    </style>
-
     <style name="AppTheme_FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/color_secondary</item>
@@ -158,26 +98,6 @@
     <style name="AppTheme_Slide">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
         <item name="android:windowExitAnimation">@anim/slide_down</item>
-    </style>
-
-    <style name="MyBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/MYBottomSheetStyle</item>
-    </style>
-
-    <style name="MYBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="Animation.Design.TopSheetDialog" parent="Animation.AppCompat.Dialog">
-        <item name="android:windowEnterAnimation">@anim/top_sheet_slide_in</item>
-        <item name="android:windowExitAnimation">@anim/top_sheet_slide_out</item>
-    </style>
-
-    <style name="Widget.Design.TopSheet.Modal" parent="android:Widget">
-        <item name="android:background">?android:attr/colorBackground</item>
-        <item name="android:elevation">@dimen/top_sheet_modal_elevation</item>
-        <item name="behavior_peekHeight">@dimen/top_sheet_modal_peek_height</item>
-        <item name="behavior_hideable">true</item>
     </style>
 
     <style name="TextHeader">
@@ -195,7 +115,6 @@
         <item name="android:focusable">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginBottom">28dp</item>
         <item name="android:textSize">16sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">#E6FFFFFF</item>
@@ -211,22 +130,5 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:paddingStart">44dp</item>
     </style>
-
-    <declare-styleable name="CircularProgressButton">
-        <attr name="cpb_selectorIdle" format="reference"/>
-        <attr name="cpb_selectorComplete" format="reference"/>
-        <attr name="cpb_selectorError" format="reference"/>
-        <attr name="cpb_textComplete" format="string"/>
-        <attr name="cpb_textIdle" format="string"/>
-        <attr name="cpb_textError" format="string"/>
-        <attr name="cpb_textProgress" format="string"/>
-        <attr name="cpb_colorProgress" format="color"/>
-        <attr name="cpb_colorIndicator" format="color"/>
-        <attr name="cpb_colorIndicatorBackground" format="color"/>
-        <attr name="cpb_iconError" format="reference"/>
-        <attr name="cpb_iconComplete" format="reference"/>
-        <attr name="cpb_cornerRadius" format="dimension"/>
-        <attr name="cpb_paddingProgress" format="dimension"/>
-    </declare-styleable>
 
 </resources>

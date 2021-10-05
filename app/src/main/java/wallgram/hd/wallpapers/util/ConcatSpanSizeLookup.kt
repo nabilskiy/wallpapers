@@ -8,11 +8,9 @@ interface SpanSizeLookupOwner {
 }
 
 class ConcatSpanSizeLookup(
-        private val spanCount: Int,
-        private val adaptersProvider: () -> List<RecyclerView.Adapter<*>>
-) :
-        GridLayoutManager.SpanSizeLookup() {
-
+    private val spanCount: Int,
+    private val adaptersProvider: () -> List<RecyclerView.Adapter<*>>
+): GridLayoutManager.SpanSizeLookup() {
     override fun getSpanSize(position: Int): Int {
         var index = position
         adaptersProvider.invoke().forEach { adapter ->

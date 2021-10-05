@@ -49,7 +49,7 @@ abstract class BaseBottomSheetDialogFragment<V : ViewModel, B : ViewBinding>(
 
     override fun onStart() {
         super.onStart()
-        val bottomSheet = requireDialog().findViewById<View>(R.id.design_bottom_sheet)
+        val bottomSheet = requireDialog().findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
       //  bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
 

@@ -7,13 +7,15 @@ import wallgram.hd.wallpapers.data.error.NO_INTERNET_CONNECTION
 import wallgram.hd.wallpapers.data.remote.service.AkspicService
 import wallgram.hd.wallpapers.model.*
 import wallgram.hd.wallpapers.util.NetworkConnectivity
+import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import java.io.IOException
 import javax.inject.Inject
 
 class RemoteData @Inject
 constructor(
         private val serviceGenerator: ServiceGenerator,
-        private val networkConnectivity: NetworkConnectivity
+        private val networkConnectivity: NetworkConnectivity,
+        private val localizationDelegate: LocalizationApplicationDelegate
 ) : RemoteDataSource {
 
     private suspend fun processCall(responseCall: suspend () -> Response<*>): Any? {
@@ -35,10 +37,11 @@ constructor(
 
     override suspend fun getCategories(): Resource<List<Category>> {
         val nasolistService = serviceGenerator.createService(AkspicService::class.java)
+        val lang = localizationDelegate.getSupportedLanguage()
 
         return when (val response =
             processCall {
-                nasolistService.getCategories("ru")
+                nasolistService.getCategories(lang)
             }) {
             is List<*> -> {
                 Resource.Success(data = response as List<Category>)
@@ -51,10 +54,11 @@ constructor(
 
     override suspend fun getWallpapers(sort: String): Resource<ServerResponse<Gallery>> {
         val nasolistService = serviceGenerator.createService(AkspicService::class.java)
+        val lang = localizationDelegate.getSupportedLanguage()
 
         return when (val response =
                 processCall {
-                    nasolistService.getWallpapersItems(sort, lang = "ru", resolution = "1080x1920", page = 1)
+                    nasolistService.getWallpapersItems(sort, lang = lang, resolution = "1080x1920", page = 1)
                 }) {
             is ServerResponse<*> -> {
                 Resource.Success(data = response as ServerResponse<Gallery>)
@@ -65,12 +69,13 @@ constructor(
         }
     }
 
-    override suspend fun getSuggest(search: String, lang: String): Resource<List<String>> {
+    override suspend fun getSuggest(search: String): Resource<List<String>> {
         val nasolistService = serviceGenerator.createService(AkspicService::class.java)
+        val lang = localizationDelegate.getSupportedLanguage()
 
         return when (val response =
                 processCall {
-                    nasolistService.getSuggest(search = search, lang = "ru")
+                    nasolistService.getSuggest(search = search, lang = lang)
                 }) {
             is List<*> -> {
                 Resource.Success(data = response as List<String>)
@@ -81,8 +86,9 @@ constructor(
         }
     }
 
-    override suspend fun getPic(id: Int, res: String, lang: String): Resource<Pic> {
+    override suspend fun getPic(id: Int, res: String): Resource<Pic> {
         val service = serviceGenerator.createService(AkspicService::class.java)
+        val lang = localizationDelegate.getSupportedLanguage()
         return when (val response =
                 processCall {
                     service.getPic(id, res, lang)
@@ -96,12 +102,13 @@ constructor(
         }
     }
 
-    override suspend fun getTags(isTop: Int, lang: String): Resource<ServerResponse<Tag>> {
+    override suspend fun getTags(isTop: Int): Resource<ServerResponse<Tag>> {
         val nasolistService = serviceGenerator.createService(AkspicService::class.java)
+        val lang = localizationDelegate.getSupportedLanguage()
 
         return when (val response =
                 processCall {
-                    nasolistService.getTags(is_top = 1, lang = "ru", page = 1)
+                    nasolistService.getTags(is_top = 1, lang = lang, page = 1)
                 }) {
             is ServerResponse<*> -> {
                 Resource.Success(data = response as ServerResponse<Tag>)

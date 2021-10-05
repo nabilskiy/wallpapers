@@ -30,9 +30,9 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="86dp"
         android:background="#B304030C"
-        android:fitsSystemWindows="true"
+        android:fitsSystemWindows="false"
         app:menu="@menu/wallpaper_menu"
         app:navigationIcon="@drawable/ic_back"
         app:navigationIconTint="#BDBDBD">
@@ -53,6 +53,7 @@
 
 
     <LinearLayout
+        android:id="@+id/buttons_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -76,7 +77,7 @@
             android:paddingEnd="16dp"
             android:paddingBottom="8dp"
             android:stateListAnimator="@null"
-            android:text="Скачать"
+            android:text="@string/download"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"
@@ -112,7 +113,7 @@
             android:letterSpacing="0.03"
             android:minWidth="136dp"
             android:stateListAnimator="@null"
-            android:text="Установить"
+            android:text="@string/install_wallpaper"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite"
             android:textSize="12sp"

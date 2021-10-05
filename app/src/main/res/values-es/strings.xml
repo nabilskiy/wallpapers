@@ -1,127 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Wallgram</string>
     <string name="action_settings">Ajustes</string>
 
-    <string name="your_device">Tu dispositivo</string>
     <string name="user_agreement">Al iniciar la aplicación, aceptas los términos y condiciones de uso</string>
     <string name="menu_favorites">Favoritos</string>
     <string name="menu_history">Historial</string>
     <string name="menu_feedback">Dejar un comentario</string>
     <string name="menu_site">Página oficial</string>
-    <string name="menu_history_clear">Borrar historial</string>
-    <string name="action_search">Búsqueda</string>
-    <string name="category_title">Categorías</string>
+    <string name="search">Buscar</string>
+    <string name="category">Categorías</string>
     <string name="news_title">Nuevos</string>
     <string name="popular_title">Populares</string>
     <string name="random_title">Aleatorios</string>
-    <string name="image_applying">Aplicando la imagen…</string>
-    <string name="wallpaper_installed">Se ha aplicado el fondo de pantalla</string>
-    <string name="wrong_error">Algo salió mal…</string>
-    <string name="wallpaper_downloaded">Imagen cargada</string>
     <string name="wallpapers_adapted">Todos los fondos de pantalla están adaptados a tu pantalla</string>
-    <string name="start_button">Empezar</string>
     <string name="agreement_sub">los términos y condiciones de uso</string>
-    <string name="favorites_empty">Aún no hay nada</string>
-    <string name="history_empty">Ningún elemento del historial</string>
-    <string name="internet_connection">Sin conexión a internet</string>
+    <string name="favorites_empty">Oh, todavía no hay nada.\n\nTenemos más de 80.000 fondos de pantalla. Echa un vistazo, seguro que te va a gustar algo.</string>
     <string name="retry_button">Repetir</string>
     <string name="lang_title">Idioma</string>
-    <string name="lang_choose">Elegir idioma</string>
 
-    <string-array name="lang_entries">
-        <item>Русский</item>
-        <item>English</item>
-        <item>Español</item>
-        <item>Deutsch</item>
-        <item>Français</item>
-        <item>汉语</item>
-    </string-array>
-
-    <string-array name="lang_values">
-        <item>ru</item>
-        <item>en</item>
-        <item>es</item>
-        <item>de</item>
-        <item>fr</item>
-        <item>zh</item>
-    </string-array>
-
-    <string name="search_none">No encontrado nada</string>
-    <string name="image_background">Imagen de fondo</string>
     <string name="image_logo">Logo de la aplicación</string>
     <string name="image">Imagen</string>
-    <string name="search_icon">Búsqueda</string>
-    <string name="favorites_icon">Favoritos</string>
-    <string name="history_icon">Historial</string>
     <string name="similar_wallpapers">Fondos de pantalla similares</string>
-    <string name="general_title">General</string>
     <string name="exit_toast">Imágenes similares</string>
     <string name="home_screen">Pantalla Inicio</string>
     <string name="lock_screen">Pantalla Bloqueo</string>
     <string name="both_screens">Pantallas Inicio y Bloqueo</string>
-    <string name="upload_gallery">Subir a la galería</string>
-    <string name="license_key">Licencia: %1$s</string>
-    <string name="clear_history_confirm">¿Seguro que quieres borrar la historia?</string>
     <string name="clear">Borrar</string>
     <string name="cancel">Cancelar</string>
     <string name="clear_cache_title">Borrar la caché</string>
     <string name="cache_size">El tamaño de la caché: %1$s</string>
-    <string name="clear_cache_confirm">¿Seguro que quieres borrar la caché?</string>
-    <string name="cache_cleared">Se ha borrado la caché</string>
-    <string name="brightness_key">Brillo</string>
-    <string name="contrast_key">Contraste</string>
-    <string name="saturation_key">Saturación</string>
-    <string name="editing_key">Editación</string>
-    <string name="filter_key">Filtro</string>
-    <string name="edit_key">Editar</string>
-    <string name="exit_confirm_key">Hay cambios sin guardar. ¿Estás seguro de que quieres salir?</string>
-    <string name="exit_key">Salir</string>
     <string name="crop_image_key">Recortar una imagen</string>
     <string name="action_subscription">Subscripción</string>
-    <string name="ads_without_key">Sin anuncios</string>
-    <string name="unlim_download_key">Descarga fondos de pantalla sin límites</string>
-    <string name="install_key">Instalar</string>
-    <string name="navigation_drawer_open">Abrir el cajón de navegación</string>
-    <string name="navigation_drawer_close">Cerrar cajón de navegación</string>
-    <string name="sub_purchase">Has comprado la suscripción</string>
-    <string name="more_sixteen">16% más rentable</string>
-    <string name="more_thirty">31% más rentable</string>
+    <string name="save_50">Ahorra 50%</string>
     <string name="continue_key">Continuar</string>
-    <string name="free_days">Conseguir 3 días gratis</string>
-    <string name="sub_text">La suscripción a la aplicación se renueva automáticamente, a menos que la canceles 24 horas antes del final del período de pago actual. En cualquier momento puedes cancelar la renovación automática de la suscripción comprada en Google Play.</string>
-    <string name="sub_year">1 año</string>
-    <string name="sub_six">6 meses</string>
-    <string name="sub_one">1 mes</string>
+    <string name="free_days">"Y tendrás 3 días gratis "</string>
+    <string name="sub_text">La suscripción se renueva automáticamente. Puedes desactivar la renovación automática en cualquier momento.\n\nX por X. Te da acceso a todos los fondos de pantalla sin restricciones ni anuncios. Los pagos de los usuarios se cargan desde su cuenta de Google Play tras la confirmación del pago. Las suscripciones se renuevan automáticamente a menos que el usuario cancele la suscripción a más tardar 24 horas antes de la fecha de finalización del período de suscripción actual. Las renovaciones de suscripción se cobrarán dentro de las 24 horas anteriores a la fecha de finalización del período de suscripción actual. Los usuarios pueden cambiar y cancelar suscripciones en la configuración de su cuenta de Google Play .</string>
+    <string name="year">/ año</string>
+    <string name="month">/ mes</string>
     <string name="error_msg">Error al cargar el fondo de pantalla</string>
-    <string name="error_msg_details">Error al cargar los datos</string>
-    <string name="error_msg_category">Error al cargar las categorías</string>
-    <string name="tap_to_reload">Haz clic para volver a intentarlo</string>
-    <string name="error_msg_timeout">The server is not responding</string>
-    <string name="error_msg_unkown">Error desconocido</string>
-    <string name="search_change_query">Intenta cambiar tu búsqueda</string>
-    <string name="loading_key">Cargando</string>
 
-    <string name="feedback_title">Deja un comentario</string>
+    <string name="feedback_title">Dejar un comentario</string>
     <string name="rate_title">Valora la aplicación</string>
     <string name="ok_btn">Vale</string>
     <string name="rate_neutral">No, gracias</string>
     <string name="rate_later">Más tarde</string>
     <string name="send_feedback">Enviar comentarios</string>
     <string name="email_error">Cliente de correo electrónico no instalado</string>
-    <string name="email_subject">Akspic_feedback</string>
-    <string name="ads_not_load">Anuncio todavía no ha cargado</string>
-    <string name="list_of_images">Lista de imágenes</string>
-    <string name="ad_attribution">Ad</string>
-    <string name="other_key">Otro</string>
-    <string name="enter_query">Ingresar solicitud</string>
     <string name="privacy_policy">Política de Privacidad</string>
-    <string name="menu_favorites_clear">Ljóst eftirlæti</string>
-    <string name="clear_confirm">¿Realmente quieres borrar la lista de imágenes?</string>
-    <string name="back" >Volver</string>
+    <string name="clear_confirm">¿Seguro que quieres borrar la historia?</string>
     <string name="portrait">Vertical</string>
     <string name="landscape">Horizontal</string>
     <string name="original">Tamaño original</string>
     <string name="install_wallpaper">Establecer</string>
     <string name="download">Descargar</string>
+    <string name="all">Todos</string>
+    <string name="color">Color</string>
+    <string name="best_wallpaper">MEJORES FONDOS DE PANTALLA PARA</string>
+    <string name="cache">Caché de la aplicación</string>
+    <string name="choose_plan">Elige tu plan</string>
+    <string name="free">Gratis</string>
+    <string name="downloads_limit_10">Hasta 10 descargas al día</string>
+    <string name="integrated_ads">Hay anuncios integrados</string>
+    <string name="current">Plan actual</string>
+    <string name="pro">Sin limitaciones de descarga\nSin anuncios</string>
+    <string name="subscribe_now">Suscríbete ahora</string>
+    <string name="home">Inicio</string>
 </resources>

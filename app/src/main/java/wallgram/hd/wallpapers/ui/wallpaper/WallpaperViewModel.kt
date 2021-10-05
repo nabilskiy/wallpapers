@@ -23,6 +23,7 @@ import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
 import wallgram.hd.wallpapers.util.cache.CacheManager
 import wallgram.hd.wallpapers.util.cache.ICacheManager
+import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import wallgram.hd.wallpapers.util.modo.back
 import wallgram.hd.wallpapers.util.modo.externalForward
 import wallgram.hd.wallpapers.util.modo.forward
@@ -31,10 +32,12 @@ import javax.inject.Inject
 class WallpaperViewModel @Inject constructor(
     private val dataRepository: DataRepositorySource,
     private val serviceGenerator: ServiceGenerator,
-    private val cacheManager: ICacheManager
+    private val cacheManager: ICacheManager,
+    private val localizationDelegate: LocalizationApplicationDelegate
 ) : BaseViewModel() {
 
     val wallpapersLiveData: MutableLiveData<PagingData<Gallery>> get() = cacheManager.wallpapersData
+    val similarData: MutableLiveData<PagingData<Gallery>> get() = cacheManager.similarData
 
     private val similarLiveDataPrivate = MutableLiveData<PagingData<Gallery>>()
     val similarLiveData: MutableLiveData<PagingData<Gallery>> get() = similarLiveDataPrivate
@@ -44,7 +47,6 @@ class WallpaperViewModel @Inject constructor(
 
     private val picLiveDataPrivate = MutableLiveData<Resource<Pic>>()
     val picLiveData: LiveData<Resource<Pic>> get() = picLiveDataPrivate
-
 
     fun onBack() {
         modo.back()
@@ -57,7 +59,7 @@ class WallpaperViewModel @Inject constructor(
     fun getLiveData(feedRequest: FeedRequest) {
         viewModelScope.launch {
             Pager(PagingConfig(27, enablePlaceholders = false)) {
-                FeedPagingSource(feedRequest, serviceGenerator)
+                FeedPagingSource(feedRequest, serviceGenerator, localizationDelegate)
             }.flow.cachedIn(viewModelScope).collect {
                 similarLiveDataPrivate.value = it
             }
@@ -78,7 +80,7 @@ class WallpaperViewModel @Inject constructor(
     fun getPic(id: Int, res: String){
         picLiveDataPrivate.value = Resource.Loading()
         viewModelScope.launch {
-            dataRepository.getPic(id, res, "ru").collect{
+            dataRepository.getPic(id, res).collect{
                 picLiveDataPrivate.value = it
             }
         }
@@ -94,8 +96,8 @@ class WallpaperViewModel @Inject constructor(
     }
 
     fun itemClicked(position: Int, id: Int) {
-        cacheManager.wallpapersData = similarLiveDataPrivate
-        modo.externalForward(Screens.Wallpaper(position, id))
+        cacheManager.similarData = similarLiveDataPrivate
+        modo.forward(Screens.Wallpaper(position, id, WallType.SIMILAR))
     }
 
     fun clearInformation() {

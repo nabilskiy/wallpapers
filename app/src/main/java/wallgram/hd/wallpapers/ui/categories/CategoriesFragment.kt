@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import wallgram.hd.wallpapers.App
+import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.databinding.FragmentCategoriesBinding
@@ -41,7 +42,7 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel, FragmentCategoriesB
             }
             setHasFixedSize(true)
             addItemDecoration(ItemOffsetDecoration())
-            adapter = ConcatAdapter(HeaderAdapter("Категории"),
+            adapter = ConcatAdapter(HeaderAdapter(getString(R.string.category)),
                     categoriesAdapter)
         }
 

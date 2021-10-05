@@ -25,10 +25,10 @@ public final class CustomRadioGroup extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public static void setOnClickListener(OnCustomRadioButtonListener onClickListener) {
+    public void setOnClickListener(OnCustomRadioButtonListener onClickListener) {
         CustomRadioGroup.onClickListener = onClickListener;
     }
-
+    
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (child instanceof BaseCustomRadioButton) {
@@ -65,7 +65,7 @@ public final class CustomRadioGroup extends LinearLayout {
                 .getDrawable(R.drawable.background_custom_radio_buttons_unselected_state));
     }
 
-    private void setSelectedButtonToSelectedState(BaseCustomRadioButton selectedButton) {
+    public void setSelectedButtonToSelectedState(BaseCustomRadioButton selectedButton) {
       //  float viewWithoutFilter = 1f;
 
      //   selectedButton.setAlpha(viewWithoutFilter);

@@ -38,10 +38,6 @@ class WallpapersAdapter(private val onItemClicked: ((Int, Int) -> Unit)) :
                     .apply(RequestOptions().placeholder(ColorDrawable(Color.parseColor("#1B1928"))))
                     .transition(DrawableTransitionOptions.withCrossFade(100))
                     .into(ivPhoto)
-
-                root.setOnClickListener {
-                    onItemClicked(bindingAdapterPosition, item.id)
-                }
             }
         }
     }
@@ -65,8 +61,17 @@ class WallpapersAdapter(private val onItemClicked: ((Int, Int) -> Unit)) :
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val viewHolder = ViewHolder(binding)
+        binding.root.setOnClickListener {
+            val position = viewHolder.bindingAdapterPosition
+            val id = getItem(position)?.id ?: -1
+            if (position != RecyclerView.NO_POSITION && id != -1)
+                onItemClicked(position, id)
+        }
+        return viewHolder
+    }
 
     override fun getSpanSizeLookup(): GridLayoutManager.SpanSizeLookup = SimpleSpanSizeLookup(1)
     override fun getItemDecorations(): List<RecyclerView.ItemDecoration> =
