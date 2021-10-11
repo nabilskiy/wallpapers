@@ -11,6 +11,7 @@ public final class OneFieldCustomRadioButton extends BaseCustomRadioButton {
     private TextView priceTextView;
     private TextView periodTextView;
     private TextView discountTextView;
+    private TextView currentTextView;
 
     private String price;
     private String discount;
@@ -35,6 +36,7 @@ public final class OneFieldCustomRadioButton extends BaseCustomRadioButton {
         priceTextView = findViewById(R.id.price_text);
         periodTextView = findViewById(R.id.period_text);
         discountTextView = findViewById(R.id.discount_text);
+        currentTextView = findViewById(R.id.current_text);
     }
 
     @Override
@@ -64,6 +66,12 @@ public final class OneFieldCustomRadioButton extends BaseCustomRadioButton {
 
     private boolean typedArrayHasValue(int index) {
         return a.hasValue(index);
+    }
+
+    @Override
+    public void setCurrent(boolean isCurrent){
+        discountTextView.setVisibility(isCurrent ? GONE : VISIBLE);
+        currentTextView.setVisibility(isCurrent ? VISIBLE : GONE);
     }
 
     public void setPrice(String price){

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import wallgram.hd.wallpapers.data.Resource
-import wallgram.hd.wallpapers.data.repository.DataRepositorySource
+import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.model.Pic
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect

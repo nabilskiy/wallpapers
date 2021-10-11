@@ -14,6 +14,10 @@ import wallgram.hd.wallpapers.BuildConfig;
 
 public class Common {
 
+    public static String getProjectName(){
+        return BuildConfig.APPLICATION_ID;
+    }
+
     public static String getSiteUrl(){
         String locale = Locale.getDefault().getLanguage().toLowerCase();
         switch (locale){

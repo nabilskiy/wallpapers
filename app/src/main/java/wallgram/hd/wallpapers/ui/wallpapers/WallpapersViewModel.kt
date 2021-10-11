@@ -1,12 +1,10 @@
 package wallgram.hd.wallpapers.ui.wallpapers
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import wallgram.hd.wallpapers.data.paging.FeedPagingSource
 import wallgram.hd.wallpapers.data.remote.ServiceGenerator
-import wallgram.hd.wallpapers.data.repository.DataRepositorySource
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel

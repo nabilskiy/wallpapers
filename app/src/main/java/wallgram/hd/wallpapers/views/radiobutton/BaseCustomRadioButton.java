@@ -75,4 +75,6 @@ public abstract class BaseCustomRadioButton extends RelativeLayout {
     protected abstract void initAttributes();
 
     protected abstract void populateViews();
+
+    protected abstract void setCurrent(boolean isCurrent);
 }

@@ -28,7 +28,7 @@ public final class CustomRadioGroup extends LinearLayout {
     public void setOnClickListener(OnCustomRadioButtonListener onClickListener) {
         CustomRadioGroup.onClickListener = onClickListener;
     }
-    
+
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (child instanceof BaseCustomRadioButton) {
@@ -44,6 +44,24 @@ public final class CustomRadioGroup extends LinearLayout {
         super.addView(child, index, params);
     }
 
+    public void setSelectedButton(BaseCustomRadioButton button) {
+        setAllButtonsToUnselectedState();
+        setSelectedButtonToSelectedState(button);
+    }
+
+    public void setCurrent(BaseCustomRadioButton button) {
+        LinearLayout container = this;
+
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+
+            if (child instanceof BaseCustomRadioButton) {
+                BaseCustomRadioButton containerView = (BaseCustomRadioButton) child;
+                containerView.setCurrent(containerView == button);
+            }
+        }
+    }
+
     private void setAllButtonsToUnselectedState() {
         LinearLayout container = this;
 
@@ -57,24 +75,41 @@ public final class CustomRadioGroup extends LinearLayout {
         }
     }
 
-    private void setButtonToUnselectedState(BaseCustomRadioButton containerView) {
-     //   float viewWithFilter = 0.5f;
+    public int getSelectedButton() {
+        int id = -1;
+        for (int i = 0; i < this.getChildCount(); i++) {
+            View child = this.getChildAt(i);
 
-      //  containerView.setAlpha(viewWithFilter);
+            if (child instanceof BaseCustomRadioButton) {
+                if (child.isSelected()) {
+                    id = child.getId();
+                    return id;
+                }
+            }
+        }
+        return id;
+    }
+
+    private void setButtonToUnselectedState(BaseCustomRadioButton containerView) {
+        //   float viewWithFilter = 0.5f;
+
+        //  containerView.setAlpha(viewWithFilter);
+        containerView.setSelected(false);
         containerView.setBackground(getResources()
                 .getDrawable(R.drawable.background_custom_radio_buttons_unselected_state));
     }
 
     public void setSelectedButtonToSelectedState(BaseCustomRadioButton selectedButton) {
-      //  float viewWithoutFilter = 1f;
+        //  float viewWithoutFilter = 1f;
 
-     //   selectedButton.setAlpha(viewWithoutFilter);
+        //   selectedButton.setAlpha(viewWithoutFilter);
+        selectedButton.setSelected(true);
         selectedButton.setBackground(getResources()
                 .getDrawable(R.drawable.background_custom_radio_buttons_selected_state));
     }
 
     private void initOnClickListener(View selectedButton) {
-        if(onClickListener != null) {
+        if (onClickListener != null) {
             onClickListener.onClick(selectedButton);
         }
     }

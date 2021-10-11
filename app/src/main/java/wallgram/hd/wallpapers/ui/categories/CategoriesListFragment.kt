@@ -3,7 +3,9 @@ package wallgram.hd.wallpapers.ui.categories
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.databinding.FragmentCategoriesItemsBinding
@@ -35,14 +37,39 @@ class CategoriesListFragment : BaseFragment<FeedViewModel, FragmentCategoriesIte
     }
 
     private val feedRequest: FeedRequest by args(ARG_FEED_REQUEST)
+    private var position = 0
 
     override fun invalidate() {
         super.invalidate()
         modo.back()
     }
 
+    override fun onDestroyView() {
+        position = binding.viewPager.currentItem
+        super.onDestroyView()
+
+        viewModel.bundleFragment.value = bundleOf(
+            "POSITION" to position
+        )
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.bundleFragment.observe(viewLifecycleOwner, {
+            binding.viewPager.post {
+                position = it.getInt("POSITION", 0)
+                binding.viewPager.currentItem = position
+            }
+        })
+        if(viewModel.bundleFragment.value == null){
+            binding.viewPager.post{
+                binding.viewPager.currentItem = when (feedRequest.type) {
+                    WallType.POPULAR -> 1
+                    else -> 0
+                }
+            }
+        }
 
         with(binding) {
 
@@ -58,12 +85,7 @@ class CategoriesListFragment : BaseFragment<FeedViewModel, FragmentCategoriesIte
                 offscreenPageLimit = 3
                 adapter = CategoriesItemsAdapter(this@CategoriesListFragment, feedRequest)
             }
-            viewPager.post {
-                when (feedRequest.type) {
-                    WallType.POPULAR -> viewPager.currentItem = 1
-                    else -> viewPager.currentItem = 0
-                }
-            }
+
 
             TabLayoutMediator(
                 tabLayout,

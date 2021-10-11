@@ -20,9 +20,13 @@ import wallgram.hd.wallpapers.data.local.preference.FIRST_LAUNCH
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.databinding.FragmentStartBinding
 import wallgram.hd.wallpapers.ui.base.BaseFragment
+import wallgram.hd.wallpapers.util.Common
 import wallgram.hd.wallpapers.util.modo.replace
 import wallgram.hd.wallpapers.views.AgreementDialog
 import wallgram.hd.wallpapers.util.device.DeviceName
+import wallgram.hd.wallpapers.util.getResolution
+import wallgram.hd.wallpapers.util.physicalScreenRectPx
+import wallgram.hd.wallpapers.util.screenRectPx
 import javax.inject.Inject
 
 class StartFragment :
@@ -37,6 +41,11 @@ class StartFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setDeviceName()
+
+        val widthPx = requireContext().physicalScreenRectPx.width()
+        val heightPx = requireContext().physicalScreenRectPx.height()
+        binding.resolutionText.text = "$widthPx x $heightPx"
+
         binding.purchaseButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     requireContext(),

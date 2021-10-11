@@ -66,6 +66,16 @@ public final class TwoFieldCustomRadioButton extends BaseCustomRadioButton {
         return a.hasValue(index);
     }
 
+    public void setPrice(String price){
+        this.price = price;
+        populateViews();
+    }
+
+    @Override
+    public void setCurrent(boolean isCurrent){
+        discountTextView.setVisibility(isCurrent ? VISIBLE : GONE);
+    }
+
     @Override
     protected void populateViews() {
         priceTextView.setText(price);

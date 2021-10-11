@@ -17,7 +17,7 @@
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/roboto_bold"
         android:lineSpacingExtra="5sp"
-        android:text="94,99 ₴"
+        tools:text="94,99 ₴"
         android:textColor="#E6FFFFFF"
         android:textSize="20sp" />
 
@@ -30,7 +30,7 @@
         android:layout_toEndOf="@+id/price_text"
         android:fontFamily="@font/roboto_regular"
         android:lineSpacingExtra="5sp"
-        android:text="/ месяц"
+        tools:text="/ месяц"
         android:textColor="#E6FFFFFF"
         android:textSize="16sp" />
 
@@ -41,13 +41,33 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/roboto_medium"
         android:letterSpacing="0.03"
         android:lineSpacingExtra="2sp"
-        android:text="Экономия 16%"
+        tools:text="@string/save_50"
+        android:drawablePadding="8dp"
         android:textColor="#F5C901"
         android:textSize="12sp" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/current_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/roboto_medium"
+        android:letterSpacing="0.03"
+        android:lineSpacingExtra="2sp"
+        android:text="@string/current"
+        android:drawablePadding="8dp"
+        android:textColor="#F5C901"
+        android:textSize="12sp"
+        app:drawableEndCompat="@drawable/ic_check" />
 
 </merge>

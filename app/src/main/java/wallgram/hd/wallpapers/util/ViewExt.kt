@@ -38,8 +38,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.views.loadingbutton.animatedDrawables.ProgressType
-import wallgram.hd.wallpapers.views.loadingbutton.customViews.ProgressButton
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
@@ -58,40 +56,6 @@ fun RadioGroup.setCustomChecked(id: Int, listener: RadioGroup.OnCheckedChangeLis
     setOnCheckedChangeListener(null)
     check(id)
     setOnCheckedChangeListener(listener)
-}
-
-fun ProgressButton.morphDoneAndRevert(
-    context: Context,
-    fillColor: Int = defaultColor(context),
-    bitmap: Bitmap = defaultDoneImage(context.resources),
-    doneTime: Long = 3000,
-    revertTime: Long = 4000
-) {
-    progressType = ProgressType.INDETERMINATE
-    startAnimation()
-    Handler().run {
-        postDelayed({ doneLoadingAnimation(fillColor, bitmap) }, doneTime)
-        postDelayed(::revertAnimation, revertTime)
-    }
-}
-
-fun ProgressButton.morphAndRevert(revertTime: Long = 3000, startAnimationCallback: () -> Unit = {}) {
-    startAnimation(startAnimationCallback)
-    Handler().postDelayed(::revertAnimation, revertTime)
-}
-
-fun ProgressButton.morphStopRevert(stopTime: Long = 1000, revertTime: Long = 2000) {
-    startAnimation()
-    Handler().postDelayed(::stopAnimation, stopTime)
-    Handler().postDelayed(::revertAnimation, revertTime)
-}
-
-fun progressAnimator(progressButton: ProgressButton) = ValueAnimator.ofFloat(0F, 100F).apply {
-    duration = 1500
-    startDelay = 500
-    addUpdateListener { animation ->
-        progressButton.setProgress(animation.animatedValue as Float)
-    }
 }
 
 @ExperimentalCoroutinesApi

@@ -1,8 +1,8 @@
 package wallgram.hd.wallpapers.ui.wallpaper
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -14,18 +14,16 @@ import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.data.paging.FeedPagingSource
 import wallgram.hd.wallpapers.data.remote.ServiceGenerator
-import wallgram.hd.wallpapers.data.repository.DataRepositorySource
+import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.Pic
 import wallgram.hd.wallpapers.model.Tag
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
-import wallgram.hd.wallpapers.util.cache.CacheManager
 import wallgram.hd.wallpapers.util.cache.ICacheManager
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import wallgram.hd.wallpapers.util.modo.back
-import wallgram.hd.wallpapers.util.modo.externalForward
 import wallgram.hd.wallpapers.util.modo.forward
 import javax.inject.Inject
 
@@ -94,6 +92,8 @@ class WallpaperViewModel @Inject constructor(
             }
         }
     }
+
+
 
     fun itemClicked(position: Int, id: Int) {
         cacheManager.similarData = similarLiveDataPrivate

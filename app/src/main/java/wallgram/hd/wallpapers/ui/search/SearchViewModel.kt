@@ -10,7 +10,7 @@ import androidx.paging.cachedIn
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.data.paging.FeedPagingSource
 import wallgram.hd.wallpapers.data.remote.ServiceGenerator
-import wallgram.hd.wallpapers.data.repository.DataRepositorySource
+import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
@@ -25,10 +25,10 @@ import wallgram.hd.wallpapers.util.modo.externalForward
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-        private val dataRepository: DataRepositorySource,
-        private val serviceGenerator: ServiceGenerator,
-        private val cacheManager: ICacheManager,
-        private val languageDelegate: LocalizationApplicationDelegate
+    private val dataRepository: DataRepositorySource,
+    private val serviceGenerator: ServiceGenerator,
+    private val cacheManager: ICacheManager,
+    private val languageDelegate: LocalizationApplicationDelegate
 ) : BaseViewModel() {
     private val suggestLiveDataPrivate = MutableLiveData<Resource<List<String>>>()
     val suggestLiveData: LiveData<Resource<List<String>>> get() = suggestLiveDataPrivate

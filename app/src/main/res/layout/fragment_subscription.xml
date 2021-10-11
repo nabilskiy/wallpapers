@@ -1,131 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/subscribe_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fillViewport="true">
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:context=".ui.subscribe.SubscriptionFragment">
-
-        <TextView
-            android:id="@+id/header_title"
-            style="@style/TextHeader"
-            android:layout_alignParentTop="true"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/subscribe_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/choose_plan" />
-
-        <wallgram.hd.wallpapers.views.radiobutton.CustomRadioGroup
-            android:id="@+id/radio_group"
-            android:layout_width="match_parent"
-            android:layout_below="@id/header_title"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingStart="16dp"
-            android:layout_marginTop="24dp"
-            android:paddingEnd="16dp">
-
-            <wallgram.hd.wallpapers.views.radiobutton.TwoFieldCustomRadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/background_custom_radio_buttons_selected_state"
-                app:period_field="Бесплатно"
-                app:price_field="0 ₴"
-                app:discount_field="Выбран"/>
+            android:visibility="gone"
+            tools:context=".ui.subscribe.SubscriptionFragment">
 
             <TextView
-                android:layout_width="match_parent"
-                android:textColor="@color/colorYellow"
-                android:lineSpacingExtra="4sp"
-                android:layout_marginTop="16dp"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:drawableStart="@drawable/ic_pro"
-                android:gravity="top"
-                android:drawablePadding="12dp"
-                android:text="@string/pro"/>
-
-
-            <wallgram.hd.wallpapers.views.radiobutton.OneFieldCustomRadioButton
-                android:id="@+id/month_sub"
+                android:id="@+id/header_title"
+                style="@style/TextHeader"
+                android:layout_alignParentTop="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/choose_plan" />
+
+            <wallgram.hd.wallpapers.views.radiobutton.CustomRadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_below="@id/header_title"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:layout_marginTop="24dp"
+                android:paddingEnd="16dp">
+
+                <wallgram.hd.wallpapers.views.radiobutton.TwoFieldCustomRadioButton
+                    android:id="@+id/default_sku"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/background_custom_radio_buttons_unselected_state"
+                    app:period_field="@string/free"
+                    app:price_field="0 ₴"
+                    app:discount_field="@string/current"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textColor="@color/colorYellow"
+                    android:lineSpacingExtra="4sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:gravity="top"
+                    android:drawablePadding="12dp"
+                    android:text="@string/pro"
+                    app:drawableStartCompat="@drawable/ic_pro" />
+
+
+                <wallgram.hd.wallpapers.views.radiobutton.OneFieldCustomRadioButton
+                    android:id="@+id/month_sub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/background_custom_radio_buttons_unselected_state"
+                    app:period_field="@string/month"
+                    />
+
+
+                <wallgram.hd.wallpapers.views.radiobutton.OneFieldCustomRadioButton
+                    android:id="@+id/year_sub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/background_custom_radio_buttons_unselected_state"
+                    app:discount_field="@string/save_50"
+                    app:period_field="@string/year" />
+            </wallgram.hd.wallpapers.views.radiobutton.CustomRadioGroup>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/subscribe_btn"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_below="@id/radio_group"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_medium"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="8sp"
+                android:text="@string/subscribe_now"
+                android:textAllCaps="false"
+                android:textColor="#E6000000"
+                android:textSize="14sp"
+                app:backgroundTint="@color/colorYellow"
+                app:cornerRadius="4dp" />
+
+            <TextView
+                android:id="@+id/text_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/subscribe_btn"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="70dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/background_custom_radio_buttons_unselected_state"
-                app:period_field="@string/month"
-                app:price_field="19,99 ₴" />
+                android:layout_marginEnd="70dp"
+                android:fontFamily="@font/roboto_regular"
+                android:lineSpacingExtra="2sp"
+                android:text="@string/free_days"
+                android:textAlignment="center"
+                android:textColor="#F5C901"
+                android:textSize="12sp" />
 
-
-            <wallgram.hd.wallpapers.views.radiobutton.OneFieldCustomRadioButton
-                android:id="@+id/year_sub"
+            <TextView
+                android:layout_below="@id/text_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/background_custom_radio_buttons_unselected_state"
-                app:discount_field="@string/save_50"
-                app:period_field="@string/year"
-                app:price_field="199,99 ₴" />
-        </wallgram.hd.wallpapers.views.radiobutton.CustomRadioGroup>
+                android:layout_margin="16dp"
+                android:fontFamily="@font/roboto_regular"
+                android:lineSpacingExtra="2sp"
+                android:text="@string/sub_text"
+                android:textAlignment="center"
+                android:textColor="#66FFFFFF"
+                android:textSize="12sp" />
 
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/subscribe_btn"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_below="@id/radio_group"
-            android:layout_marginEnd="16dp"
-            android:fontFamily="@font/roboto_medium"
-            android:letterSpacing="0.02"
-            android:lineSpacingExtra="8sp"
-            android:text="@string/subscribe_now"
-            android:textAllCaps="false"
-            android:textColor="#E6000000"
-            android:textSize="14sp"
-            app:backgroundTint="@color/colorYellow"
-            app:cornerRadius="4dp" />
-
-        <TextView
-            android:id="@+id/text_2"
+        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/subscribe_btn"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="70dp"
-            android:fontFamily="@font/roboto_regular"
-            android:lineSpacingExtra="2sp"
-            android:text="@string/free_days"
-            android:textAlignment="center"
-            android:textColor="#F5C901"
-            android:textSize="12sp" />
+            android:layout_gravity="center"
+            android:theme="@style/CircularProgress" />
+    </FrameLayout>
 
-        <TextView
-            android:layout_below="@id/text_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:fontFamily="@font/roboto_regular"
-            android:lineSpacingExtra="2sp"
-            android:text="@string/sub_text"
-            android:textAlignment="center"
-            android:textColor="#66FFFFFF"
-            android:textSize="12sp" />
-
-    </RelativeLayout>
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:theme="@style/CircularProgress" />
-</FrameLayout>
+</androidx.core.widget.NestedScrollView>

@@ -10,16 +10,21 @@ android {
         applicationId "wallgram.hd.wallpapers"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 4
-        versionName "4"
+        versionCode 5
+        versionName "5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField("String", "BILLING_KEY", BILLING_KEY)
     }
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -70,7 +75,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.12.0"
 
+    implementation "com.google.guava:guava:31.0.1-android"
+
     implementation "androidx.paging:paging-runtime-ktx:3.1.0-alpha03"
+
+    implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
 
     implementation 'com.github.ssseasonnn:ClarityPotion:1.0.2'
 

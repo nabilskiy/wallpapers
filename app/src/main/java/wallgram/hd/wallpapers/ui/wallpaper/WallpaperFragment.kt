@@ -3,11 +3,12 @@ package wallgram.hd.wallpapers.ui.wallpaper
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import kotlinx.coroutines.*
-import android.os.Handler
 import android.text.TextUtils
+import android.util.Log
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
@@ -18,25 +19,29 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.*
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
+import com.github.razir.progressbutton.*
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.databinding.FragmentWallpaperBinding
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.ui.wallpapers.*
 import wallgram.hd.wallpapers.util.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import wallgram.hd.wallpapers.data.Resource
+import wallgram.hd.wallpapers.model.Config
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.details.DownloadDialogFragment
 import wallgram.hd.wallpapers.ui.details.InstallDialogFragment
 import wallgram.hd.wallpapers.util.downloadx.State
-import wallgram.hd.wallpapers.util.downloadx.download
-import wallgram.hd.wallpapers.views.progressbutton.*
+import java.io.File
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 import kotlin.math.atan2
 
 
@@ -54,6 +59,9 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
             ARG_TYPE to type
         )
     }
+
+    private val downloadLiveDataPrivate = MutableLiveData<Resource<Uri>>()
+    private val installLiveDataPrivate = MutableLiveData<Resource<Uri>>()
 
     private val wallpapersAdapter: WallpaperItemAdapter by lazy {
         WallpaperItemAdapter {
@@ -125,6 +133,76 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 }
 
             })
+            val downloadDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_download_icon)!!
+            val installDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_install)!!
+            val drawableSize = resources.getDimensionPixelSize(R.dimen.doneSize)
+            downloadDrawable.setBounds(0,0,drawableSize, drawableSize)
+            installDrawable.setBounds(0,0,drawableSize, drawableSize)
+
+            downloadBtn.showDrawable(downloadDrawable){
+                buttonTextRes = R.string.download
+                gravity = DrawableButton.GRAVITY_TEXT_START
+            }
+
+            installBtn.showDrawable(installDrawable){
+                buttonTextRes = R.string.install_wallpaper
+                gravity = DrawableButton.GRAVITY_TEXT_START
+            }
+
+            downloadLiveDataPrivate.observe(viewLifecycleOwner, {
+                when (it) {
+                    is Resource.Loading ->{
+
+                        downloadBtn.showProgress {
+                            progressColor = Color.WHITE
+                            gravity = DrawableButton.GRAVITY_CENTER
+
+                        }
+
+                        downloadBtn.isEnabled = false
+                    }
+
+
+                    is Resource.Success ->{
+                        downloadBtn.isEnabled = true
+                        downloadBtn.hideProgress(R.string.download)
+                        downloadBtn.showDrawable(downloadDrawable){
+                            buttonTextRes = R.string.download
+                            gravity = DrawableButton.GRAVITY_TEXT_START
+                        }
+                    }
+
+                }
+            })
+
+            installLiveDataPrivate.observe(viewLifecycleOwner, {
+                when (it) {
+                    is Resource.Loading ->{
+
+                        installBtn.showProgress {
+                            progressColor = Color.WHITE
+                            gravity = DrawableButton.GRAVITY_CENTER
+
+                        }
+
+                        installBtn.isEnabled = false
+                    }
+
+
+                    is Resource.Success ->{
+                        installBtn.isEnabled = true
+                        installBtn.hideProgress(R.string.install_wallpaper)
+                        installBtn.showDrawable(installDrawable){
+                            buttonTextRes = R.string.install_wallpaper
+                            gravity = DrawableButton.GRAVITY_TEXT_START
+                        }
+                    }
+                }
+            })
+
+            bindProgressButton(downloadBtn)
+            bindProgressButton(installBtn)
+
 
             viewModel.getLiveData(FeedRequest(type = WallType.SIMILAR, category = pic))
 
@@ -133,7 +211,8 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 similarAdapter.submitData(lifecycle = lifecycle, it)
             }
 
-            bottomSheetBehavior.peekHeight = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) 62.dp else 42.dp + getNavigationBarHeight()
+            bottomSheetBehavior.peekHeight =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) 62.dp else 42.dp + getNavigationBarHeight()
 
 
             toolbar.menu.getItem(2).actionView.findViewById<ImageView>(R.id.tag_icon)
@@ -274,25 +353,23 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
             })
 
             installBtn.setOnClickListener {
-                InstallDialogFragment().show(
-                    childFragmentManager,
-                    InstallDialogFragment::class.java.simpleName
-                )
+                val item = wallpapersAdapter.peek(binding.list.currentItem)
+                item?.let {
+                    InstallDialogFragment.create(it.links.portrait ?: "").show(
+                        childFragmentManager,
+                        InstallDialogFragment::class.java.simpleName
+                    )
+                }
             }
 
             downloadBtn.setOnClickListener {
-//                val item = wallpapersAdapter.peek(binding.list.currentItem)
-//                item?.let {
-//                    DownloadDialogFragment.create(it.links).show(
-//                        childFragmentManager,
-//                        DownloadDialogFragment::class.java.simpleName
-//                    )
-//                }
-
-            }
-
-            downloadBtn.run {
-               // setOnClickListener { morphDoneAndRevert(requireContext()) }
+                val item = wallpapersAdapter.peek(binding.list.currentItem)
+                item?.let {
+                    DownloadDialogFragment.create(it.links).show(
+                        childFragmentManager,
+                        DownloadDialogFragment::class.java.simpleName
+                    )
+                }
 
             }
 
@@ -440,7 +517,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         val item = wallpapersAdapter.peek(binding.list.currentItem)
         item?.let {
             val landscape = it.links.landscape
-            if (landscape != null){
+            if (landscape != null) {
                 isTagsVisible = true
                 viewModel.onCropClicked(landscape)
             }
@@ -456,26 +533,40 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
     override fun getViewModel(): Class<WallpaperViewModel> = WallpaperViewModel::class.java
 
-    fun download(url: String) {
-        val downloadTask = lifecycleScope.download(
-            url
-        )
-        downloadTask.state()
-            .onEach {
-//                when (it) {
-//                    is State.Downloading -> {
-//                        if (!binding.downloadBtn.isProgressActive())
-//                            showLoading()
-//                    }
-//                    is State.Succeed -> showDone(it)
-//                    is State.Failed -> showDone(it)
-//                    is State.Stopped -> showDone(it)
-//                    is State.None -> showDone(it)
+    fun downloadSupend(url: String) {
+
+        val temp: File = Glide.with(requireContext())
+            .asFile()
+            .load(url)
+            .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+            .get(2, TimeUnit.MINUTES)
+
+        val result = WallpaperUtils.saveToFile(context, url, temp)
+        downloadLiveDataPrivate.postValue(Resource.Success(result))
+    }
+
+    fun downloadAndSetWallpaper(url: String, config: Config) {
+        installLiveDataPrivate.postValue(Resource.Loading())
+        lifecycleScope.launch(Dispatchers.IO) {
+            val wallpaper = WallpaperUtils.getImageFile(requireContext(), url)
+            if (wallpaper == null || !wallpaper.exists()) {
+                throw IOException("Download wallpaper failure")
             }
+            val uiHelper = UIHelper()
+            val result = uiHelper.setWallpaper(requireContext(), config, wallpaper)
+            installLiveDataPrivate.postValue(Resource.Success(result))
+        }
+    }
 
-            .launchIn(lifecycleScope)
 
-        downloadTask.start()
+    fun download(url: String) {
+        downloadLiveDataPrivate.postValue(Resource.Loading())
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            downloadSupend(url)
+        }
+
     }
 
 

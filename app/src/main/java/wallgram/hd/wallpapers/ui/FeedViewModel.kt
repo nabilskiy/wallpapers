@@ -1,6 +1,6 @@
 package wallgram.hd.wallpapers.ui
 
-import wallgram.hd.wallpapers.data.repository.DataRepositorySource
+import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import javax.inject.Inject
 

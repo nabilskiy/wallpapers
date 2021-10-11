@@ -1,19 +1,13 @@
 package wallgram.hd.wallpapers.ui.main
 
-import android.util.Log
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import wallgram.hd.wallpapers.data.Resource
-import wallgram.hd.wallpapers.data.repository.DataRepositorySource
+import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.model.Category
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.data.repository.billing.BillingRepository
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
@@ -21,8 +15,15 @@ import wallgram.hd.wallpapers.util.modo.*
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val dataRepository: DataRepositorySource
+    private val dataRepository: DataRepositorySource,
+    private val billingRepository: BillingRepository
 ) : BaseViewModel() {
+
+    val messages: LiveData<Int>
+        get() = billingRepository.messages.asLiveData()
+
+    val billingLifecycleObserver: LifecycleObserver
+        get() = billingRepository.billingLifecycleObserver
 
     private val categoriesLiveDataPrivate = MutableLiveData<Resource<List<Category>>>()
     val categoriesLiveData: LiveData<Resource<List<Category>>> get() = categoriesLiveDataPrivate

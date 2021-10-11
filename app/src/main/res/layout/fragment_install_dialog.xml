@@ -14,6 +14,7 @@
         android:src="@drawable/ic_line" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/home_screen_btn"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:gravity="center_vertical"
@@ -36,6 +37,7 @@
         app:drawableStartCompat="@drawable/ic_main_screen" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/lock_screen_btn"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:gravity="center_vertical"
@@ -57,6 +59,7 @@
         android:textSize="16sp" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/both_screen_btn"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:gravity="center_vertical"

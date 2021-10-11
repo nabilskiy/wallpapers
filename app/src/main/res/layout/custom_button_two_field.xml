@@ -30,7 +30,7 @@
         android:layout_marginStart="4dp"
         android:fontFamily="@font/roboto_regular"
         android:lineSpacingExtra="5sp"
-        android:text="Бесплатно"
+        tools:text="@string/free"
         android:textColor="#BAFFFFFF"
         android:textSize="16sp" />
 
@@ -43,7 +43,7 @@
         android:fontFamily="@font/roboto_regular"
         android:lineSpacingExtra="2sp"
         android:layout_alignStart="@id/price_text"
-        android:text="До 10 скачиваний в сутки"
+        android:text="@string/downloads_limit_10"
         android:textColor="#BAFFFFFF"
         android:textSize="12sp" />
     <TextView
@@ -55,26 +55,27 @@
         android:fontFamily="@font/roboto_regular"
         android:lineSpacingExtra="2sp"
         android:layout_marginBottom="8dp"
-        android:text="Есть встроенная реклама"
+        android:text="@string/integrated_ads"
         android:textColor="#BAFFFFFF"
         android:textSize="12sp" />
 
     <TextView
         android:id="@+id/discount_text"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/roboto_medium"
-        android:letterSpacing="0.03"
         android:gravity="end"
-        android:drawableTop="@drawable/ic_check"
+        android:letterSpacing="0.03"
         android:lineSpacingExtra="2sp"
-        android:text="Выбран"
+        android:text="@string/current"
         android:textColor="#F5C901"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        app:drawableTopCompat="@drawable/ic_check" />
 
 </merge>

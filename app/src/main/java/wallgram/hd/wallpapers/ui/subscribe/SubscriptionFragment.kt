@@ -1,5 +1,7 @@
 package wallgram.hd.wallpapers.ui.subscribe
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,72 +11,122 @@ import wallgram.hd.wallpapers.*
 import wallgram.hd.wallpapers.App.Companion.modo
 import wallgram.hd.wallpapers.databinding.FragmentSubscriptionBinding
 import wallgram.hd.wallpapers.ui.base.BaseFragment
-import wallgram.hd.wallpapers.util.billing.DataWrappers
-import wallgram.hd.wallpapers.util.billing.IapConnector
-import wallgram.hd.wallpapers.util.billing.SubscriptionServiceListener
+import wallgram.hd.wallpapers.util.localization.LanguageSetting
 import wallgram.hd.wallpapers.util.modo.back
 import wallgram.hd.wallpapers.views.radiobutton.CustomRadioGroup
 import wallgram.hd.wallpapers.views.radiobutton.OnCustomRadioButtonListener
+import java.util.*
 
 class SubscriptionFragment : BaseFragment<BillingViewModel, FragmentSubscriptionBinding>(
     FragmentSubscriptionBinding::inflate
 ) {
-
-    var selectedSku = YEAR_SKU
 
     override fun invalidate() {
         super.invalidate()
         modo.back()
     }
 
+    private var currentSub = DEFAULT_SKU
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val subsList = listOf(MONTH_SKU, YEAR_SKU)
+        val currency = Currency.getInstance(LanguageSetting.getDefaultLanguage(App.context)).symbol
 
-        val iapConnector = IapConnector(
-            context = requireContext(),
-            subscriptionKeys = subsList,
-            key = BuildConfig.BILLING_KEY,
-            enableLogging = true
-        )
+        viewModel.openPlayStoreSubscriptionsEvent.observe(viewLifecycleOwner, { sku ->
+            openPlayStoreSubscriptions(sku)
+        })
 
-        iapConnector.addSubscriptionListener(object : SubscriptionServiceListener {
-            override fun onSubscriptionRestored(purchaseInfo: DataWrappers.PurchaseInfo) {
-                Log.d("RESTORED", purchaseInfo.toString())
+        viewModel.getSkuDetails(MONTH_SKU).price.observe(viewLifecycleOwner, {
+            binding.monthSub.setPrice(it)
+            if(it.isNotEmpty()){
+                hideLoading()
+            }
+        })
+
+        viewModel.getSkuDetails(YEAR_SKU).price.observe(viewLifecycleOwner, {
+            binding.yearSub.setPrice(it)
+            if(it.isNotEmpty()){
+                hideLoading()
+            }
+        })
+
+        viewModel.getCurrentSub().observe(viewLifecycleOwner, {
+
+            if(currentSub == it){
+                hideLoading()
+                return@observe
             }
 
-            override fun onSubscriptionPurchased(purchaseInfo: DataWrappers.PurchaseInfo) {
-                Log.d("PURCHASED", purchaseInfo.toString())
-            }
-
-            override fun onPricesUpdated(iapKeyPrices: Map<String, DataWrappers.SkuDetails>) {
-                Log.d("PRICES", iapKeyPrices.toString())
-                binding?.apply{
-                    monthSub.setPrice(iapKeyPrices.getValue(MONTH_SKU).price ?: "")
-                    yearSub.setPrice(iapKeyPrices.getValue(YEAR_SKU).price ?: "")
-                    progressBar.isVisible = false
-                    subscribeContent.isVisible = true
-                }
-
-            }
-
+            showLoading()
+            currentSub = it
+            updateButtonBackground(it)
+            updateButtonCurrent(it)
         })
 
         with(binding) {
+
+            defaultSku.setPrice("0 $currency")
+
             subscribeBtn.setOnClickListener {
-                iapConnector.subscribe(requireActivity(), selectedSku)
+                val sub = when(radioGroup.selectedButton){
+                    R.id.default_sku -> currentSub
+                    R.id.month_sub -> MONTH_SKU
+                    R.id.year_sub -> YEAR_SKU
+                    else -> currentSub
+                }
+                viewModel.buySku(requireActivity(), sub, currentSub)
             }
 
             radioGroup.setOnClickListener(object : OnCustomRadioButtonListener {
                 override fun onClick(view: View) {
                     text2.isInvisible = view.id != R.id.year_sub
-                    selectedSku = if (view.id == R.id.month_sub) MONTH_SKU else YEAR_SKU
                 }
             })
-
-            radioGroup.setSelectedButtonToSelectedState(binding.yearSub)
         }
+    }
+
+    private fun hideLoading() {
+        binding.subscribeContent.isVisible = true
+        binding.progressBar.isVisible = false
+    }
+
+
+    private fun showLoading() {
+        binding.subscribeContent.isVisible = false
+        binding.progressBar.isVisible = true
+    }
+
+    private fun updateButtonBackground(sub: String) {
+        with(binding){
+            radioGroup.setSelectedButton(when(sub){
+                MONTH_SKU -> monthSub
+                else -> yearSub
+            })
+            text2.isInvisible = sub != YEAR_SKU
+        }
+    }
+
+    private fun updateButtonCurrent(sub: String) {
+        with(binding){
+            radioGroup.setCurrent(when(sub){
+                MONTH_SKU -> monthSub
+                YEAR_SKU -> yearSub
+                else -> defaultSku
+            })
+        }
+        hideLoading()
+    }
+
+
+    private fun openPlayStoreSubscriptions(sku: String) {
+        if(sku == DEFAULT_SKU)
+            return
+
+        val url = String.format(PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL, sku, requireActivity().packageName)
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(url)
+        startActivity(intent)
     }
 
     override fun getViewModel(): Class<BillingViewModel> = BillingViewModel::class.java

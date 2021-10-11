@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.data.remote.ServiceGenerator
-import wallgram.hd.wallpapers.data.repository.DataRepositorySource
+import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.model.Category
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.Tag

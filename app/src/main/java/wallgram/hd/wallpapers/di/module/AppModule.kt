@@ -7,16 +7,20 @@ import androidx.room.Room
 import wallgram.hd.wallpapers.App
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import dagger.Binds
 
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import wallgram.hd.wallpapers.PREFERENCES
+import wallgram.hd.wallpapers.data.billing.BillingDataSource
 import wallgram.hd.wallpapers.data.local.Database
 import wallgram.hd.wallpapers.data.local.Database.Companion.DATABASE_NAME
 import wallgram.hd.wallpapers.data.local.dao.GalleryDao
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.data.local.preference.SharedPreferencesImpl
+import wallgram.hd.wallpapers.data.repository.billing.BillingRepository
 import wallgram.hd.wallpapers.util.Network
 import wallgram.hd.wallpapers.util.NetworkConnectivity
 import wallgram.hd.wallpapers.util.cache.CacheManager
@@ -75,5 +79,20 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGalleryDao(database: Database): GalleryDao = database.galleryDao()
+
+    @Provides
+    @Singleton
+    fun provideBillingDataSource(application: Application): BillingDataSource = BillingDataSource.getInstance(
+        application,
+        GlobalScope,
+        knownSubscriptionSKUs = BillingRepository.SUBSCRIPTION_SKUS,
+        knownInappSKUs = null,
+        autoConsumeSKUs = null
+    )
+
+    @Provides
+    @Singleton
+    fun provideBillingRepository(billingDataSource: BillingDataSource): BillingRepository = BillingRepository(billingDataSource, GlobalScope)
+
 
 }
