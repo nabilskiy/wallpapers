@@ -152,6 +152,9 @@ public class ROM {
     }
 
     private static boolean isOneUiSystem() {
+        if(Build.MANUFACTURER.equalsIgnoreCase("samsung"))
+            return true;
+
         try {
             return getSemPlatform() > 90000;
         } catch (Throwable ignored) {

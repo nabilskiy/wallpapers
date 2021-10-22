@@ -34,7 +34,7 @@
     <string name="save_50">Sparen Sie 50%</string>
     <string name="continue_key">Weiter</string>
     <string name="free_days">"Und 3 Tage gratis geschenkt bekommen "</string>
-    <string name="sub_text">"Das Abo wird automatisch verlängert. Sie können die automatische Verlängerung jederzeit deaktivieren.\n\nX für X. Bietet Zugriff auf alle Hintergrundbilder ohne Einschränkungen und Anzeigen. Vom Benutzer getätigte Zahlungen werden nach Bestätigung der Zahlung von seinem Google Play Konto ausgebucht. Abos werden automatisch verlängert, es sei denn, der Benutzer kündigt das Abo spätestens 24 Stunden vor dem Enddatum des aktuellen Abozeitraums. Aboverlängerungen werden innerhalb von 24 Stunden vor dem Enddatum des aktuellen Abozeitraums verrechnet. Benutzer haben die Möglichkeit, Abos in ihren Google Play Kontoeinstellungen zu ändern und zu kündigen. "</string>
+    <string name="sub_text">"Das Abo wird automatisch verlängert. Sie können die automatische Verlängerung jederzeit deaktivieren.\n\n %1$s für  %2$s. Bietet Zugriff auf alle Hintergrundbilder ohne Einschränkungen und Anzeigen. Vom Benutzer getätigte Zahlungen werden nach Bestätigung der Zahlung von seinem Google Play Konto ausgebucht. Abos werden automatisch verlängert, es sei denn, der Benutzer kündigt das Abo spätestens 24 Stunden vor dem Enddatum des aktuellen Abozeitraums. Aboverlängerungen werden innerhalb von 24 Stunden vor dem Enddatum des aktuellen Abozeitraums verrechnet. Benutzer haben die Möglichkeit, Abos in ihren Google Play Kontoeinstellungen zu ändern und zu kündigen. "</string>
     <string name="year">/ Jahr</string>
     <string name="month">/ Monat</string>
     <string name="error_msg">Hintergrundbild konnte nicht geladen werden</string>
@@ -65,4 +65,6 @@
     <string name="pro">Keine Download-Einschränkungen\nKeine Werbung</string>
     <string name="subscribe_now">Abonnieren Sie jetzt</string>
     <string name="home">Startseite</string>
+    <string name="wallpaper_setted">Hintergrundbild wurde gesetzt</string>
+    <string name="image_dowloaded">Bild geladen</string>
 </resources>

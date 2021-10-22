@@ -6,6 +6,7 @@ import wallgram.hd.wallpapers.data.error.NETWORK_ERROR
 import wallgram.hd.wallpapers.data.error.NO_INTERNET_CONNECTION
 import wallgram.hd.wallpapers.data.remote.service.AkspicService
 import wallgram.hd.wallpapers.model.*
+import wallgram.hd.wallpapers.util.DisplayHelper
 import wallgram.hd.wallpapers.util.NetworkConnectivity
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import java.io.IOException
@@ -15,8 +16,11 @@ class RemoteData @Inject
 constructor(
         private val serviceGenerator: ServiceGenerator,
         private val networkConnectivity: NetworkConnectivity,
-        private val localizationDelegate: LocalizationApplicationDelegate
+        private val localizationDelegate: LocalizationApplicationDelegate,
+        private val displayHelper: DisplayHelper
 ) : RemoteDataSource {
+
+    val resolutionScreen = displayHelper.getPhysicalScreenResolution()
 
     private suspend fun processCall(responseCall: suspend () -> Response<*>): Any? {
         if (!networkConnectivity.isConnected()) {
@@ -58,7 +62,7 @@ constructor(
 
         return when (val response =
                 processCall {
-                    nasolistService.getWallpapersItems(sort, lang = lang, resolution = "1080x1920", page = 1)
+                    nasolistService.getWallpapersItems(sort, lang = lang, resolution = resolutionScreen, page = 1)
                 }) {
             is ServerResponse<*> -> {
                 Resource.Success(data = response as ServerResponse<Gallery>)
@@ -91,7 +95,7 @@ constructor(
         val lang = localizationDelegate.getSupportedLanguage()
         return when (val response =
                 processCall {
-                    service.getPic(id, res, lang)
+                    service.getPic(id, resolutionScreen, lang)
                 }) {
             is Pic -> {
                 Resource.Success(data = response)

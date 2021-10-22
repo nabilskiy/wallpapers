@@ -52,7 +52,7 @@
     <string name="action_subscription">Subscription</string>
     <string name="continue_key">Сontinue</string>
     <string name="free_days">And get 3 free days as a gift</string>
-    <string name="sub_text">Subscription renews automatically. You can turn off automatic renewal at any time.\n\nX for X. Provides access to all wallpapers without limitations and ads. User payments are charged from their Google Play account upon confirmation of payment. Subscriptions renew automatically unless the user cancels the subscription no later than 24 hours before the end date of the current subscription period. Subscription renewals will be charged within 24 hours prior to the end date of the current subscription period. Users can change and cancel subscriptions in their Google Play account settings.\n</string>
+    <string name="sub_text">Subscription renews automatically. You can turn off automatic renewal at any time.\n\n %1$s for  %2$s. Provides access to all wallpapers without limitations and ads. User payments are charged from their Google Play account upon confirmation of payment. Subscriptions renew automatically unless the user cancels the subscription no later than 24 hours before the end date of the current subscription period. Subscription renewals will be charged within 24 hours prior to the end date of the current subscription period. Users can change and cancel subscriptions in their Google Play account settings.\n</string>
     <string name="year">/ year</string>
     <string name="month">/ month</string>
     <string name="error_msg">Failed to load wallpapers</string>
@@ -119,5 +119,7 @@
     <string name="current">Current</string>
     <string name="pro">No download limitations\nNo ads</string>
     <string name="subscribe_now">Subscribe now</string>
+    <string name="wallpaper_setted">Wallpaper setted</string>
+    <string name="image_dowloaded">Image downloaded</string>
 
 </resources>

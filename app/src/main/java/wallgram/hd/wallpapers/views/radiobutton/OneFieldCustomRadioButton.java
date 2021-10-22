@@ -79,6 +79,21 @@ public final class OneFieldCustomRadioButton extends BaseCustomRadioButton {
         populateViews();
     }
 
+    public String getPrice(){
+        return price;
+    }
+
+    @Override
+    public String getDuration(){
+        if(getId() == R.id.month_sub){
+            return "1" + getContext().getString(R.string.month).replace("/", "");
+        }
+        else if(getId() == R.id.year_sub){
+            return "1" + getContext().getString(R.string.year).replace("/", "");
+        }
+        else return "0";
+    }
+
     @Override
     protected void populateViews() {
         priceTextView.setText(price);

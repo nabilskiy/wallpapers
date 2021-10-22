@@ -33,7 +33,7 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
 
     companion object {
         private const val ARG_TYPE = "arg_type"
-        fun create(type: WallType) = FavoriteFragment().withArgs(
+        fun create(type: Int) = FavoriteFragment().withArgs(
             ARG_TYPE to type
         )
     }
@@ -52,7 +52,7 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
 
     }
 
-    private val type: WallType by args(ARG_TYPE, WallType.FAVORITE)
+    private val type: Int by args(ARG_TYPE, 0)
 
     private val favoritesAdapter: FavoritesAdapter by lazy {
         FavoritesAdapter(onItemClicked = { position, id ->

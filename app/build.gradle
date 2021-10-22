@@ -10,8 +10,8 @@ android {
         applicationId "wallgram.hd.wallpapers"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 5
-        versionName "5"
+        versionCode 6
+        versionName "6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -20,12 +20,26 @@ android {
     buildTypes {
         debug {
             debuggable true
+
+            buildConfigField("String", "ADMOB_APP_ID", ADMOB_APP_ID)
+            resValue("string", "admob_app_id", ADMOB_APP_ID)
+
+            buildConfigField("String", "REWARDED_INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/5354046379\"")
+            buildConfigField("String", "INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
         }
+
         release {
             debuggable false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            
+            buildConfigField("String", "ADMOB_APP_ID", ADMOB_APP_ID)
+            resValue("string", "admob_app_id", ADMOB_APP_ID)
+
+            buildConfigField("String", "REWARDED_INTERSTITIAL_ID", "\"ca-app-pub-3722478150829941/2334662603\"")
+            buildConfigField("String", "INTERSTITIAL_ID", "\"ca-app-pub-3722478150829941/1622208553\"")
+
         }
     }
     compileOptions {
@@ -90,6 +104,9 @@ dependencies {
 
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
 
+    implementation("ch.acra:acra-mail:5.8.4")
+    implementation("ch.acra:acra-toast:5.8.4")
+
     // Retrofit2
     def retrofit2_version = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit2_version"
@@ -122,5 +139,18 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$dagger_version"
     implementation "com.google.dagger:dagger-android-support:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
+
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-core:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-attr:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-build-config:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-crash:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-disk:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-geiger-counter:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-measurement:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-phoenix:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-recorder:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-shared-preferences:0.9.34'
+    debugImplementation 'com.willowtreeapps.hyperion:hyperion-timber:0.9.34'
 
 }

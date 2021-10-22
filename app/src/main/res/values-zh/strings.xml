@@ -49,7 +49,7 @@
     <string name="download">下载</string>
     <string name="integrated_ads">有内置广告</string>
     <string name="downloads_limit_10">每天最多下载10次</string>
-    <string name="sub_text">"\"自动续订。您可以随时关闭自动续订。  X年X。无广告无限次下载所有壁纸。确认付款后，将从用户的Google Play帐户中扣除服务费。如果用户没有在当前订阅有效期结束前的24小时内取消订阅，则将自动续订。将在当前订阅有效期结束之前的24小时内收取续订费用。用户可以在其Google Play帐户设置中更改和取消订阅。\" "</string>
+    <string name="sub_text">"\"自动续订。您可以随时关闭自动续订。   %1$s年%2$s。无广告无限次下载所有壁纸。确认付款后，将从用户的Google Play帐户中扣除服务费。如果用户没有在当前订阅有效期结束前的24小时内取消订阅，则将自动续订。将在当前订阅有效期结束之前的24小时内收取续订费用。用户可以在其Google Play帐户设置中更改和取消订阅。\" "</string>
     <string name="subscribe_now">立即订阅</string>
     <string name="action_subscription">订阅</string>
     <string name="save_50">节省50%</string>
@@ -65,4 +65,6 @@
     <string name="all">所有</string>
     <string name="wallpapers_adapted">所有壁纸都可以与您的手机相匹配</string>
     <string name="free_days">您得到三天免费</string>
+    <string name="wallpaper_setted">墙纸集</string>
+    <string name="image_dowloaded">图片已上传</string>
 </resources>

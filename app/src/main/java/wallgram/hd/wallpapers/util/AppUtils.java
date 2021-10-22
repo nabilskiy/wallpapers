@@ -289,4 +289,8 @@ public class AppUtils {
     public static void setHomeScreenWallpaper(Context context, File file) throws IOException {
         setWallpaper(context, file, WallpaperManager.FLAG_SYSTEM);
     }
+
+    public static void setHomeScreenWallpaperOld(Context context, File file) throws IOException{
+        setWallpaper(context, file);
+    }
 }

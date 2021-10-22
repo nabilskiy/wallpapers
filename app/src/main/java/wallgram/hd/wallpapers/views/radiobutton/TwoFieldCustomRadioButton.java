@@ -82,5 +82,21 @@ public final class TwoFieldCustomRadioButton extends BaseCustomRadioButton {
         periodTextView.setText(period);
         discountTextView.setText(discount);
     }
+
+    @Override
+    public String getPrice(){
+        return price;
+    }
+
+    @Override
+    public String getDuration(){
+        if(getId() == R.id.month_sub){
+            return "1" + getContext().getString(R.string.month).replace("/ ", "");
+        }
+        else if(getId() == R.id.year_sub){
+            return "1" + getContext().getString(R.string.year).replace("/ ", "");
+        }
+        else return "0";
+    }
 }
 

@@ -79,11 +79,11 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun getFavorites(type: WallType) {
+    fun getFavorites(type: Int) {
         viewModelScope.launch {
             favoritesLiveDataPrivate.value = Resource.Loading()
 
-            dataRepository.getSavedItems(if(type == WallType.FAVORITE) 0 else 1).collect {
+            dataRepository.getSavedItems(type).collect {
                 favoritesLiveDataPrivate.value = Resource.Success(it)
             }
 
@@ -107,9 +107,9 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
-    fun clearAll(type: WallType) {
+    fun clearAll(type: Int) {
         viewModelScope.launch {
-            dataRepository.deleteAllItems(if(type == WallType.FAVORITE) 0 else 1)
+            dataRepository.deleteAllItems(type)
         }
     }
 

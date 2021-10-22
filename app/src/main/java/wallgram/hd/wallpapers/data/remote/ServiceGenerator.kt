@@ -39,7 +39,7 @@ class ServiceGenerator @Inject constructor() {
         get() {
             val loggingInterceptor = HttpLoggingInterceptor()
 
-                loggingInterceptor.apply { level = HttpLoggingInterceptor.Level.BODY }
+                loggingInterceptor.apply { level = HttpLoggingInterceptor.Level.NONE }
 
             return loggingInterceptor
         }

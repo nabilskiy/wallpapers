@@ -1,6 +1,8 @@
 package wallgram.hd.wallpapers.util;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import java.io.File;
 import java.io.IOException;
 
+import wallgram.hd.wallpapers.R;
 import wallgram.hd.wallpapers.model.Config;
 import wallgram.hd.wallpapers.util.cache.CacheUtils;
 
@@ -41,18 +44,50 @@ public class UIHelper implements IUIHelper {
 
     private void systemSetWallpaper(Context context, @Constants.setWallpaperMode int mode, File home,
                                     File lock) throws IOException {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            AppUtils.setWallpaper(context, home);
+        if (mode == Constants.EXTRA_SET_WALLPAPER_MODE_HOME) {
+            homeSetWallpaper(context, home);
+        } else if (mode == Constants.EXTRA_SET_WALLPAPER_MODE_LOCK) {
+            setLockScreenWallpaper(context, lock);
         } else {
-            if (mode == Constants.EXTRA_SET_WALLPAPER_MODE_HOME) {
-                AppUtils.setHomeScreenWallpaper(context, home);
-            } else if (mode == Constants.EXTRA_SET_WALLPAPER_MODE_LOCK) {
-                AppUtils.setLockScreenWallpaper(context, lock);
-            } else {
-                AppUtils.setHomeScreenWallpaper(context, home);
-                AppUtils.setLockScreenWallpaper(context, lock);
-            }
+            homeSetWallpaper(context, home);
+            setLockScreenWallpaper(context, lock);
         }
+    }
+
+    private static void setLockScreenWallpaper(Context context, File lockWallpaper) throws IOException {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            lockSetWallpaper(context, lockWallpaper);
+        } else {
+            AppUtils.setLockScreenWallpaper(context, lockWallpaper);
+        }
+    }
+
+    private static void lockSetWallpaper(Context context, File wallpaper) throws IOException {
+        Intent localIntent = new Intent("android.intent.action.ATTACH_DATA");
+        localIntent.setClassName("com.sec.android.gallery3d", "com.sec.android.gallery3d.app.LockScreen");
+
+        File file = new File(SDCardUtils.getExternalStoragePicturesPublicDirectory(), "Wallgram");
+
+        File outFile = FileUtils.createFile(file, "test.jpg");
+        com.google.common.io.Files.copy(wallpaper, outFile);
+
+        localIntent.setDataAndType(Uri.fromFile(outFile), "image/*");
+
+        try {
+            context.startActivity(localIntent);
+        } catch (ActivityNotFoundException exception) {
+            UIHelper.openDefaultInstaller(context);
+        }
+
+    }
+
+    private static void homeSetWallpaper(Context context, File wallpaper) throws IOException {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            AppUtils.setHomeScreenWallpaper(context, wallpaper);
+        } else {
+            AppUtils.setWallpaper(context, wallpaper);
+        }
+        //wallpaper = UIHelper.cropWallpaper(context, wallpaper,false);
     }
 
     public static File cropWallpaper(Context context, File wallpaper) throws IOException {
@@ -61,6 +96,11 @@ public class UIHelper implements IUIHelper {
 
     public static DisplayMetrics getSysResolution(Context context) {
         return DisplayUtils.getScreenInfo(context, true);
+    }
+
+    public static void openDefaultInstaller(Context context) {
+        Intent intent = new Intent(Intent.ACTION_SET_WALLPAPER);
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.install_wallpaper)));
     }
 
     public static File cropWallpaper(Context context, File wallpaper, boolean portrait) throws IOException {

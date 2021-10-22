@@ -20,7 +20,7 @@ import wallgram.hd.wallpapers.model.Gallery
 abstract class Database : RoomDatabase() {
 
     companion object {
-        const val DATABASE_VERSION = 3
+        const val DATABASE_VERSION = 4
         const val DATABASE_NAME = "akspic.db"
     }
 

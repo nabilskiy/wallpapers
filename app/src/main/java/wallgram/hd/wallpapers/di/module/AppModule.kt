@@ -21,6 +21,7 @@ import wallgram.hd.wallpapers.data.local.dao.GalleryDao
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.data.local.preference.SharedPreferencesImpl
 import wallgram.hd.wallpapers.data.repository.billing.BillingRepository
+import wallgram.hd.wallpapers.util.DisplayHelper
 import wallgram.hd.wallpapers.util.Network
 import wallgram.hd.wallpapers.util.NetworkConnectivity
 import wallgram.hd.wallpapers.util.cache.CacheManager
@@ -79,6 +80,10 @@ class AppModule {
     @Provides
     @Singleton
     fun provideGalleryDao(database: Database): GalleryDao = database.galleryDao()
+
+    @Provides
+    @Singleton
+    fun provideDisplayHelper(application: Application): DisplayHelper = DisplayHelper(application)
 
     @Provides
     @Singleton

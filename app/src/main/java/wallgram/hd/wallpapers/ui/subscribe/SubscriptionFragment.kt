@@ -13,6 +13,7 @@ import wallgram.hd.wallpapers.databinding.FragmentSubscriptionBinding
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.util.localization.LanguageSetting
 import wallgram.hd.wallpapers.util.modo.back
+import wallgram.hd.wallpapers.views.radiobutton.BaseCustomRadioButton
 import wallgram.hd.wallpapers.views.radiobutton.CustomRadioGroup
 import wallgram.hd.wallpapers.views.radiobutton.OnCustomRadioButtonListener
 import java.util.*
@@ -37,26 +38,30 @@ class SubscriptionFragment : BaseFragment<BillingViewModel, FragmentSubscription
             openPlayStoreSubscriptions(sku)
         })
 
+
+
         viewModel.getSkuDetails(MONTH_SKU).price.observe(viewLifecycleOwner, {
             binding.monthSub.setPrice(it)
-            if(it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 hideLoading()
             }
         })
 
         viewModel.getSkuDetails(YEAR_SKU).price.observe(viewLifecycleOwner, {
             binding.yearSub.setPrice(it)
-            if(it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 hideLoading()
             }
         })
 
         viewModel.getCurrentSub().observe(viewLifecycleOwner, {
 
-            if(currentSub == it){
-                hideLoading()
+            if(it == currentSub){
+                if(it == DEFAULT_SKU)
+                    setDefaultSelect()
                 return@observe
             }
+
 
             showLoading()
             currentSub = it
@@ -69,7 +74,7 @@ class SubscriptionFragment : BaseFragment<BillingViewModel, FragmentSubscription
             defaultSku.setPrice("0 $currency")
 
             subscribeBtn.setOnClickListener {
-                val sub = when(radioGroup.selectedButton){
+                val sub = when (radioGroup.selectedButton) {
                     R.id.default_sku -> currentSub
                     R.id.month_sub -> MONTH_SKU
                     R.id.year_sub -> YEAR_SKU
@@ -81,9 +86,26 @@ class SubscriptionFragment : BaseFragment<BillingViewModel, FragmentSubscription
             radioGroup.setOnClickListener(object : OnCustomRadioButtonListener {
                 override fun onClick(view: View) {
                     text2.isInvisible = view.id != R.id.year_sub
+                    textSub.isInvisible = view.id == R.id.default_sku
+
+                    val v = when (view.id) {
+                        R.id.year_sub -> yearSub
+                        R.id.month_sub -> monthSub
+                        else -> defaultSku
+                    }
+
+                    textSub.text = getString(R.string.sub_text, v.duration, v.price)
                 }
             })
         }
+
+    }
+
+    private fun setDefaultSelect(){
+        updateButtonBackground(YEAR_SKU)
+        updateButtonCurrent(DEFAULT_SKU)
+        binding.text2.isInvisible = false
+        binding.textSub.isInvisible = false
     }
 
     private fun hideLoading() {
@@ -98,32 +120,45 @@ class SubscriptionFragment : BaseFragment<BillingViewModel, FragmentSubscription
     }
 
     private fun updateButtonBackground(sub: String) {
-        with(binding){
-            radioGroup.setSelectedButton(when(sub){
-                MONTH_SKU -> monthSub
-                else -> yearSub
-            })
-            text2.isInvisible = sub != YEAR_SKU
+        with(binding) {
+            radioGroup.setSelectedButton(
+                when (sub) {
+                    MONTH_SKU -> monthSub
+                    else -> yearSub
+                }
+            )
         }
     }
 
     private fun updateButtonCurrent(sub: String) {
-        with(binding){
-            radioGroup.setCurrent(when(sub){
-                MONTH_SKU -> monthSub
+        with(binding) {
+            radioGroup.setCurrent(
+                when (sub) {
+                    MONTH_SKU -> monthSub
+                    DEFAULT_SKU -> defaultSku
+                    else -> yearSub
+                }
+            )
+            text2.isInvisible = sub != YEAR_SKU || sub != DEFAULT_SKU
+            textSub.isInvisible = sub == DEFAULT_SKU
+            val v = when (sub) {
                 YEAR_SKU -> yearSub
+                MONTH_SKU -> monthSub
                 else -> defaultSku
-            })
+            }
+
+            textSub.text = getString(R.string.sub_text, v.duration, v.price)
         }
         hideLoading()
     }
 
 
     private fun openPlayStoreSubscriptions(sku: String) {
-        if(sku == DEFAULT_SKU)
+        if (sku == DEFAULT_SKU)
             return
 
-        val url = String.format(PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL, sku, requireActivity().packageName)
+        val url =
+            String.format(PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL, sku, requireActivity().packageName)
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(url)
         startActivity(intent)

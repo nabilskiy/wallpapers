@@ -11,7 +11,6 @@ data class FeedRequest(
         var categoryName: String = "",
         var sort: String = "",
         var page: Int = 1,
-        var resolution: String = "1080x2131",
         var search: String = "",
         var r: String? = null,
         var g: String? = null,

@@ -9,5 +9,5 @@ import wallgram.hd.wallpapers.ui.wallpapers.WallpapersFragment
 class FavoriteItemsAdapter(fa: Fragment, val type: WallType) : FragmentStateAdapter(fa) {
     override fun getItemCount(): Int = 2
 
-    override fun createFragment(position: Int) = FavoriteFragment.create(type = type)
+    override fun createFragment(position: Int) = FavoriteFragment.create(position)
 }

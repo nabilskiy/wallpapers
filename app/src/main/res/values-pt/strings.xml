@@ -28,7 +28,7 @@
     <string name="year">/ ano</string>
     <string name="month">/ mês</string>
     <string name="subscribe_now">Assine agora</string>
-    <string name="sub_text">A assinatura é renovada automaticamente. Você pode desativar a renovação automática a qualquer momento.\n\nX for X. Fornece acesso a todos os papéis de parede sem limites e anúncios. Os pagamentos do usuário são cobrados de sua conta do Google Play após a confirmação do pagamento. As assinaturas são renovadas automaticamente, a menos que o usuário cancele a assinatura o mais tardar 24 horas antes da data de término do período de assinatura atual. As renovações de assinatura serão cobradas 24 horas antes da data de término do período de assinatura atual. Os usuários podem alterar e cancelar assinaturas em suas configurações de conta do Google Play.</string>
+    <string name="sub_text">A assinatura é renovada automaticamente. Você pode desativar a renovação automática a qualquer momento.\n\n %1$s for  %2$s. Fornece acesso a todos os papéis de parede sem limites e anúncios. Os pagamentos do usuário são cobrados de sua conta do Google Play após a confirmação do pagamento. As assinaturas são renovadas automaticamente, a menos que o usuário cancele a assinatura o mais tardar 24 horas antes da data de término do período de assinatura atual. As renovações de assinatura serão cobradas 24 horas antes da data de término do período de assinatura atual. Os usuários podem alterar e cancelar assinaturas em suas configurações de conta do Google Play.</string>
     <string name="free_days">"E ganhe 3 dias grátis de brinde "</string>
     <string name="favorites_empty">Opa, a lista ainda está vazia.\n\nTemos mais de 80.000 papéis de parede. Dê uma olhada: com certeza você vai gostar de algo.</string>
     <string name="popular_title">Populares</string>
@@ -62,4 +62,6 @@
     <string name="email_error">Os clientes de e-mail não estão instalados</string>
     <string name="clear_confirm">Tem certeza de que deseja limpar o histórico?</string>
     <string name="privacy_policy">Política de Privacidade</string>
+    <string name="wallpaper_setted">Configuração de papel de parede</string>
+    <string name="image_dowloaded">Imagem baixada</string>
 </resources>

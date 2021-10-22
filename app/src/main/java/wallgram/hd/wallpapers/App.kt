@@ -10,9 +10,14 @@ import wallgram.hd.wallpapers.util.modo.MultiReducer
 import wallgram.hd.wallpapers.util.modo.AppReducer
 import wallgram.hd.wallpapers.util.modo.LogReducer
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import org.acra.config.mailSender
+import org.acra.config.toast
+import org.acra.data.StringFormat
+import org.acra.ktx.initAcra
 import wallgram.hd.wallpapers.di.component.DaggerAppComponent
 import wallgram.hd.wallpapers.util.localization.LanguageSetting.getDefaultLanguage
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
@@ -32,8 +37,6 @@ open class App : Application(), HasAndroidInjector {
         modo = Modo(LogReducer(AppReducer(this, MultiReducer())))
         super.onCreate()
 
-        MobileAds.initialize(this)
-        MobileAds.setAppMuted(true)
         context = applicationContext
         initDagger()
     }

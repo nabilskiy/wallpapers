@@ -21,6 +21,7 @@ import wallgram.hd.wallpapers.model.Tag
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
+import wallgram.hd.wallpapers.util.DisplayHelper
 import wallgram.hd.wallpapers.util.cache.ICacheManager
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import wallgram.hd.wallpapers.util.modo.back
@@ -31,7 +32,8 @@ class WallpaperViewModel @Inject constructor(
     private val dataRepository: DataRepositorySource,
     private val serviceGenerator: ServiceGenerator,
     private val cacheManager: ICacheManager,
-    private val localizationDelegate: LocalizationApplicationDelegate
+    private val localizationDelegate: LocalizationApplicationDelegate,
+    private val displayHelper: DisplayHelper
 ) : BaseViewModel() {
 
     val wallpapersLiveData: MutableLiveData<PagingData<Gallery>> get() = cacheManager.wallpapersData
@@ -57,7 +59,7 @@ class WallpaperViewModel @Inject constructor(
     fun getLiveData(feedRequest: FeedRequest) {
         viewModelScope.launch {
             Pager(PagingConfig(27, enablePlaceholders = false)) {
-                FeedPagingSource(feedRequest, serviceGenerator, localizationDelegate)
+                FeedPagingSource(feedRequest, serviceGenerator, localizationDelegate, displayHelper)
             }.flow.cachedIn(viewModelScope).collect {
                 similarLiveDataPrivate.value = it
             }
@@ -72,6 +74,13 @@ class WallpaperViewModel @Inject constructor(
             dataRepository.isFavorite(gallery.id).collect{
                 favoriteLiveDataPrivate.value = it
             }
+        }
+    }
+
+    fun addToHistory(gallery: Gallery){
+        viewModelScope.launch {
+            gallery.type = 1
+            dataRepository.addToFavorites(gallery)
         }
     }
 

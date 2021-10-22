@@ -10,6 +10,7 @@ import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.ServerResponse
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
+import wallgram.hd.wallpapers.util.DisplayHelper
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import java.io.IOException
 
@@ -17,12 +18,14 @@ private const val PAGE_START = 1
 
 class FeedPagingSource(var feedRequest: FeedRequest,
                        val serviceGenerator: ServiceGenerator,
-                       val languageApplicationDelegate: LocalizationApplicationDelegate
+                       languageApplicationDelegate: LocalizationApplicationDelegate,
+                       displayHelper: DisplayHelper
 ) : PagingSource<Int, Gallery>() {
 
 
     private val service = serviceGenerator.createService(AkspicService::class.java)
     private val lang = languageApplicationDelegate.getSupportedLanguage()
+    private val resolutionScreen = displayHelper.getPhysicalScreenResolution()
 
     override fun getRefreshKey(state: PagingState<Int, Gallery>): Int? = state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
@@ -34,12 +37,12 @@ class FeedPagingSource(var feedRequest: FeedRequest,
         try {
 
             val response: Response<ServerResponse<Gallery>> = when(feedRequest.type){
-                WallType.CATEGORY -> service.getWallpapersFromCategory(feedRequest.category, feedRequest.sort, position, feedRequest.resolution, lang)
-                WallType.TAG -> service.getWallpapersFromTag(feedRequest.category, feedRequest.sort, position, feedRequest.resolution, lang)
-                WallType.SEARCH -> service.search(feedRequest.search, position, feedRequest.resolution, lang)
-                WallType.SIMILAR -> service.getSimilar(feedRequest.category, feedRequest.resolution, lang, position)
-                WallType.COLOR -> service.getWallpapersItemsFromColor(feedRequest.sort, position, feedRequest.resolution, lang, r = feedRequest.r, g = feedRequest.g, b = feedRequest.b)
-                else -> service.getWallpapersItems(feedRequest.sort, position, feedRequest.resolution, lang)
+                WallType.CATEGORY -> service.getWallpapersFromCategory(feedRequest.category, feedRequest.sort, position, resolutionScreen, lang)
+                WallType.TAG -> service.getWallpapersFromTag(feedRequest.category, feedRequest.sort, position, resolutionScreen, lang)
+                WallType.SEARCH -> service.search(feedRequest.search, position, resolutionScreen, lang)
+                WallType.SIMILAR -> service.getSimilar(feedRequest.category, resolutionScreen, lang, position)
+                WallType.COLOR -> service.getWallpapersItemsFromColor(feedRequest.sort, position, resolutionScreen, lang, r = feedRequest.r, g = feedRequest.g, b = feedRequest.b)
+                else -> service.getWallpapersItems(feedRequest.sort, position, resolutionScreen, lang)
             }
 
             val feed = response.body()?.list ?: listOf()

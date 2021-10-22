@@ -48,9 +48,6 @@ class WallpapersFragment : BaseFragment<WallpapersViewModel, FragmentWallpapersB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        feedRequest.apply {
-            resolution = requireContext().getResolution()
-        }
         viewModel.getLiveData(feedRequest)
     }
 

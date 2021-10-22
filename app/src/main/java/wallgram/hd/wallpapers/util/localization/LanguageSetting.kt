@@ -6,10 +6,6 @@ import androidx.core.os.ConfigurationCompat
 import java.util.*
 import android.os.Build
 
-
-
-
-
 object LanguageSetting {
     private const val PREFERENCE_LANGUAGE = "pref_language"
     private const val KEY_CURRENT_LANGUAGE = "key_language"

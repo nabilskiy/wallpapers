@@ -34,7 +34,7 @@
     <string name="save_50">Ahorra 50%</string>
     <string name="continue_key">Continuar</string>
     <string name="free_days">"Y tendrás 3 días gratis "</string>
-    <string name="sub_text">La suscripción se renueva automáticamente. Puedes desactivar la renovación automática en cualquier momento.\n\nX por X. Te da acceso a todos los fondos de pantalla sin restricciones ni anuncios. Los pagos de los usuarios se cargan desde su cuenta de Google Play tras la confirmación del pago. Las suscripciones se renuevan automáticamente a menos que el usuario cancele la suscripción a más tardar 24 horas antes de la fecha de finalización del período de suscripción actual. Las renovaciones de suscripción se cobrarán dentro de las 24 horas anteriores a la fecha de finalización del período de suscripción actual. Los usuarios pueden cambiar y cancelar suscripciones en la configuración de su cuenta de Google Play .</string>
+    <string name="sub_text">La suscripción se renueva automáticamente. Puedes desactivar la renovación automática en cualquier momento.\n\n %1$s por  %2$s. Te da acceso a todos los fondos de pantalla sin restricciones ni anuncios. Los pagos de los usuarios se cargan desde su cuenta de Google Play tras la confirmación del pago. Las suscripciones se renuevan automáticamente a menos que el usuario cancele la suscripción a más tardar 24 horas antes de la fecha de finalización del período de suscripción actual. Las renovaciones de suscripción se cobrarán dentro de las 24 horas anteriores a la fecha de finalización del período de suscripción actual. Los usuarios pueden cambiar y cancelar suscripciones en la configuración de su cuenta de Google Play .</string>
     <string name="year">/ año</string>
     <string name="month">/ mes</string>
     <string name="error_msg">Error al cargar el fondo de pantalla</string>
@@ -65,4 +65,6 @@
     <string name="pro">Sin limitaciones de descarga\nSin anuncios</string>
     <string name="subscribe_now">Suscríbete ahora</string>
     <string name="home">Inicio</string>
+    <string name="wallpaper_setted">Se ha aplicado el fondo de pantalla</string>
+    <string name="image_dowloaded">Imagen descargada</string>
 </resources>

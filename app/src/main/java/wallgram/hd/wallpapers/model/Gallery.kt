@@ -6,10 +6,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
-@Entity(tableName = "gallery")
+@Entity(tableName = "gallery", primaryKeys = ["id", "type"])
 @Parcelize
 data class Gallery(
-        @PrimaryKey
         val id: Int,
         val width: Int,
         val height: Int,

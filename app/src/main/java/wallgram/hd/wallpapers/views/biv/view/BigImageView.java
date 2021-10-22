@@ -5,6 +5,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -402,6 +404,16 @@ public class BigImageView extends FrameLayout implements ImageLoader.Callback {
 
     public void cancel() {
         mImageLoader.cancel(hashCode());
+    }
+
+    public Rect getCroppedRect() {
+        SubsamplingScaleImageView imageView = getSSIV();
+        PointF center = imageView.getCenter();
+        if (center != null) {
+            int left = (int) (center.x - imageView.getWidth() / 2);
+            return new Rect(left, 0, imageView.getSWidth(), imageView.getSHeight());
+        }
+        return new Rect(0, 0, imageView.getSWidth(), imageView.getSHeight());
     }
 
     public SubsamplingScaleImageView getSSIV() {

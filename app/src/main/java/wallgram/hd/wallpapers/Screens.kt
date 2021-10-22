@@ -55,12 +55,12 @@ object Screens {
 
     @Parcelize
     class Favorite : AppScreen("Favorite") {
-        override fun create(): Fragment = FavoriteFragment.create(WallType.FAVORITE)
+        override fun create(): Fragment = FavoriteFragment.create(0)
     }
 
     @Parcelize
     class History : AppScreen("History") {
-        override fun create(): Fragment = FavoriteFragment.create(WallType.HISTORY)
+        override fun create(): Fragment = FavoriteFragment.create(1)
     }
 
     @Parcelize

@@ -27,7 +27,7 @@ interface GalleryDao {
         }
     }
 
-    @Query("SELECT EXISTS(SELECT * FROM gallery WHERE id = :id)")
+    @Query("SELECT EXISTS(SELECT * FROM gallery WHERE id = :id AND type == 0)")
     fun isFavorite(id: Int): Boolean
 
     @Query("SELECT * FROM gallery")

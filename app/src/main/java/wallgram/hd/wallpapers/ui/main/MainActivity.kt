@@ -27,6 +27,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import wallgram.hd.wallpapers.Screens
 import wallgram.hd.wallpapers.data.local.preference.FIRST_LAUNCH
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
@@ -44,6 +46,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
 
     val modo = App.modo
 
+
+
     @Inject
     lateinit var preferences: PreferenceContract
 
@@ -54,6 +58,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
 
             override fun createMultiStackFragment(multiScreen: MultiScreen): MultiStackFragment =
                 MainFragment()
+
+
 
 
             //only for sample
@@ -184,6 +190,14 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
         super.onCreate(savedInstanceState)
 
         showRateDialog()
+
+            //       MobileAds.initialize(this)
+
+//        MobileAds.setRequestConfiguration(
+//            RequestConfiguration.Builder()
+//                .setTestDeviceIds(listOf("ABCDEF012345"))
+//                .build()
+//        )
 
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
