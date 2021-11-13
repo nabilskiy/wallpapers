@@ -68,5 +68,6 @@
     <string name="home">Home</string>
     <string name="wallpaper_setted">Wallpaper setted</string>
     <string name="image_dowloaded">Image downloaded</string>
+    <string name="recommend">Recommend</string>
 
 </resources>

@@ -62,7 +62,7 @@ fun RadioGroup.setCustomChecked(id: Int, listener: RadioGroup.OnCheckedChangeLis
 fun EditText.afterTextChangedFlow(): Flow<Editable?> = callbackFlow {
     val watcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            offer(s)
+            this@callbackFlow.trySend(s).isSuccess
         }
 
         override fun beforeTextChanged(

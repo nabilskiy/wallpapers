@@ -19,7 +19,7 @@
         android:layout_height="86dp"
         android:background="#B304030C"
         android:fitsSystemWindows="false"
-        app:menu="@menu/filters_menu"
+        app:menu="@menu/crop_menu"
         app:navigationIcon="@drawable/ic_back"
         app:navigationIconTint="#BDBDBD">
 
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
+        android:layout_centerInParent="true"
         android:theme="@style/CircularProgress" />
 
    <!-- <include

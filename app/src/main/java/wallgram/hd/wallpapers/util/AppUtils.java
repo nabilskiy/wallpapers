@@ -196,27 +196,6 @@ public class AppUtils {
     }
 
     /**
-     * 打开忽略电池优化对话框
-     *
-     * @see <a href="https://developer.android.com/reference/android/provider/Settings#ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS">android doc</a>
-     */
-    public static boolean showIgnoreBatteryOptimizationDialog(Context context) {
-        if (context == null) {
-            return false;
-        }
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
-            return false;
-        }
-        Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-        intent.setData(Uri.parse("package:" + context.getPackageName()));
-        if (intent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(intent);
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 判断应用是否在忽略电池优化中
      *
      * @see <a href="https://developer.android.com/reference/android/provider/Settings#ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS">android doc</a>

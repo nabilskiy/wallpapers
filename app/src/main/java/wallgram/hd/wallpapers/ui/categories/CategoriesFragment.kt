@@ -5,15 +5,12 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
-import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.databinding.FragmentCategoriesBinding
 import wallgram.hd.wallpapers.model.Category
 import wallgram.hd.wallpapers.model.request.FeedRequest
-import wallgram.hd.wallpapers.ui.HeaderAdapter
-import wallgram.hd.wallpapers.ui.ItemOffsetDecoration
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
 import wallgram.hd.wallpapers.util.modo.forward
@@ -23,8 +20,8 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel, FragmentCategoriesB
 ) {
     private val modo = wallgram.hd.wallpapers.App.modo
 
-    private val categoriesAdapter: CategoriesListAdapter by lazy {
-        CategoriesListAdapter(onItemClicked = {
+    private val categoriesAdapter: CategoriesAdapter by lazy {
+        CategoriesAdapter(onItemClicked = {
             modo.forward(Screens.CategoriesList(FeedRequest(type = WallType.CATEGORY, category = it.id, categoryName = it.name)))
         }, tag = CategoriesFragment::class.java.simpleName)
     }
@@ -42,7 +39,8 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel, FragmentCategoriesB
             }
             setHasFixedSize(true)
             addItemDecoration(ItemOffsetDecoration())
-            adapter = ConcatAdapter(HeaderAdapter(getString(R.string.category)),
+            adapter = ConcatAdapter(
+                HeaderAdapter(getString(R.string.category)),
                     categoriesAdapter)
         }
 

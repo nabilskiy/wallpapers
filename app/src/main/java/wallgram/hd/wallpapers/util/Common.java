@@ -24,15 +24,16 @@ public class Common {
             case "ru":
                 return "https://akspic.ru/";
             case "es":
-                return "https://es.akspic.com";
+                return "https://wallspic.com/es";
             case "de":
-                return "https://akspic.com/de";
+                return "https://wallspic.com/de";
             case "fr":
-                return "https://akspic.com/fr";
+                return "https://wallspic.com/fr";
             case "zh":
-                return "https://akspic.cn";
+            case "cn":
+                return "https://wallspic.com/cn";
             default:
-                return "https://akspic.com/";
+                return "https://wallspic.com/";
         }
     }
 

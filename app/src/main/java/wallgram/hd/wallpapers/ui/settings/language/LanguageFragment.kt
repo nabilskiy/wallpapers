@@ -1,24 +1,17 @@
 package wallgram.hd.wallpapers.ui.settings.language
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioGroup
 import androidx.core.view.forEach
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.data.local.preference.LANGUAGE
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.databinding.FragmentLanguageBinding
-import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.ui.base.BaseActivity
 import wallgram.hd.wallpapers.ui.base.BaseFragment
-import wallgram.hd.wallpapers.ui.components.crop.CropFragment
-import wallgram.hd.wallpapers.ui.main.MainActivity
 import wallgram.hd.wallpapers.ui.settings.SettingsViewModel
 import wallgram.hd.wallpapers.util.dp
 import wallgram.hd.wallpapers.util.setCustomChecked
-import wallgram.hd.wallpapers.util.withArgs
-import java.util.*
 import javax.inject.Inject
 
 class LanguageFragment : BaseFragment<SettingsViewModel, FragmentLanguageBinding>(

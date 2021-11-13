@@ -3,19 +3,18 @@ package wallgram.hd.wallpapers.ui.wallpapers
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
-import wallgram.hd.wallpapers.App
+import com.google.android.gms.ads.AdRequest
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.Screens
-import wallgram.hd.wallpapers.databinding.FragmentWallpaperBinding
 import wallgram.hd.wallpapers.databinding.FragmentWallpapersBinding
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseFragment
-import wallgram.hd.wallpapers.ui.main.MainActivity
 import wallgram.hd.wallpapers.util.*
-import wallgram.hd.wallpapers.util.modo.externalForward
+import java.util.*
+
+import java.util.TimerTask
 
 private const val CATEGORY_ID = "category_id"
 private const val TYPE_ID = "type_id"
@@ -54,17 +53,18 @@ class WallpapersFragment : BaseFragment<WallpapersViewModel, FragmentWallpapersB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.wallpapersLiveData.observe(viewLifecycleOwner, {
-            wallpapersAdapter.submitData(lifecycle = lifecycle, it)
-        })
-
         val concatAdapter = wallpapersAdapter.withLoadStateHeaderAndFooter(
             header = ReposLoadStateAdapter { wallpapersAdapter.retry() },
             footer = ReposLoadStateAdapter { wallpapersAdapter.retry() })
 
+        viewModel.wallpapersLiveData.observe(viewLifecycleOwner, {
+            wallpapersAdapter.submitData(lifecycle = lifecycle, it as PagingData<Any>)
+        })
+
+
         with(binding) {
 
-            swipeRefreshLayout.setColorSchemeResources(R.color.colorYellow)
+            swipeRefreshLayout.setColorSchemeResources(wallgram.hd.wallpapers.R.color.colorYellow)
             swipeRefreshLayout.setOnRefreshListener {
                 wallpapersAdapter.refresh()
             }

@@ -6,11 +6,11 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import wallgram.hd.wallpapers.di.ViewModelKey
-import wallgram.hd.wallpapers.ui.FeedViewModel
+import wallgram.hd.wallpapers.ui.feed.FeedViewModel
 import wallgram.hd.wallpapers.ui.base.ViewModelFactory
 import wallgram.hd.wallpapers.ui.categories.CategoriesViewModel
-import wallgram.hd.wallpapers.ui.components.crop.CropViewModel
-import wallgram.hd.wallpapers.ui.details.DownloadViewModel
+import wallgram.hd.wallpapers.ui.crop.CropViewModel
+import wallgram.hd.wallpapers.ui.dialogs.DownloadViewModel
 import wallgram.hd.wallpapers.ui.favorite.FavoriteViewModel
 import wallgram.hd.wallpapers.ui.main.MainViewModel
 import wallgram.hd.wallpapers.ui.search.SearchViewModel

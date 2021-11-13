@@ -1,6 +1,7 @@
 package wallgram.hd.wallpapers.ui.start
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Spannable
@@ -11,22 +12,16 @@ import android.text.style.ClickableSpan
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.data.local.preference.FIRST_LAUNCH
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.databinding.FragmentStartBinding
 import wallgram.hd.wallpapers.ui.base.BaseFragment
-import wallgram.hd.wallpapers.util.Common
 import wallgram.hd.wallpapers.util.modo.replace
-import wallgram.hd.wallpapers.views.AgreementDialog
 import wallgram.hd.wallpapers.util.device.DeviceName
-import wallgram.hd.wallpapers.util.getResolution
 import wallgram.hd.wallpapers.util.physicalScreenRectPx
-import wallgram.hd.wallpapers.util.screenRectPx
 import javax.inject.Inject
 
 class StartFragment :
@@ -37,6 +32,7 @@ class StartFragment :
     @Inject
     lateinit var preferences: PreferenceContract
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

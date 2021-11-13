@@ -67,4 +67,5 @@
     <string name="home">Accueil</string>
     <string name="wallpaper_setted">Fonds d’écran sont installés</string>
     <string name="image_dowloaded">Image est téléchargée</string>
+    <string name="recommend">Recommandons</string>
 </resources>

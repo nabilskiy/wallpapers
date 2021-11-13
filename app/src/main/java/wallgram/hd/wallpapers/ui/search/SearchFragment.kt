@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.data.Resource
@@ -29,7 +30,6 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
     FragmentSearchBinding::inflate
 ) {
 
-
     private lateinit var suggestionAdapter: ArrayAdapter<String>
 
     private val wallpapersAdapter: WallpapersAdapter by lazy {
@@ -46,8 +46,6 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         suggestionAdapter = ArrayAdapter<String>(
             requireContext(),
             R.layout.dropdown_menu_popup_item,
@@ -62,10 +60,9 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
             }
 
             searchField.setStartIconOnClickListener {
-                withMainFragment {
-
-                }
+                requireActivity().onBackPressed()
             }
+
             searchText.setAdapter(suggestionAdapter)
             searchText.setOnKeyListener { _, i, keyEvent ->
                 if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
@@ -73,7 +70,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
                         lifecycleScope.launch {
                             viewModel.getFlow(binding.searchText.text.toString())
                                 .collectLatest { pagingData ->
-                                    wallpapersAdapter.submitData(pagingData)
+                                    wallpapersAdapter.submitData(pagingData as PagingData<Any>)
                                 }
                         }
                     }
@@ -86,7 +83,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
                 val selectedItem = parent.getItemAtPosition(position).toString()
                 lifecycleScope.launch {
                     viewModel.getFlow(selectedItem).collectLatest { pagingData ->
-                        wallpapersAdapter.submitData(pagingData)
+                        wallpapersAdapter.submitData(pagingData as PagingData<Any>)
                     }
                 }
             }
@@ -168,7 +165,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
         binding.searchText.setText(text)
         lifecycleScope.launch {
             viewModel.getFlow(text).collectLatest { pagingData ->
-                wallpapersAdapter.submitData(pagingData)
+                wallpapersAdapter.submitData(pagingData as PagingData<Any>)
             }
         }
     }

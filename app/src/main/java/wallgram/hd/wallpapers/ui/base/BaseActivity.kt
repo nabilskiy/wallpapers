@@ -3,12 +3,19 @@ package wallgram.hd.wallpapers.ui.base
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.install.InstallState
 import wallgram.hd.wallpapers.util.localization.LocalizationActivityDelegate
 import dagger.android.AndroidInjection
 import wallgram.hd.wallpapers.util.localization.OnLocaleChangedListener
+import wallgram.hd.wallpapers.util.update.UpdateListener
+import wallgram.hd.wallpapers.util.update.UpdateManager
+import wallgram.hd.wallpapers.util.update.UpdateType
 import java.util.*
 import javax.inject.Inject
 
@@ -28,6 +35,8 @@ abstract class BaseActivity<V : ViewModel, B : ViewBinding>(private val bindingI
 
     protected abstract fun getViewModel(): Class<V>
 
+    private lateinit var updateManager : UpdateManager
+
     private val localizationDelegate: LocalizationActivityDelegate by lazy{
         LocalizationActivityDelegate(this)
     }
@@ -40,6 +49,7 @@ abstract class BaseActivity<V : ViewModel, B : ViewBinding>(private val bindingI
         binding = bindingInflater.invoke(layoutInflater)
         setContentView(binding.root)
         viewModel = viewModelFactory.create(getViewModel())
+        initializeUpdateManager()
     }
 
     override fun onResume() {
@@ -78,4 +88,47 @@ abstract class BaseActivity<V : ViewModel, B : ViewBinding>(private val bindingI
 
     fun getCurrentLanguage() = localizationDelegate.getLanguage(this)
 
+    private fun initializeUpdateManager(){
+        val builder =
+            UpdateManager.Builder()
+                .setActivity(this)
+                .setUpdateType(UpdateType.FLEXIBLE)
+        updateManager = builder.create()
+        updateManager.updateListener = object : UpdateListener {
+            override fun onUpdateChecked(appUpdateInfo: AppUpdateInfo, updateAvailable: Boolean) {
+                onUpdateAvailable(appUpdateInfo,updateAvailable)
+            }
+
+            override fun onUpdateCheckFailure(exception: Exception?) {
+                onUpdateFailure(exception)
+            }
+
+            override fun onUpdateState(installState: InstallState, bytesDownLoaded: Long, totalBytesToDownLoaded: Long) {
+                onInstallState(installState, bytesDownLoaded, totalBytesToDownLoaded)
+            }
+        }
+    }
+
+    fun checkUpdate(){
+        updateManager.checkUpdate()
+    }
+
+    protected fun startUpdate(appUpdateInfo: AppUpdateInfo){
+        updateManager.update(appUpdateInfo)
+    }
+
+    protected fun restart(){
+        updateManager.completeUpdate()
+    }
+
+    protected fun showRestartSnackBar(@ColorRes colorRes : Int, updateMessage : String){
+        updateManager.showSnackBarForCompleteUpdate(updateMessage,
+            ContextCompat.getColor(this, colorRes))
+    }
+
+    abstract fun onInstallState(installState: InstallState, bytesDownLoaded: Long, totalBytesToDownLoaded: Long)
+
+    abstract fun onUpdateAvailable(appUpdateInfo: AppUpdateInfo,updateAvailable: Boolean)
+
+    abstract fun onUpdateFailure(exception: Exception?)
 }

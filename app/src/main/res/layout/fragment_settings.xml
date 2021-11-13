@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -25,14 +25,12 @@
         <TextView
             android:id="@+id/history_item"
             style="@style/MenuTextStyle"
-            android:layout_below="@id/setting_title"
             android:layout_marginTop="34dp"
             android:text="@string/menu_history"
             app:drawableStartCompat="@drawable/ic_history"
             app:drawableTint="#66FFFFFF" />
         <TextView
             android:id="@+id/subscribe_item"
-            android:layout_below="@id/history_item"
             app:drawableTint="#66FFFFFF"
             style="@style/MenuTextStyle"
             android:text="@string/action_subscription"
@@ -40,7 +38,6 @@
 
         <TextView
             android:id="@+id/review_item"
-            android:layout_below="@id/subscribe_item"
             app:drawableTint="#66FFFFFF"
             style="@style/MenuTextStyle"
             android:text="@string/menu_feedback"
@@ -49,7 +46,6 @@
         <TextView
             android:id="@+id/site_item"
             style="@style/MenuTextStyle"
-            android:layout_below="@id/review_item"
             android:text="@string/menu_site"
             app:drawableStartCompat="@drawable/ic_weixin_mini_app"
             app:drawableTint="#66FFFFFF" />
@@ -58,7 +54,6 @@
         <TextView
             android:id="@+id/lang_item"
             style="@style/MenuTextStyle"
-            android:layout_below="@id/site_item"
             android:text="@string/lang_title"
             app:drawableStartCompat="@drawable/ic_translate" />
 
@@ -67,7 +62,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/lang_item"
             android:background="#1FFFFFFF" />
 
         <TextView
@@ -75,7 +69,6 @@
             style="@style/MenuTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/border_1"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:text="@string/cache" />
@@ -84,7 +77,6 @@
             android:id="@+id/cache_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cache_title"
             android:fontFamily="@font/roboto_regular"
             android:text="@string/cache_size"
             android:textColor="#66FFFFFF"
@@ -94,7 +86,6 @@
             android:id="@+id/clear_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cache_value"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/roboto_medium"
             android:letterSpacing="0.03"
@@ -111,6 +102,6 @@
             app:elevation="0dp"
             app:strokeColor="#BAFFFFFF"
             app:strokeWidth="2dp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

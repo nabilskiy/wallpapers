@@ -6,7 +6,7 @@ import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.model.Category
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.data.repository.billing.BillingRepository
 import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel

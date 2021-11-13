@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -406,14 +407,22 @@ public class BigImageView extends FrameLayout implements ImageLoader.Callback {
         mImageLoader.cancel(hashCode());
     }
 
-    public Rect getCroppedRect() {
-        SubsamplingScaleImageView imageView = getSSIV();
-        PointF center = imageView.getCenter();
-        if (center != null) {
-            int left = (int) (center.x - imageView.getWidth() / 2);
-            return new Rect(left, 0, imageView.getSWidth(), imageView.getSHeight());
-        }
-        return new Rect(0, 0, imageView.getSWidth(), imageView.getSHeight());
+//    public Rect getCroppedRect() {
+//        SubsamplingScaleImageView imageView = getSSIV();
+//        PointF center = imageView.getCenter();
+//        if (center != null) {
+//            int left = (int) (center.x - imageView.getWidth() / 2);
+//            return new Rect(left, 0, imageView.getSWidth(), imageView.getSHeight());
+//        }
+//
+//        return new Rect(0, 0, imageView.getSWidth(), imageView.getSHeight());
+//    }
+
+    public Rect getCroppedRect(){
+        SubsamplingScaleImageView ssiv = getSSIV();
+        final PointF topLeft = ssiv.viewToSourceCoord(getPaddingLeft(), getPaddingTop());
+        final PointF bottomRight = ssiv.viewToSourceCoord(getWidth() - getPaddingRight(), getHeight() - getPaddingBottom());
+        return new Rect((int) topLeft.x, (int) topLeft.y, (int) bottomRight.x, (int) bottomRight.y);
     }
 
     public SubsamplingScaleImageView getSSIV() {

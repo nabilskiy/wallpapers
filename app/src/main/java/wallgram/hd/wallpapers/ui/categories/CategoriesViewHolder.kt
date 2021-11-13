@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import java.util.*
 
 
 class CategoriesViewHolder(private val itemBinding: ItemCategoryBinding, val tag: String) :
@@ -59,7 +60,7 @@ class CategoriesViewHolder(private val itemBinding: ItemCategoryBinding, val tag
     fun bind(item: Category, onItemClicked: (Category) -> Unit) {
         itemBinding.apply {
 
-            name.text = item.name.capitalize()
+            name.text = item.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
             Glide.with(root.context).load(images[bindingAdapterPosition])
 
                 .apply(

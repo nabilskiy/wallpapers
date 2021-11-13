@@ -10,7 +10,7 @@ import wallgram.hd.wallpapers.model.request.FeedRequest
 import wallgram.hd.wallpapers.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.util.DisplayHelper
 import wallgram.hd.wallpapers.util.cache.ICacheManager
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate

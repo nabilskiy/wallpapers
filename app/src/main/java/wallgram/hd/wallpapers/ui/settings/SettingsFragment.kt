@@ -15,7 +15,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
 import wallgram.hd.wallpapers.ui.main.MainFragment
 import wallgram.hd.wallpapers.util.Common
@@ -44,7 +44,8 @@ class SettingsFragment : BaseFragment<MainViewModel, FragmentSettingsBinding>(
                 viewModel.onItemClicked(Screens.History())
                 val fragment = requireParentFragment().requireParentFragment()
                 (fragment as MainFragment).getCurrentFragment()?.let {
-                    (it as FavoriteContainerFragment).selectScreen(1)
+                    if(it is FavoriteContainerFragment)
+                            it.selectScreen(1)
                 }
 
             }

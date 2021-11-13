@@ -64,4 +64,5 @@
     <string name="privacy_policy">Política de Privacidade</string>
     <string name="wallpaper_setted">Configuração de papel de parede</string>
     <string name="image_dowloaded">Imagem baixada</string>
+    <string name="recommend">Recomendar</string>
 </resources>

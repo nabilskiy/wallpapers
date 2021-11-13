@@ -10,30 +10,6 @@ import java.util.regex.Pattern;
 public class StringUtils {
 
     /**
-     * 过滤EMOJI表情
-     */
-    public static InputFilter[] emojiFilter() {
-        InputFilter[] inputFilters = new InputFilter[] {
-                new InputFilter() {
-                    Pattern emoji = Pattern.compile(
-                            "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
-                            Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
-
-                    @Override
-                    public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart,
-                                               int dend) {
-                        Matcher emojiMatcher = emoji.matcher(source);
-                        if (emojiMatcher.find()) {
-                            return "";
-                        }
-                        return source;
-                    }
-                }
-        };
-        return inputFilters;
-    }
-
-    /**
      * 判断字符是否为ASCII格式
      */
     public static boolean isAllASCII(String input) {

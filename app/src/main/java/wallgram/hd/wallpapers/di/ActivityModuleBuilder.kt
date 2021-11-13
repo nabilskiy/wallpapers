@@ -3,15 +3,17 @@ package wallgram.hd.wallpapers.di
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import wallgram.hd.wallpapers.ui.categories.CategoriesFragment
-import wallgram.hd.wallpapers.ui.categories.CategoriesListFragment
-import wallgram.hd.wallpapers.ui.components.crop.CropFragment
-import wallgram.hd.wallpapers.ui.details.DownloadDialogFragment
-import wallgram.hd.wallpapers.ui.details.InstallDialogFragment
+import wallgram.hd.wallpapers.ui.feed.FeedsFragment
+import wallgram.hd.wallpapers.ui.crop.CropFragment
+import wallgram.hd.wallpapers.ui.dialogs.CropDialogFragment
+import wallgram.hd.wallpapers.ui.dialogs.DownloadDialogFragment
+import wallgram.hd.wallpapers.ui.dialogs.InstallDialogFragment
 import wallgram.hd.wallpapers.ui.favorite.FavoriteFragment
 import wallgram.hd.wallpapers.ui.favorite.container.FavoriteContainerFragment
-import wallgram.hd.wallpapers.ui.main.HomeFragment
+import wallgram.hd.wallpapers.ui.home.HomeFragment
 import wallgram.hd.wallpapers.ui.main.MainActivity
 import wallgram.hd.wallpapers.ui.main.MainFragment
+import wallgram.hd.wallpapers.ui.main.SplashActivity
 import wallgram.hd.wallpapers.ui.search.SearchFragment
 import wallgram.hd.wallpapers.ui.settings.SettingsFragment
 import wallgram.hd.wallpapers.ui.settings.language.LanguageFragment
@@ -28,6 +30,9 @@ abstract class ActivityModuleBuilder {
     abstract fun contributeMainActivity(): MainActivity
 
     @ContributesAndroidInjector()
+    abstract fun contributeSplashActivity(): SplashActivity
+
+    @ContributesAndroidInjector()
     abstract fun contributeMainFragment(): MainFragment
 
     @ContributesAndroidInjector()
@@ -37,7 +42,7 @@ abstract class ActivityModuleBuilder {
     abstract fun contributeCategoriesFragment(): CategoriesFragment
 
     @ContributesAndroidInjector()
-    abstract fun contributeCategoriesListFragment(): CategoriesListFragment
+    abstract fun contributeCategoriesListFragment(): FeedsFragment
 
     @ContributesAndroidInjector()
     abstract fun contributeStartFragment(): StartFragment
@@ -65,6 +70,9 @@ abstract class ActivityModuleBuilder {
 
     @ContributesAndroidInjector()
     abstract fun contributeDownloadDialogFragment(): DownloadDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeCropDialogFragment(): CropDialogFragment
 
     @ContributesAndroidInjector()
     abstract fun contributeCropFragment(): CropFragment

@@ -2,18 +2,11 @@ package wallgram.hd.wallpapers.ui.favorite.container
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.isVisible
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.databinding.FragmentCategoriesItemsBinding
 import wallgram.hd.wallpapers.databinding.FragmentFavoriteContainerBinding
-import wallgram.hd.wallpapers.model.SubCategory
-import wallgram.hd.wallpapers.ui.FeedViewModel
 import wallgram.hd.wallpapers.ui.base.BaseFragment
-import wallgram.hd.wallpapers.ui.categories.CategoriesItemsAdapter
-import wallgram.hd.wallpapers.ui.categories.CategoriesListFragment
 import wallgram.hd.wallpapers.ui.favorite.FavoriteViewModel
 import wallgram.hd.wallpapers.ui.wallpapers.WallType
 import wallgram.hd.wallpapers.util.args

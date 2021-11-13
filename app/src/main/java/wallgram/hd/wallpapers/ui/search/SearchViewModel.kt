@@ -18,7 +18,7 @@ import wallgram.hd.wallpapers.ui.wallpapers.WallType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.util.DisplayHelper
 import wallgram.hd.wallpapers.util.cache.ICacheManager
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate

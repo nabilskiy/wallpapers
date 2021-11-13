@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">Wallgram</string>
     <string name="action_settings">Settings</string>
 
+    <string name="ad_attribution" translatable="false">Ad</string>
     <string name="user_agreement">By launching the application, you accept the terms of the user agreement</string>
 
     <string name="menu_favorites">Favorites</string>
@@ -121,5 +122,6 @@
     <string name="subscribe_now">Subscribe now</string>
     <string name="wallpaper_setted">Wallpaper setted</string>
     <string name="image_dowloaded">Image downloaded</string>
+    <string name="recommend">Recommend</string>
 
 </resources>

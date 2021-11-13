@@ -82,4 +82,5 @@
     <string name="home">Главная</string>
     <string name="wallpaper_setted">Обои установлены</string>
     <string name="image_dowloaded">Изображение загружено</string>
+    <string name="recommend">Рекомендуем</string>
 </resources>

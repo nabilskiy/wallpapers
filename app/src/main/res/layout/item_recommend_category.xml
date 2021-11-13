@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="52dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/item_recom_bg">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="centerCrop"
-        android:layout_marginStart="2dp"
-        app:shapeAppearanceOverlay="@style/circleImageView"
         android:layout_centerVertical="true"
-        android:src="@drawable/image_category" />
+        android:layout_marginStart="2dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circleImageView" />
 
-    <LinearLayout
-        android:layout_toEndOf="@id/image"
+    <TextView
+        android:id="@+id/name_text"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:layout_marginEnd="4dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_regular"
+        android:lineSpacingExtra="4sp"
+        android:maxLines="1"
+        android:textColor="#E6FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintTop_toTopOf="@id/image" />
 
-        <TextView
-            android:id="@+id/name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:layout_marginEnd="4dp"
-            android:ellipsize="end"
-            android:lineSpacingExtra="4sp"
-            android:textColor="#E6FFFFFF"
-            android:fontFamily="@font/roboto_regular" />
+    <TextView
+        android:id="@+id/total_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/roboto_regular"
+        android:lineSpacingExtra="2sp"
+        android:textColor="#66FFFFFF"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@id/image"
+        app:layout_constraintTop_toBottomOf="@id/name_text" />
 
-        <TextView
-            android:id="@+id/total_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:lineSpacingExtra="2sp"
-            android:textColor="#66FFFFFF"
-            android:fontFamily="@font/roboto_regular" />
-
-    </LinearLayout>
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

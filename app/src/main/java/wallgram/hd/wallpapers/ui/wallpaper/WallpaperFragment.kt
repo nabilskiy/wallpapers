@@ -9,11 +9,8 @@ import android.os.Bundle
 import kotlinx.coroutines.*
 import android.text.TextUtils
 import android.util.Log
-import android.view.GestureDetector
+import android.view.*
 import android.view.GestureDetector.SimpleOnGestureListener
-import android.view.Gravity
-import android.view.MotionEvent
-import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -36,28 +33,29 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.model.Config
 import wallgram.hd.wallpapers.model.request.FeedRequest
-import wallgram.hd.wallpapers.ui.details.DownloadDialogFragment
-import wallgram.hd.wallpapers.ui.details.InstallDialogFragment
-import wallgram.hd.wallpapers.util.downloadx.State
+import wallgram.hd.wallpapers.ui.dialogs.DownloadDialogFragment
+import wallgram.hd.wallpapers.ui.dialogs.InstallDialogFragment
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import kotlin.math.atan2
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.paging.PagingData
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback
 import com.google.android.material.snackbar.Snackbar
-import wallgram.hd.wallpapers.BuildConfig.REWARDED_INTERSTITIAL_ID
-import wallgram.hd.wallpapers.BuildConfig.INTERSTITIAL_ID
+import wallgram.hd.wallpapers.DEFAULT_SKU
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.databinding.ViewToastBinding
+import wallgram.hd.wallpapers.util.cache.ICacheManager
+import javax.inject.Inject
 
 
 class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBinding>(
@@ -74,6 +72,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
             ARG_TYPE to type
         )
     }
+
 
     private val downloadLiveDataPrivate = MutableLiveData<Resource<Uri>>()
     private val installLiveDataPrivate = MutableLiveData<Resource<Uri>>()
@@ -98,6 +97,9 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     private var mAdIsLoading: Boolean = false
     private var timeRemaining: Long = 0L
 
+    @Inject
+    lateinit var cacheManager: ICacheManager
+
     private val similarAdapter: WallpapersAdapter by lazy {
         WallpapersAdapter { position, id ->
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
@@ -106,18 +108,18 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         }
     }
 
-//    override fun onDestroyView() {
-//
-//        showInterstitial()
-//
-//        super.onDestroyView()
-//    }
+    override fun onDestroyView() {
+
+        showInterstitial()
+
+        super.onDestroyView()
+    }
 
     private fun loadAd() {
         var adRequest = AdRequest.Builder().build()
 
         InterstitialAd.load(
-            requireContext(), INTERSTITIAL_ID, adRequest,
+            requireContext(), "ca-app-pub-3722478150829941/1622208553", adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     Log.d(WallpaperFragment::class.java.name, adError.message)
@@ -133,10 +135,8 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    Log.d(WallpaperFragment::class.java.name, "Ad was loaded.")
                     mInterstitialAd = interstitialAd
                     mAdIsLoading = false
-                    Toast.makeText(this@WallpaperFragment.requireContext(), "onAdLoaded()", Toast.LENGTH_SHORT).show()
                 }
             }
         )
@@ -144,12 +144,16 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
     private fun showInterstitial() {
         if (mInterstitialAd != null) {
+
             mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     Log.d(WallpaperFragment::class.java.name, "Ad was dismissed.")
                     // Don't forget to set the ad reference to null so you
                     // don't show the ad a second time.
                     mInterstitialAd = null
+
+                    cacheManager.isInterstitialAdShowed = true
+
                     loadAd()
                 }
 
@@ -169,19 +173,34 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         }
     }
 
+    private fun checkSubscriptionAndLoadAds() {
+        viewModel.getCurrentSub().observe(viewLifecycleOwner, {
+            if (it == DEFAULT_SKU)
+                loadAds()
+        })
+    }
+
+    private fun loadAds() {
+
+        if (!cacheManager.isRewardedAdShowed)
+            if (rewardedInterstitialAd == null && !isLoadingAds) {
+                loadRewardedInterstitialAd()
+            }
+
+        if (!cacheManager.isInterstitialAdShowed) {
+            if (!mAdIsLoading && mInterstitialAd == null) {
+                mAdIsLoading = true
+                loadAd()
+            }
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         gestureDetector =
             GestureDetector(requireContext(), SwipeGestureDetector())
 
-//        if (rewardedInterstitialAd == null && !isLoadingAds) {
-//            loadRewardedInterstitialAd()
-//        }
-//
-//        if (!mAdIsLoading && mInterstitialAd == null) {
-//            mAdIsLoading = true
-//            loadAd()
-//        }
     }
 
     private fun loadRewardedInterstitialAd() {
@@ -191,10 +210,16 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
             // Load an ad.
             RewardedInterstitialAd.load(
-                requireContext(), REWARDED_INTERSTITIAL_ID, adRequest, object : RewardedInterstitialAdLoadCallback() {
+                requireContext(),
+                "ca-app-pub-3722478150829941/2334662603",
+                adRequest,
+                object : RewardedInterstitialAdLoadCallback() {
                     override fun onAdFailedToLoad(adError: LoadAdError) {
                         super.onAdFailedToLoad(adError)
-                        Log.d(WallpaperFragment::class.java.name, "onAdFailedToLoad: ${adError.message}")
+                        Log.d(
+                            WallpaperFragment::class.java.name,
+                            "onAdFailedToLoad: ${adError.message}"
+                        )
                         isLoadingAds = false
                         rewardedInterstitialAd = null
                     }
@@ -210,9 +235,9 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         }
     }
 
-    private fun showRewardedVideo() {
+    private fun showRewardedVideo(url: String) {
         if (rewardedInterstitialAd == null) {
-            Log.d(WallpaperFragment::class.java.name, "The rewarded interstitial ad wasn't ready yet.")
+            download(url)
             return
         }
 
@@ -223,6 +248,9 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 // Don't forget to set the ad reference to null so you
                 // don't show the ad a second time.
                 rewardedInterstitialAd = null
+
+                if(rewardItem != null)
+                    download(url)
 
                 // Preload the next rewarded interstitial ad.
                 loadRewardedInterstitialAd()
@@ -244,12 +272,29 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         rewardedInterstitialAd?.show(
             requireActivity()
         ) { rewardItem ->
-
-            Log.d("TAG", "User earned the reward.")
+            cacheManager.isRewardedAdShowed = true
+            this@WallpaperFragment.rewardItem = rewardItem
         }
     }
 
+    private var rewardItem: RewardItem? = null
 
+    override fun onStart() {
+        super.onStart()
+        requireActivity().window.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.color_status_bar)
+        requireActivity().window.setFlags(
+            WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
+            WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        requireActivity().window.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
+    }
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<*>
 
@@ -258,8 +303,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireContext(), R.color.color_status_bar)
+        checkSubscriptionAndLoadAds()
 
         if (type == WallType.ALL)
             viewModel.wallpapersLiveData.observe(viewLifecycleOwner, {
@@ -293,25 +337,27 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 }
 
             })
-            val downloadDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_download_icon)!!
-            val installDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_install)!!
+            val downloadDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_download_icon)!!
+            val installDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_install)!!
             val drawableSize = resources.getDimensionPixelSize(R.dimen.doneSize)
-            downloadDrawable.setBounds(0,0,drawableSize, drawableSize)
-            installDrawable.setBounds(0,0,drawableSize, drawableSize)
+            downloadDrawable.setBounds(0, 0, drawableSize, drawableSize)
+            installDrawable.setBounds(0, 0, drawableSize, drawableSize)
 
-            downloadBtn.showDrawable(downloadDrawable){
+            downloadBtn.showDrawable(downloadDrawable) {
                 buttonTextRes = R.string.download
                 gravity = DrawableButton.GRAVITY_TEXT_START
             }
 
-            installBtn.showDrawable(installDrawable){
+            installBtn.showDrawable(installDrawable) {
                 buttonTextRes = R.string.install_wallpaper
                 gravity = DrawableButton.GRAVITY_TEXT_START
             }
 
             downloadLiveDataPrivate.observe(viewLifecycleOwner, {
                 when (it) {
-                    is Resource.Loading ->{
+                    is Resource.Loading -> {
 
                         downloadBtn.showProgress {
                             progressColor = Color.WHITE
@@ -323,10 +369,10 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                     }
 
 
-                    is Resource.Success ->{
+                    is Resource.Success -> {
                         downloadBtn.isEnabled = true
                         downloadBtn.hideProgress(R.string.download)
-                        downloadBtn.showDrawable(downloadDrawable){
+                        downloadBtn.showDrawable(downloadDrawable) {
                             buttonTextRes = R.string.download
                             gravity = DrawableButton.GRAVITY_TEXT_START
                         }
@@ -338,7 +384,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
             installLiveDataPrivate.observe(viewLifecycleOwner, {
                 when (it) {
-                    is Resource.Loading ->{
+                    is Resource.Loading -> {
 
                         installBtn.showProgress {
                             progressColor = Color.WHITE
@@ -350,10 +396,10 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                     }
 
 
-                    is Resource.Success ->{
+                    is Resource.Success -> {
                         installBtn.isEnabled = true
                         installBtn.hideProgress(R.string.install_wallpaper)
-                        installBtn.showDrawable(installDrawable){
+                        installBtn.showDrawable(installDrawable) {
                             buttonTextRes = R.string.install_wallpaper
                             gravity = DrawableButton.GRAVITY_TEXT_START
                         }
@@ -370,7 +416,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
             viewModel.similarLiveData.observe(viewLifecycleOwner) {
 
-                similarAdapter.submitData(lifecycle = lifecycle, it)
+                similarAdapter.submitData(lifecycle = lifecycle, it as PagingData<Any>)
             }
 
             val navHeight = getNavigationBarHeight()
@@ -445,10 +491,6 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
 
-            buttonsContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
-                view.updatePadding(bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
-                windowInsetsCompat
-            }
 
             bottomSheet.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
                 view.updatePadding(bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
@@ -665,9 +707,9 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetBehavior.isHideable = false
 
-         val navHeight = getNavigationBarHeight()
-            bottomSheetBehavior.peekHeight =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) 62.dp else 42.dp + navHeight
+        val navHeight = getNavigationBarHeight()
+        bottomSheetBehavior.peekHeight =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) 62.dp else 42.dp + navHeight
 
         val window = requireActivity().window
         WindowCompat.setDecorFitsSystemWindows(window, true)
@@ -686,12 +728,13 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     }
 
     private fun showToast(@StringRes text: Int) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).apply{
-            anchorView = binding.buttonsContainer
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_SHORT).apply {
+            anchorView = binding.downloadBtn
             setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
             setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.colorBackground))
 
-            val textView = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+            val textView =
+                view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
             textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
             textView.gravity = Gravity.CENTER_HORIZONTAL
         }.show()
@@ -715,9 +758,9 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         }
     }
 
-    private fun addToHistory(){
+    private fun addToHistory() {
         val item = wallpapersAdapter.peek(binding.list.currentItem)
-        item?.let{
+        item?.let {
             viewModel.addToHistory(it)
         }
     }
@@ -752,6 +795,13 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
         addToHistory()
     }
 
+    fun downloadSource(url: String){
+        if(rewardedInterstitialAd != null && !cacheManager.isRewardedAdShowed)
+            showRewardedVideo(url)
+        else{
+            download(url)
+        }
+    }
 
     fun download(url: String) {
         downloadLiveDataPrivate.postValue(Resource.Loading())
@@ -762,20 +812,6 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
     }
 
-
-    private fun getMessageFromState(state: State) = when (state) {
-        is State.Succeed, is State.Failed -> R.string.ok_btn
-        is State.Stopped -> R.string.error
-        is State.None -> R.string.error
-        else -> -1
-    }
-
-    private fun getDrawableFromState(state: State) = when (state) {
-        is State.Succeed, is State.Failed -> R.drawable.animated_check
-        is State.Stopped -> R.drawable.ic_round_error
-        is State.None -> R.drawable.ic_round_error
-        else -> -1
-    }
 
     inner class SwipeGestureDetector : SimpleOnGestureListener() {
 

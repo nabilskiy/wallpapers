@@ -5,26 +5,26 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.databinding.FragmentFavoriteBinding
 import wallgram.hd.wallpapers.model.Category
-import wallgram.hd.wallpapers.ui.categories.CategoriesListAdapter
+import wallgram.hd.wallpapers.ui.categories.CategoriesAdapter
 import wallgram.hd.wallpapers.ui.base.BaseFragment
 import wallgram.hd.wallpapers.ui.main.MainFragment
 import wallgram.hd.wallpapers.ui.wallpapers.*
-import wallgram.hd.wallpapers.util.modo.externalForward
-import wallgram.hd.wallpapers.util.modo.forward
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import wallgram.hd.wallpapers.model.request.FeedRequest
-import wallgram.hd.wallpapers.ui.ColorsItemDecoration
-import wallgram.hd.wallpapers.ui.FeedItemsAdapter
+import wallgram.hd.wallpapers.ui.home.colors.ColorsItemDecoration
+import wallgram.hd.wallpapers.ui.favorite.popular.PopularAdapter
+import wallgram.hd.wallpapers.ui.favorite.popular.PopularItemDecoration
+import wallgram.hd.wallpapers.ui.favorite.tags.TagsAdapter
+import wallgram.hd.wallpapers.ui.favorite.tags.TagsOffsetDecoration
+import wallgram.hd.wallpapers.ui.feed.FeedsAdapter
 import wallgram.hd.wallpapers.util.*
-import wallgram.hd.wallpapers.util.modo.selectStack
 
 
 class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding>(
@@ -62,8 +62,8 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
         })
     }
 
-    private val categoriesAdapter: CategoriesListAdapter by lazy {
-        CategoriesListAdapter(onItemClicked = {
+    private val categoriesAdapter: CategoriesAdapter by lazy {
+        CategoriesAdapter(onItemClicked = {
             viewModel.onItemClicked(
                 Screens.CategoriesList(
                     FeedRequest(
@@ -136,7 +136,7 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
 
             emptyView.viewPager.apply {
                 offscreenPageLimit = 3
-                adapter = FeedItemsAdapter(this@FavoriteFragment)
+                adapter = FeedsAdapter(this@FavoriteFragment, FeedRequest())
             }
 
             TabLayoutMediator(

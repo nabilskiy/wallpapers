@@ -7,6 +7,7 @@ import androidx.core.content.edit
 import wallgram.hd.wallpapers.PREFERENCES
 
 const val FIRST_LAUNCH = "first_launch"
+const val LAUNCH_COUNT = "launch_count"
 const val LANGUAGE = "language"
 
 const val TIMER_VISIBILITY_PREFS = "timer_visibility"

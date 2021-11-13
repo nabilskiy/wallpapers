@@ -67,4 +67,5 @@
     <string name="home">Startseite</string>
     <string name="wallpaper_setted">Hintergrundbild wurde gesetzt</string>
     <string name="image_dowloaded">Bild geladen</string>
+    <string name="recommend">Recommandons</string>
 </resources>

@@ -1,35 +1,24 @@
 package wallgram.hd.wallpapers.ui.main
 
-import wallgram.hd.wallpapers.views.ConfirmationDialogFragment.ConfirmationListener
-import com.android.billingclient.api.SkuDetails
-import com.android.billingclient.api.BillingClient
 import com.google.firebase.analytics.FirebaseAnalytics
 import wallgram.hd.wallpapers.R
-import com.android.billingclient.api.SkuDetailsParams
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.Purchase
 import android.widget.Toast
 import android.content.Intent
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import com.android.billingclient.api.BillingClientStateListener
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
-import android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
 import android.widget.RatingBar
 import com.google.android.material.textfield.TextInputLayout
 import android.widget.RatingBar.OnRatingBarChangeListener
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import wallgram.hd.wallpapers.Screens
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.install.InstallState
+import com.google.android.play.core.install.model.InstallStatus
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.data.local.preference.FIRST_LAUNCH
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.databinding.ActivityMainBinding
@@ -37,16 +26,15 @@ import wallgram.hd.wallpapers.ui.base.BaseActivity
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import wallgram.hd.wallpapers.util.modo.*
 import wallgram.hd.wallpapers.App
+import wallgram.hd.wallpapers.data.local.preference.LAUNCH_COUNT
 import java.util.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMainBinding::inflate),
-    ConfirmationListener {
+class MainActivity :
+    BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMainBinding::inflate) {
 
 
     val modo = App.modo
-
-
 
     @Inject
     lateinit var preferences: PreferenceContract
@@ -58,59 +46,6 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
 
             override fun createMultiStackFragment(multiScreen: MultiScreen): MultiStackFragment =
                 MainFragment()
-
-
-
-
-            //only for sample
-            override fun invoke(state: NavigationState) {
-                super.invoke(state)
-
-                if (state.chain.isEmpty())
-                    return
-
-                window.statusBarColor = ContextCompat.getColor(
-                    this@MainActivity,
-                    if (state.chain.last() is Screens.Wallpaper || state.chain.last() is Screens.Crop) R.color.color_status_bar else R.color.colorPrimaryDark
-                )
-
-                if(state.chain.last() is Screens.Wallpaper || state.chain.last() is Screens.Crop)
-                    window.setFlags(FLAG_TRANSLUCENT_NAVIGATION, FLAG_TRANSLUCENT_NAVIGATION)
-                else window.clearFlags(FLAG_TRANSLUCENT_NAVIGATION)
-
-                val stateStr =
-                    "‣root\n${getNavigationStateString("⦙  ", state).trimEnd()}  ᐊ current screen"
-                Log.d("STATE", stateStr)
-            }
-
-
-            //copy-paste from LogReducer
-            private fun getNavigationStateString(
-                prefix: String,
-                navigationState: NavigationState
-            ): String =
-                navigationState.chain.map { screen ->
-                    when (screen) {
-                        is MultiScreen -> buildString {
-                            append(prefix)
-                            append('‣')
-                            append(screen.id)
-                            if (screen.stacks.size > 1) {
-                                append(" [${screen.selectedStack + 1}/${screen.stacks.size}]")
-                            }
-                            append('\n')
-                            append(
-                                getNavigationStateString(
-                                    "$prefix⦙  ",
-                                    screen.stacks[screen.selectedStack]
-                                )
-                            )
-                        }
-                        else -> {
-                            "$prefix${screen.id}\n"
-                        }
-                    }
-                }.joinToString(separator = "")
         }
     }
 
@@ -122,9 +57,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
         back_pressed = System.currentTimeMillis()
     }
 
+
     private fun showRateDialog() {
         val inflater = this.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            ?: return
         val view = inflater.inflate(R.layout.rating_layout, findViewById(R.id.layout_root))
         val ratingBar = view.findViewById<RatingBar>(R.id.rating_bar)
         val feedbackText: TextInputLayout = view.findViewById(R.id.feedback_text)
@@ -186,18 +121,19 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+
+        checkUpdate()
 
         showRateDialog()
 
-            //       MobileAds.initialize(this)
+        MobileAds.initialize(this)
 
-//        MobileAds.setRequestConfiguration(
-//            RequestConfiguration.Builder()
-//                .setTestDeviceIds(listOf("ABCDEF012345"))
-//                .build()
-//        )
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf("553F078B738FD74B93AFF838615C6149"))
+                .build()
+        )
 
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -239,6 +175,30 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
         )
     }
 
+    override fun onUpdateAvailable(appUpdateInfo: AppUpdateInfo, updateAvailable: Boolean) {
+        if (updateAvailable) {
+            startUpdate(appUpdateInfo)
+        }
+    }
+
+
+    override fun onInstallState(
+        installState: InstallState,
+        bytesDownLoaded: Long,
+        totalBytesToDownLoaded: Long
+    ) {
+        when (installState.installStatus()) {
+            InstallStatus.DOWNLOADED -> {
+                restart()
+            }
+        }
+    }
+
+
+    override fun onUpdateFailure(exception: Exception?) {
+        Toast.makeText(this, exception?.message ?: "", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onResume() {
         super.onResume()
         modo.render = modoRender
@@ -257,23 +217,13 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(ActivityMa
 
     override fun onBackPressed() {
         val screen = (modoRender.currentState.chain[modoRender.currentState.chain.lastIndex])
-        if(screen is MultiScreen){
-            if(screen.stacks[screen.selectedStack].chain.size == 1)
-                if(screen.selectedStack != 0){
+        if (screen is MultiScreen) {
+            if (screen.stacks[screen.selectedStack].chain.size == 1)
+                if (screen.selectedStack != 0) {
                     modo.selectStack(0)
                 } else exitFromApp()
             else modo.back()
         } else modo.back()
-    }
-
-    //override fun onSearchClick(query: String) {
-//        val feedFragment = supportFragmentManager.findFragmentByTag("SEARCH") as FeedFragment?
-//        feedFragment?.searchClicked(query)
-    //   }
-
-    override fun confirmButtonClicked() {
-//        val feedFragment = supportFragmentManager.findFragmentByTag("FEED") as FeedFragment?
-//        feedFragment?.confirmButtonClicked()
     }
 
     companion object {

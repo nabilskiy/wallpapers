@@ -109,13 +109,13 @@ class SubscriptionFragment : BaseFragment<BillingViewModel, FragmentSubscription
     }
 
     private fun hideLoading() {
-        binding.subscribeContent.isVisible = true
+        binding.group.isVisible = true
         binding.progressBar.isVisible = false
     }
 
 
     private fun showLoading() {
-        binding.subscribeContent.isVisible = false
+        binding.group.isVisible = false
         binding.progressBar.isVisible = true
     }
 

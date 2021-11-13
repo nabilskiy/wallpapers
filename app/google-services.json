@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "935832880988",
-    "firebase_url": "https://akspic-fdb13.firebaseio.com",
-    "project_id": "akspic-fdb13",
-    "storage_bucket": "akspic-fdb13.appspot.com"
+    "project_number": "520346572369",
+    "project_id": "wallgram-42d8a",
+    "storage_bucket": "wallgram-42d8a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:935832880988:android:b79dd01d937daa7c22a399",
+        "mobilesdk_app_id": "1:520346572369:android:f4dd14e4fa7b4433c40a70",
         "android_client_info": {
           "package_name": "wallgram.hd.wallpapers"
         }
       },
       "oauth_client": [
         {
-          "client_id": "935832880988-e529pi1fnp6fl6dabsg9je2r2r6ttj9r.apps.googleusercontent.com",
+          "client_id": "520346572369-q834gmuujujg66spbu609ap0hlite0bl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "wallgram.hd.wallpapers",
+            "certificate_hash": "d8ac48bce08e51c0c28c57e1d0a689161e77b6a8"
+          }
+        },
+        {
+          "client_id": "520346572369-2r2p0fgf8pkd04fuo2et443g8hehe5p3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC5NkrjvO5XOP3zhreUa4iSJpL_aNc_8ok"
+          "current_key": "AIzaSyDSU2C1ddGxr45DfGHng768Rk53mXqfGck"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "935832880988-e529pi1fnp6fl6dabsg9je2r2r6ttj9r.apps.googleusercontent.com",
+              "client_id": "520346572369-2r2p0fgf8pkd04fuo2et443g8hehe5p3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

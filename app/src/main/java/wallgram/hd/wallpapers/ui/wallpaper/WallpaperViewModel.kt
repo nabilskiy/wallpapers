@@ -1,8 +1,8 @@
 package wallgram.hd.wallpapers.ui.wallpaper
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -10,10 +10,11 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import wallgram.hd.wallpapers.Screens
+import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.data.Resource
 import wallgram.hd.wallpapers.data.paging.FeedPagingSource
 import wallgram.hd.wallpapers.data.remote.ServiceGenerator
+import wallgram.hd.wallpapers.data.repository.billing.BillingRepository
 import wallgram.hd.wallpapers.data.repository.data.DataRepositorySource
 import wallgram.hd.wallpapers.model.Gallery
 import wallgram.hd.wallpapers.model.Pic
@@ -33,7 +34,8 @@ class WallpaperViewModel @Inject constructor(
     private val serviceGenerator: ServiceGenerator,
     private val cacheManager: ICacheManager,
     private val localizationDelegate: LocalizationApplicationDelegate,
-    private val displayHelper: DisplayHelper
+    private val displayHelper: DisplayHelper,
+    private val billingRepository: BillingRepository
 ) : BaseViewModel() {
 
     val wallpapersLiveData: MutableLiveData<PagingData<Gallery>> get() = cacheManager.wallpapersData
@@ -102,7 +104,9 @@ class WallpaperViewModel @Inject constructor(
         }
     }
 
-
+    fun getCurrentSub(): LiveData<String>{
+        return billingRepository.getCurrentSub().asLiveData()
+    }
 
     fun itemClicked(position: Int, id: Int) {
         cacheManager.similarData = similarLiveDataPrivate
