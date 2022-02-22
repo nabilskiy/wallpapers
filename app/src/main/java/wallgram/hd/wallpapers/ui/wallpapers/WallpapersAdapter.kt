@@ -105,13 +105,24 @@ class WallpapersAdapter(private val onItemClicked: ((Int, Int) -> Unit)) :
                     false
                 )
             ) as BaseViewHolder<Any>
-            else -> ViewHolder(
-                ItemPhotoBinding.inflate(
+            else -> {
+                val binding =  ItemPhotoBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
                 )
-            ) as BaseViewHolder<Any>
+                val viewHolder = ViewHolder(
+                    binding
+                ) as BaseViewHolder<Any>
+                binding.root.setOnClickListener {
+                    val position = viewHolder.bindingAdapterPosition
+                    val id = (getItem(position) as Gallery)?.id ?: -1
+                    if (position != RecyclerView.NO_POSITION && id != -1)
+                        onItemClicked(position, id)
+                }
+                return viewHolder
+
+            }
         }
     }
 

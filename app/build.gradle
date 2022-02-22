@@ -18,8 +18,8 @@ android {
         applicationId "wallgram.hd.wallpapers"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 8
-        versionName "8"
+        versionCode 14
+        versionName "14"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 

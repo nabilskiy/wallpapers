@@ -769,15 +769,25 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
     fun downloadSupend(url: String) {
 
-        val temp: File = Glide.with(requireContext())
-            .asFile()
-            .load(url)
-            .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-            .get(2, TimeUnit.MINUTES)
+        lifecycleScope.launch(Dispatchers.IO) {
 
-        val result = WallpaperUtils.saveToFile(context, url, temp)
-        addToHistory()
-        downloadLiveDataPrivate.postValue(Resource.Success(result))
+            val temp: File = Glide.with(requireContext())
+                .asFile()
+                .load(url)
+                .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .get(2, TimeUnit.MINUTES)
+
+            withContext(Dispatchers.Main){
+                val result = WallpaperUtils.saveToFile(context, url, temp)
+                addToHistory()
+                downloadLiveDataPrivate.postValue(Resource.Success(result))
+            }
+
+        }
+
+
+
+
     }
 
     fun downloadAndSetWallpaper(url: String, config: Config) {
@@ -806,9 +816,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     fun download(url: String) {
         downloadLiveDataPrivate.postValue(Resource.Loading())
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            downloadSupend(url)
-        }
+        downloadSupend(url)
 
     }
 
