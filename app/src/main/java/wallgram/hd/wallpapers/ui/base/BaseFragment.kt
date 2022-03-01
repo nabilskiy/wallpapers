@@ -24,7 +24,7 @@ abstract class BaseFragment<V : ViewModel, B : ViewBinding>(
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private var _binding: B? = null
+    protected var _binding: B? = null
 
     protected val binding: B get() = _binding!!
 

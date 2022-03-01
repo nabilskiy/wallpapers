@@ -111,9 +111,9 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
             }
             wallpapersAdapter.addLoadStateListener { loadState ->
                 // Only show the list if refresh succeeds.
-                binding.list.isVisible = loadState.source.refresh is LoadState.NotLoading
+                _binding?.list?.isVisible = loadState.source.refresh is LoadState.NotLoading
                 // Show loading spinner during initial load or refresh.
-                binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                _binding?.progressBar?.isVisible = loadState.source.refresh is LoadState.Loading
                 if (swipeRefreshLayout.isRefreshing)
                     swipeRefreshLayout.isRefreshing = loadState.source.refresh is LoadState.Loading
                 // Show the retry state if initial load or refresh fails.

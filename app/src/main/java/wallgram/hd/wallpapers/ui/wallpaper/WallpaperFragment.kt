@@ -759,7 +759,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     }
 
     private fun addToHistory() {
-        val item = wallpapersAdapter.peek(binding.list.currentItem)
+        val item = wallpapersAdapter.peek( _binding?.list?.currentItem ?: return)
         item?.let {
             viewModel.addToHistory(it)
         }
