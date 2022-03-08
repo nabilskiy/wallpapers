@@ -16,7 +16,7 @@ private const val timeoutRead = 30   //In seconds
 private const val contentType = "Content-Type"
 private const val contentTypeValue = "application/json"
 private const val timeoutConnect = 30   //In seconds
-private const val BASE_URL = "https://akspic.com/rest/v3/"
+private const val BASE_URL = "https://wallspic.com/rest/v3/"
 
 @Singleton
 class ServiceGenerator @Inject constructor() {
