@@ -55,8 +55,12 @@ class WallpapersAdapter(private val onItemClicked: ((Int, Int) -> Unit)) :
         }
 
         override fun performBind(item: Gallery?) {
+            var preview = item?.preview ?: ""
+            if(preview.contains("akspic.ru"))
+                preview = preview.replace("akspic.ru", "wallspic.com")
+
             with(binding) {
-                Glide.with(root.context).load(item?.preview)
+                Glide.with(root.context).load(preview)
                     .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                     .apply(RequestOptions().placeholder(ColorDrawable(Color.parseColor("#1B1928"))))
                     .transition(DrawableTransitionOptions.withCrossFade(100))

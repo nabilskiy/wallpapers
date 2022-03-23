@@ -29,9 +29,18 @@ class WallpaperItemAdapter(private val onItemClicked: ((MotionEvent) -> Unit)) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Gallery) {
+            var preview = item.preview
+            if(preview.contains("akspic.ru"))
+                preview = preview.replace("akspic.ru", "wallspic.com")
+
+            var original = item.original ?: ""
+            if(original.contains("akspic.ru"))
+                original = original.replace("akspic.ru", "wallspic.com")
+
+
             with(binding) {
-                Glide.with(root.context).load(item.original)
-                    .thumbnail(Glide.with(root.context).load(item.preview).centerCrop())
+                Glide.with(root.context).load(original)
+                    .thumbnail(Glide.with(root.context).load(preview).centerCrop())
                     .apply(RequestOptions().skipMemoryCache(true))
                     .listener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
