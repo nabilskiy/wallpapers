@@ -28,6 +28,7 @@ import wallgram.hd.wallpapers.ui.main.MainFragment
 import wallgram.hd.wallpapers.ui.main.MainViewModel
 import wallgram.hd.wallpapers.ui.search.SearchFragment
 import wallgram.hd.wallpapers.util.findCurrentFragment
+import java.lang.RuntimeException
 
 class HomeFragment : BaseFragment<MainViewModel, FragmentHomeBinding>(
         FragmentHomeBinding::inflate
@@ -59,6 +60,7 @@ class HomeFragment : BaseFragment<MainViewModel, FragmentHomeBinding>(
             (it as BaseFragment<*,*>).invalidate()
         }
         binding.appbar.setExpanded(true, true)
+
     }
 
     private lateinit var suggestionAdapter: ArrayAdapter<String>

@@ -18,12 +18,14 @@ import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.model.InstallStatus
+import com.google.firebase.analytics.ktx.analytics
 import wallgram.hd.wallpapers.ui.base.Screens
 import wallgram.hd.wallpapers.data.local.preference.FIRST_LAUNCH
 import wallgram.hd.wallpapers.data.local.preference.PreferenceContract
 import wallgram.hd.wallpapers.databinding.ActivityMainBinding
 import wallgram.hd.wallpapers.ui.base.BaseActivity
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
+import com.google.firebase.ktx.Firebase
 import wallgram.hd.wallpapers.util.modo.*
 import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.data.local.preference.LAUNCH_COUNT
@@ -36,10 +38,11 @@ class MainActivity :
 
     val modo = App.modo
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+
     @Inject
     lateinit var preferences: PreferenceContract
-
-    private var mFirebaseAnalytics: FirebaseAnalytics? = null
 
     private val modoRender by lazy {
         object : ModoRender(this@MainActivity, R.id.container) {
@@ -136,7 +139,7 @@ class MainActivity :
         )
 
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics = Firebase.analytics
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
