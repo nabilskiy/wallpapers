@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     signingConfigs {
@@ -75,6 +76,9 @@ android {
 dependencies {
     //base packages
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation platform('com.google.firebase:firebase-bom:29.3.0')
+
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -84,9 +88,13 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.android.billingclient:billing-ktx:4.1.0'
+
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.google.firebase:firebase-dynamic-links:21.0.0'
     implementation 'com.google.firebase:firebase-analytics:20.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation "androidx.lifecycle:lifecycle-process:2.4.1"
