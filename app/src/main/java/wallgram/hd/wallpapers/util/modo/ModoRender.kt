@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.util.modo
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -52,8 +53,14 @@ open class ModoRender(
         }
         val currentScreen = currentState.chain.lastOrNull()
         if (currentScreen is MultiScreen) {
-            fragmentManager.executePendingTransactions()
-            (fragmentManager.findFragmentById(containerId) as MultiStackFragment?)?.applyMultiState(currentScreen)
+            try {
+                fragmentManager.executePendingTransactions()
+                (fragmentManager.findFragmentById(containerId) as MultiStackFragment?)?.applyMultiState(currentScreen)
+            }
+            catch (e : ClassCastException){
+                Log.d("ERROR", e.toString())
+            }
+
         }
     }
 

@@ -120,9 +120,12 @@ class WallpapersAdapter(private val onItemClicked: ((Int, Int) -> Unit)) :
                 ) as BaseViewHolder<Any>
                 binding.root.setOnClickListener {
                     val position = viewHolder.bindingAdapterPosition
-                    val id = (getItem(position) as Gallery)?.id ?: -1
-                    if (position != RecyclerView.NO_POSITION && id != -1)
-                        onItemClicked(position, id)
+                    if (position>-1){
+                        val id = (getItem(position) as Gallery)?.id ?: -1
+                        if (position != RecyclerView.NO_POSITION && id != -1)
+                            onItemClicked(position, id)
+                    }
+
                 }
                 return viewHolder
 

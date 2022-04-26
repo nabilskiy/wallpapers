@@ -462,8 +462,7 @@ public class FileUtils {
         File outFile = FileUtils.createFile(file, name);
         com.google.common.io.Files.copy(from, outFile);
         Uri uri = Uri.fromFile(outFile);
-        context.sendBroadcast(
-                new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri));
         return uri;
     }
 

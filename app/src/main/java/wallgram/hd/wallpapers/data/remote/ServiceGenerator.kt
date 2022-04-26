@@ -1,5 +1,7 @@
 package wallgram.hd.wallpapers.data.remote
 
+//import com.readystatesoftware.chuck.BuildConfig
+//import com.readystatesoftware.chuck.ChuckInterceptor
 import wallgram.hd.wallpapers.data.remote.moshiFactories.MyStandardJsonAdapters
 import com.squareup.moshi.Moshi
 import okhttp3.Interceptor
@@ -7,6 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import wallgram.hd.wallpapers.App.Companion.context
 import wallgram.hd.wallpapers.data.remote.moshiFactories.MyKotlinJsonAdapterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -47,6 +50,8 @@ class ServiceGenerator @Inject constructor() {
     init {
         okHttpBuilder.addInterceptor(headerInterceptor)
         okHttpBuilder.addInterceptor(logger)
+
+       //     okHttpBuilder.addInterceptor( ChuckInterceptor(context) )
         okHttpBuilder.connectTimeout(timeoutConnect.toLong(), TimeUnit.SECONDS)
         okHttpBuilder.readTimeout(timeoutRead.toLong(), TimeUnit.SECONDS)
         val client = okHttpBuilder.build()
@@ -63,7 +68,7 @@ class ServiceGenerator @Inject constructor() {
     private fun getMoshi(): Moshi {
         return Moshi.Builder()
             .add(MyKotlinJsonAdapterFactory())
-            .add(wallgram.hd.wallpapers.data.remote.moshiFactories.MyStandardJsonAdapters.FACTORY)
+            .add(MyStandardJsonAdapters.FACTORY)
             .build()
     }
 }

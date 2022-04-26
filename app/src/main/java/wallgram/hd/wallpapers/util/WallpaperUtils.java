@@ -64,7 +64,7 @@ public class WallpaperUtils {
     }
 
     public static File getImageFile(Context context, String url) throws Exception {
-        return Glide.with(context).downloadOnly().load(url).submit().get();
+        return Glide.with(context).downloadOnly().load(url).timeout(220000).submit().get();
     }
 
 
