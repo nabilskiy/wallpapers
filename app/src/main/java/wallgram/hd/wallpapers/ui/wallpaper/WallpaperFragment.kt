@@ -125,13 +125,6 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                     Log.d(WallpaperFragment::class.java.name, adError.message)
                     mInterstitialAd = null
                     mAdIsLoading = false
-                    val error = "domain: ${adError.domain}, code: ${adError.code}, " +
-                            "message: ${adError.message}"
-                    Toast.makeText(
-                        this@WallpaperFragment.requireContext(),
-                        "onAdFailedToLoad() with error $error",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
@@ -249,7 +242,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 // don't show the ad a second time.
                 rewardedInterstitialAd = null
 
-                if(rewardItem != null)
+                if (rewardItem != null)
                     download(url)
 
                 // Preload the next rewarded interstitial ad.
@@ -355,7 +348,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                 gravity = DrawableButton.GRAVITY_TEXT_START
             }
 
-            downloadLiveDataPrivate.observe(viewLifecycleOwner, {
+            downloadLiveDataPrivate.observe(viewLifecycleOwner) {
                 when (it) {
                     is Resource.Loading -> {
 
@@ -378,9 +371,17 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                         }
                         showToast(R.string.image_dowloaded)
                     }
+                    is Resource.DataError -> {
+                        downloadBtn.isEnabled = true
+                        downloadBtn.hideProgress(R.string.download)
+                        downloadBtn.showDrawable(downloadDrawable) {
+                            buttonTextRes = R.string.download
+                            gravity = DrawableButton.GRAVITY_TEXT_START
+                        }
+                    }
 
                 }
-            })
+            }
 
             installLiveDataPrivate.observe(viewLifecycleOwner, {
                 when (it) {
@@ -405,6 +406,15 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
                         }
                         showToast(R.string.wallpaper_setted)
                     }
+                    is Resource.DataError -> {
+                        installBtn.isEnabled = true
+                        installBtn.hideProgress(R.string.install_wallpaper)
+                        installBtn.showDrawable(installDrawable) {
+                            buttonTextRes = R.string.install_wallpaper
+                            gravity = DrawableButton.GRAVITY_TEXT_START
+                        }
+                    }
+
                 }
             })
 
@@ -759,7 +769,7 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
     }
 
     private fun addToHistory() {
-        val item = wallpapersAdapter.peek( _binding?.list?.currentItem ?: return)
+        val item = wallpapersAdapter.peek(_binding?.list?.currentItem ?: return)
         item?.let {
             viewModel.addToHistory(it)
         }
@@ -771,44 +781,51 @@ class WallpaperFragment : BaseFragment<WallpaperViewModel, FragmentWallpaperBind
 
         lifecycleScope.launch(Dispatchers.IO) {
 
-            val temp: File = Glide.with(requireContext())
-                .asFile()
-                .load(url)
-                .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .get(2, TimeUnit.MINUTES)
+            try {
+                val temp: File = Glide.with(requireContext())
+                    .asFile()
+                    .load(url)
+                    .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .get(2, TimeUnit.MINUTES)
 
-            withContext(Dispatchers.Main){
-                val result = WallpaperUtils.saveToFile(context, url, temp)
-                addToHistory()
-                downloadLiveDataPrivate.postValue(Resource.Success(result))
+                withContext(Dispatchers.Main) {
+                    val result = WallpaperUtils.saveToFile(context, url, temp)
+                    addToHistory()
+                    downloadLiveDataPrivate.postValue(Resource.Success(result))
+                }
+
+            } catch (e: Exception) {
+                showToast(R.string.error_msg)
+                downloadLiveDataPrivate.postValue(Resource.DataError(0))
             }
-
         }
-
-
-
 
     }
 
     fun downloadAndSetWallpaper(url: String, config: Config) {
         installLiveDataPrivate.postValue(Resource.Loading())
         lifecycleScope.launch(Dispatchers.IO) {
-            val wallpaper = WallpaperUtils.getImageFile(requireContext(), url)
-            if (wallpaper == null || !wallpaper.exists()) {
-                throw IOException("Download wallpaper failure")
-            }
-            val uiHelper = UIHelper()
-            val result = uiHelper.setWallpaper(requireContext(), config, wallpaper)
+            try {
+                val wallpaper = WallpaperUtils.getImageFile(requireContext(), url)
+                if (wallpaper == null || !wallpaper.exists()) {
+                    throw IOException("Download wallpaper failure")
+                }
+                val uiHelper = UIHelper()
+                val result = uiHelper.setWallpaper(requireContext(), config, wallpaper)
 
-            installLiveDataPrivate.postValue(Resource.Success(result))
+                installLiveDataPrivate.postValue(Resource.Success(result))
+            } catch (e: Exception) {
+                showToast(R.string.error_msg)
+                downloadLiveDataPrivate.postValue(Resource.DataError(0))
+            }
         }
         addToHistory()
     }
 
-    fun downloadSource(url: String){
-        if(rewardedInterstitialAd != null && !cacheManager.isRewardedAdShowed)
+    fun downloadSource(url: String) {
+        if (rewardedInterstitialAd != null && !cacheManager.isRewardedAdShowed)
             showRewardedVideo(url)
-        else{
+        else {
             download(url)
         }
     }
