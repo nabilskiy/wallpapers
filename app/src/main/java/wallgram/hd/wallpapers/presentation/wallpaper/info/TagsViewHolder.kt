@@ -1,0 +1,19 @@
+package wallgram.hd.wallpapers.presentation.wallpaper.info
+
+import android.view.View
+import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.databinding.ItemInfoBinding
+import wallgram.hd.wallpapers.databinding.ItemTagsBinding
+import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
+import wallgram.hd.wallpapers.presentation.base.adapter.GenericViewHolder
+import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
+import wallgram.hd.wallpapers.presentation.base.adapter.MyView
+import wallgram.hd.wallpapers.presentation.filters.FilterUi
+
+class TagsViewHolder(
+    private val binding: ItemTagsBinding
+) : GenericViewHolder<ItemUi>(binding.root) {
+    override fun bind(item: ItemUi) {
+        item.show(binding.authorValue)
+    }
+}

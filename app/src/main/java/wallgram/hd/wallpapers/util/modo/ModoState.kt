@@ -11,10 +11,11 @@ fun Modo.init(bundle: Bundle?, firstScreen: Screen) {
         if (!modoInitialized) {
             Log.d("Modo", "Activity first launch")
             modoInitialized = true
+            forward(firstScreen)
         } else {
             Log.d("Modo", "Activity re-launch")
         }
-        forward(firstScreen)
+
     } else {
         if (!modoInitialized) {
             Log.d("Modo", "Activity restored after process death")

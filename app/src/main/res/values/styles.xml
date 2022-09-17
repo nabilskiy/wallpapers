@@ -14,12 +14,12 @@
         <item name="colorOnBackground">#232035</item>
 
         <!--        <item name="android:statusBarColor">@color/colorPrimaryDark</item>-->
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/colorNavigationBar</item>
 
         <item name="materialAlertDialogTheme">@style/CustomAlertDialogTheme</item>
         <item name="alertDialogTheme">@style/DialogStyle</item>
 
-        <item name="android:statusBarColor">#1B1928</item>
+        <item name="android:statusBarColor">@color/colorBackground</item>
         <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
     </style>
 
@@ -53,11 +53,11 @@
     </style>
 
     <style name="MaterialAlertDialogText" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/color_white</item>
     </style>
 
     <style name="MaterialAlertDialogTitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/color_white</item>
     </style>
 
 
@@ -83,14 +83,14 @@
 
     <style name="CircleImageView" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">2dp</item>
+        <item name="cornerSize">4dp</item>
     </style>
 
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:singleLine">true</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:lineSpacingExtra">1sp</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.01</item>
         <item name="android:gravity">center</item>
         <item name="textAllCaps">false</item>
     </style>
@@ -128,7 +128,7 @@
         <item name="android:focusable">true</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">55dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">#E6FFFFFF</item>
         <item name="android:drawablePadding">17dp</item>
@@ -136,12 +136,47 @@
     </style>
 
     <style name="LanguageRadioStyle">
-        <item name="android:buttonTint">#E6FFFFFF</item>
+        <item name="android:letterSpacing">0.02</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/lang_text_selector</item>
         <item name="android:button">@drawable/lang_icon_selector</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:paddingStart">44dp</item>
+        <item name="android:paddingStart">28dp</item>
+        <item name="android:buttonTint">#FFCC00</item>
+    </style>
+
+    <style name="InfoTitleTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:letterSpacing">0.03</item>
+        <item name="android:textColor">@color/color_info_title_text</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="InfoValueTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:letterSpacing">0.03</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="ToolbarTextStyle">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+
+    </style>
+
+    <style name="PopupTopAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_top_animation_appear</item>
+        <item name="android:windowExitAnimation">@anim/popup_top_animation_disappear</item>
     </style>
 
 </resources>

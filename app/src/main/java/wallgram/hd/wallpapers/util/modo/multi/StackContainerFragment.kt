@@ -5,7 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import wallgram.hd.wallpapers.ui.main.MainFragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.presentation.feed.FeedsFragment
+import wallgram.hd.wallpapers.presentation.history.HistoryFragment
+import wallgram.hd.wallpapers.presentation.main.MainFragment
+import wallgram.hd.wallpapers.presentation.settings.language.LanguageFragment
+import wallgram.hd.wallpapers.presentation.subscribe.SubscriptionFragment
+import wallgram.hd.wallpapers.util.modo.AppScreen
 import wallgram.hd.wallpapers.util.modo.MultiScreen
 import wallgram.hd.wallpapers.util.modo.ModoRender
 
@@ -15,6 +23,23 @@ class StackContainerFragment : Fragment() {
     private val render by lazy {
         object : ModoRender(childFragmentManager, CONTAINER_ID, {}) {
             override fun createMultiStackFragment(multiScreen: MultiScreen) = MainFragment()
+
+            override fun setupTransaction(
+                fragmentManager: FragmentManager,
+                transaction: FragmentTransaction,
+                screen: AppScreen,
+                newFragment: Fragment
+            ) {
+                if (newFragment is LanguageFragment || newFragment is SubscriptionFragment
+                    || newFragment is FeedsFragment || newFragment is HistoryFragment) {
+                    transaction.setCustomAnimations(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                    )
+                }
+            }
         }
     }
 

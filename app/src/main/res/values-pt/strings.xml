@@ -65,4 +65,5 @@
     <string name="wallpaper_setted">Configuração de papel de parede</string>
     <string name="image_dowloaded">Imagem baixada</string>
     <string name="recommend">Recomendar</string>
+    <string name="connection_error">Connection error</string>
 </resources>

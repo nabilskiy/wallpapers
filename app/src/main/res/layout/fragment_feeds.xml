@@ -4,48 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.feed.FeedsFragment">
-    
+    android:orientation="vertical">
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#232035"
+        android:background="@color/colorBackground"
         app:elevation="0dp">
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="@font/roboto_bold"
-            tools:text="Животные"
-            android:textColor="#E6FFFFFF"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:textSize="24sp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/back_btn"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#E6FFFFFF" />
+
+            <wallgram.hd.wallpapers.presentation.base.CustomTextView
+                android:id="@+id/title_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_regular"
+                tools:text="Животные"
+                android:textColor="#E6FFFFFF"
+                android:textSize="22sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/back_btn"
+                app:layout_constraintBottom_toBottomOf="@id/back_btn"
+                app:layout_constraintTop_toTopOf="@id/back_btn" />
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:background="@android:color/transparent"
             app:layout_collapseMode="parallax"
             app:tabGravity="fill"
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorColor="@color/colorYellow"
-            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorHeight="3dp"
             app:tabMode="fixed"
-            app:tabMaxWidth="0dp"
-            app:tabPaddingBottom="6dp"
-           app:tabPaddingStart="8dp"
-            app:tabPaddingEnd="8dp"
-            app:tabIndicatorFullWidth="true"
-            app:tabSelectedTextColor="#FFFFFF"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="#FFCC00"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="#BAFFFFFF" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -55,7 +66,6 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="12dp"
         android:orientation="horizontal"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

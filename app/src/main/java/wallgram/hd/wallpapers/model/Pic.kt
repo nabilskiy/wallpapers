@@ -1,21 +1,20 @@
 package wallgram.hd.wallpapers.model
 
-import com.squareup.moshi.JsonClass
+import wallgram.hd.wallpapers.data.filters.FiltersCloud
 
-@JsonClass(generateAdapter = true)
 data class Pic(
 
-        val id: Int,
-        val category: Category?,
-        val user: User? = null,
-        val meta: PicMeta,
-        val promoted: Int,
-        val published: String,
-        val tags: Array<Tag>,
-        val width: Int,
-        val height: Int,
-        val focus: FloatArray,
-        val links: Links
+    val id: Int,
+    val category: FiltersCloud.Base?,
+    val user: User? = null,
+    val meta: PicMeta,
+    val promoted: Int,
+    val published: String,
+    val tags: Array<Tag>,
+    val width: Int,
+    val height: Int,
+    val focus: FloatArray,
+    val links: Links
 
 ) {
     override fun equals(other: Any?): Boolean {

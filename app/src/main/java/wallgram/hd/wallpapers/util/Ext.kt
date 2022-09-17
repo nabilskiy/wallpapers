@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import wallgram.hd.wallpapers.R
 import java.net.MalformedURLException
 
 //fun Context.getResolution(): String{
@@ -20,6 +21,26 @@ import java.net.MalformedURLException
 //
 //    return "${outMetrics.widthPixels}x${outMetrics.heightPixels}"
 //}
+
+fun Context.getAppName(): String {
+    var name: String = try {
+        (packageManager?.getApplicationLabel(applicationInfo) ?: "").toString()
+    } catch (e: Exception) {
+        ""
+    }
+    if (name.hasContent()) return name
+
+    val stringRes = applicationInfo?.labelRes ?: 0
+    name = if (stringRes == 0) {
+        applicationInfo?.nonLocalizedLabel?.toString() ?: ""
+    } else {
+        getString(stringRes)
+    }
+    if (name.hasContent()) return name
+
+    val def = getString(R.string.app_name)
+    return if (def.hasContent()) def else "Unknown"
+}
 
 fun Context.getResolution(): String{
     val metrics = DisplayMetrics()

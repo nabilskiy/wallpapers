@@ -5,8 +5,6 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
 import com.google.android.gms.ads.*
@@ -15,11 +13,8 @@ import wallgram.hd.wallpapers.util.modo.MultiReducer
 import wallgram.hd.wallpapers.util.modo.AppReducer
 import wallgram.hd.wallpapers.util.modo.LogReducer
 import com.google.android.gms.ads.appopen.AppOpenAd
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import wallgram.hd.wallpapers.data.repository.billing.BillingRepository
-import wallgram.hd.wallpapers.di.component.DaggerAppComponent
+import dagger.hilt.android.HiltAndroidApp
+import wallgram.hd.wallpapers.data.billing.BillingRepository
 import wallgram.hd.wallpapers.util.localization.LanguageSetting.getDefaultLanguage
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 import java.util.*
@@ -27,7 +22,8 @@ import javax.inject.Inject
 
 private const val AD_UNIT_ID = "ca-app-pub-3722478150829941/8708499260"
 
-open class App : Application(), HasAndroidInjector, Application.ActivityLifecycleCallbacks,
+@HiltAndroidApp
+class App : Application(), Application.ActivityLifecycleCallbacks,
     LifecycleObserver {
 
     private lateinit var appOpenAdManager: AppOpenAdManager
@@ -37,27 +33,21 @@ open class App : Application(), HasAndroidInjector, Application.ActivityLifecycl
     private var isUserSubscribe: Boolean = false
 
     @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
-
-    @Inject
     lateinit var billingRepository: BillingRepository
 
-    override fun androidInjector(): AndroidInjector<Any> = androidInjector
-
-    private val localizationDelegate = LocalizationApplicationDelegate()
+    private val localizationDelegate =  LocalizationApplicationDelegate(this)
 
     override fun onCreate() {
         modo = Modo(LogReducer(AppReducer(this, MultiReducer())))
         super.onCreate()
-
-        context = applicationContext
-        initDagger()
 
         billingRepository.getCurrentSub().asLiveData().observeForever {
             isUserSubscribe = it != DEFAULT_SKU
         }
 
         registerActivityLifecycleCallbacks(this)
+        MobileAds.setRequestConfiguration(RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("A9616546D7D5AE93B41FBE292574762E")).build())
+
         MobileAds.initialize(this) {}
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         appOpenAdManager = AppOpenAdManager()
@@ -65,9 +55,6 @@ open class App : Application(), HasAndroidInjector, Application.ActivityLifecycl
 
     }
 
-    open fun initDagger() {
-        DaggerAppComponent.builder().application(this).build().inject(this)
-    }
 
     override fun onTrimMemory(level: Int) {
         Glide.with(applicationContext).onTrimMemory(TRIM_MEMORY_MODERATE)
@@ -167,7 +154,8 @@ open class App : Application(), HasAndroidInjector, Application.ActivityLifecycl
         }
 
         private fun isAdAvailable(): Boolean {
-            return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4) && !isUserSubscribe
+            return false
+            //return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4) && !isUserSubscribe
         }
 
         fun showAdIfAvailable(activity: Activity) {
@@ -230,9 +218,6 @@ open class App : Application(), HasAndroidInjector, Application.ActivityLifecycl
 
         lateinit var modo: Modo
             private set
-
-        lateinit var context: Context
-
 
     }
 

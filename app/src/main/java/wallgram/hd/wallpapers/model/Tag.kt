@@ -1,14 +1,14 @@
 package wallgram.hd.wallpapers.model
 
 import android.os.Parcelable
-import com.squareup.moshi.JsonClass
-import kotlinx.android.parcel.Parcelize
+import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@JsonClass(generateAdapter = true)
 data class Tag(
-        override var id: Int = -1,
-        override val name: String = "",
+        var id: Int = -1,
+        val name: String = "",
         val total: Int? = 0,
-        override val background: String? = null
-): Parcelable, SubCategory()
+        @SerializedName("background")
+        val image: String? = null
+): Parcelable

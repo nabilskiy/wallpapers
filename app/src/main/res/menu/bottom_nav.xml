@@ -4,33 +4,27 @@
 
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_home"
-        android:title="Главная"
+        android:icon="@drawable/navigation_home_selector"
+        android:title="@string/home"
         android:orderInCategory="0"
         app:showAsAction="always"/>
     <item
         android:id="@+id/category"
-        android:icon="@drawable/ic_catalog"
-        android:title="Главная"
+        android:icon="@drawable/navigation_categories_selector"
+        android:title="@string/category"
         android:orderInCategory="1"
         app:showAsAction="always"/>
     <item
         android:id="@+id/favorites"
-        android:icon="@drawable/ic_liked"
-        android:title="Главная"
+        android:icon="@drawable/navigation_favorites_selector"
+        android:title="@string/menu_favorites"
         android:orderInCategory="2"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/search"
-        android:orderInCategory="3"
-        android:icon="@drawable/ic_search"
-        android:title="Главная"
-        app:showAsAction="always"/>
-    <item
         android:id="@+id/settings"
-        android:orderInCategory="4"
-        android:icon="@drawable/ic_settings"
-        android:title="Главная"
+        android:orderInCategory="3"
+        android:icon="@drawable/navigation_settings_selector"
+        android:title="@string/action_settings"
         app:showAsAction="always"/>
 
 </menu>

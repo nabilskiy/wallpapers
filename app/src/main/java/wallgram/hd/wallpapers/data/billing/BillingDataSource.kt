@@ -2,6 +2,7 @@ package wallgram.hd.wallpapers.data.billing
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -13,6 +14,7 @@ import com.android.billingclient.api.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import wallgram.hd.wallpapers.YEAR_SKU
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -20,12 +22,13 @@ import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 import kotlin.math.min
 
+
 private const val RECONNECT_TIMER_START_MILLISECONDS = 1L * 1000L
 private const val RECONNECT_TIMER_MAX_TIME_MILLISECONDS = 1000L * 60L * 15L // 15 minutes
 private const val SKU_DETAILS_REQUERY_TIME = 1000L * 60L * 60L * 4L // 4 hours
 
-class BillingDataSource @Inject constructor(
-    application: Application,
+class BillingDataSource constructor(
+    application: Context,
     private val defaultScope: CoroutineScope,
     knownInappSKUs: Array<String>?,
     knownSubscriptionSKUs: Array<String>?,
@@ -184,6 +187,16 @@ class BillingDataSource @Inject constructor(
         val skuDetailsFlow = skuDetailsMap[sku]!!
         return skuDetailsFlow.mapNotNull { skuDetails ->
             skuDetails?.title
+        }
+    }
+
+    fun getSkuCurrencyCode(sku: String = YEAR_SKU): Flow<String> {
+        val skuDetailsFlow = skuDetailsMap[sku]!!
+        return skuDetailsFlow.mapNotNull { skuDetails ->
+            val currencyCode = skuDetails?.priceCurrencyCode ?: "USD"
+
+            val symbol = Currency.getInstance(currencyCode).symbol
+            "0 $symbol"
         }
     }
 
@@ -667,7 +680,7 @@ class BillingDataSource @Inject constructor(
         // Standard boilerplate double check locking pattern for thread-safe singletons.
         @JvmStatic
         fun getInstance(
-            application: Application,
+            application: Context,
             defaultScope: CoroutineScope,
             knownInappSKUs: Array<String>?,
             knownSubscriptionSKUs: Array<String>?,

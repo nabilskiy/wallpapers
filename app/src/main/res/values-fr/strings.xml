@@ -68,4 +68,5 @@
     <string name="wallpaper_setted">Fonds d’écran sont installés</string>
     <string name="image_dowloaded">Image est téléchargée</string>
     <string name="recommend">Recommandons</string>
+    <string name="connection_error">Connection error</string>
 </resources>

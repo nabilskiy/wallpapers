@@ -1,130 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<wallgram.hd.wallpapers.presentation.base.views.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.wallpapers.WallpapersFragment">
+    android:gravity="bottom"
+    app:umanoOverlay="true"
+    app:umanoPanelHeight="0dp"
+    app:umanoShadowHeight="0dp">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/list"
+    <wallgram.hd.wallpapers.views.WindowInsetsConstraintLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" />
+        tools:context=".presentation.wallpapers.WallpapersFragment">
 
-    <wallgram.hd.wallpapers.views.FlowLayout
-        android:id="@+id/chip_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:alpha="0"
-        android:visibility="visible"
-        app:flChildSpacing="8dp"
-        app:flMaxRows="2"
-        app:flRowSpacing="8dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        <wallgram.hd.wallpapers.views.blur.ECardFlowLayout
+            android:id="@+id/ecardflow_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false">
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp"
+                android:layout_marginBottom="118dp"
+                android:orientation="horizontal"
+                android:paddingStart="54dp"
+                android:paddingEnd="54dp" />
+        </wallgram.hd.wallpapers.views.blur.ECardFlowLayout>
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="86dp"
-        android:background="#B304030C"
-        android:fitsSystemWindows="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/wallpaper_menu"
-        app:navigationIcon="@drawable/ic_back"
-        app:navigationIconTint="#BDBDBD">
-
-        <TextView
-            android:id="@+id/title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0"
-            android:fontFamily="@font/roboto_medium"
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:text="@string/similar_wallpapers"
-            android:textColor="#E6FFFFFF"
-            android:textSize="20sp" />
-
-    </com.google.android.material.appbar.MaterialToolbar>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/download_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
-        android:fontFamily="@font/roboto_medium"
-        android:includeFontPadding="false"
-        android:letterSpacing="0.03"
-        android:minWidth="136dp"
-        android:stateListAnimator="@null"
-        android:text="@string/download"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="12sp"
-        app:backgroundTint="#B304030C"
-        app:layout_constraintEnd_toStartOf="@id/install_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/install_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
-        android:fontFamily="@font/roboto_medium"
-        android:includeFontPadding="false"
-        android:letterSpacing="0.03"
-        android:minWidth="136dp"
-        android:stateListAnimator="@null"
-        android:text="@string/install_wallpaper"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="12sp"
-        app:backgroundTint="#B304030C"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/download_btn"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fitsSystemWindows="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        tools:context=".ui.wallpapers.WallpapersFragment">
-
-        <LinearLayout
-            android:id="@+id/bottom_sheet"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_line"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:behavior_hideable="false"
-            app:behavior_peekHeight="62dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            android:fitsSystemWindows="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/wallpaper_menu"
+            app:navigationIcon="@drawable/ic_back" />
+
+        <wallgram.hd.wallpapers.presentation.base.FavoriteView
+            android:id="@+id/favorite_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:outlineProvider="none"
+            android:src="@drawable/ic_not_favorite"
+            app:backgroundTint="#4D000000"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@id/download_btn"
+            app:layout_constraintEnd_toStartOf="@id/download_btn"
+            app:layout_constraintTop_toTopOf="@id/download_btn"
+            app:tint="@android:color/white" />
 
 
-            <ImageView
-                android:id="@+id/line_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:src="@drawable/ic_line" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/download_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:outlineProvider="none"
+            android:src="@drawable/ic_file_download"
+            app:backgroundTint="#4D000000"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@android:color/white" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/bottom_sheet_fragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/similar_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:outlineProvider="none"
+            android:src="@drawable/ic_similar"
+            app:backgroundTint="#4D000000"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@id/download_btn"
+            app:layout_constraintStart_toEndOf="@id/download_btn"
+            app:layout_constraintTop_toTopOf="@id/download_btn"
+            app:tint="@android:color/white" />
+
+
+    </wallgram.hd.wallpapers.views.WindowInsetsConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/sliding_up_panel_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</wallgram.hd.wallpapers.presentation.base.views.slidinguppanel.SlidingUpPanelLayout>

@@ -7,5 +7,10 @@
     <dimen name="activity_margin_quarter">4dp</dimen>
     <dimen name="doneSize">16dp</dimen>
     <dimen name="activity_margin_content">24dp</dimen>
+    
+    <dimen name="header_text_size_small">22sp</dimen>
+    <dimen name="header_text_size_normal">28sp</dimen>
+
+    <dimen name="defaultVerticalPadding">50dp</dimen>
 
 </resources>

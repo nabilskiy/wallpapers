@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wallgram.hd.wallpapers.presentation.base.ColorView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="58dp"
+    android:layout_height="58dp"
+    android:fontFamily="@font/roboto_bold"
+    android:gravity="center"
+    android:includeFontPadding="false"
+    android:textSize="12sp"
+    tools:text="Blue" />

@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#252831</color>
-    <color name="colorPrimaryDark">#1B1928</color>
+    <color name="colorPrimaryDark">#1C1C1E</color>
     <color name="color_secondary">#FFDF00</color>
     <color name="color_secondary_variant">#D2B803</color>
     <color name="color_status_bar">#0004030C</color>
-    <color name="colorWhite">#FFFFFF</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000000</color>
     <color name="colorGray">#5c5e65</color>
-    <color name="colorYellow">#F5C901</color>
+    <color name="colorYellow">#FFCC00</color>
     <color name="colorGrayText">#929498</color>
 
-    <color name="colorBackground">#232035</color>
+    <color name="colorBackground">#1C1C1E</color>
+    <color name="colorNavigationBar">#141414</color>
     <color name="colorButtonBackground">#B304030C</color>
 
+
     <color name="grey_60">#666666</color>
+
+    <color name="color_info_background">#1F2127</color>
+    <color name="color_info_title_text">#A5A5A5</color>
 
 
     <color name="color_tag_1">#f44336</color>
@@ -45,5 +51,30 @@
         <item>@color/color_tag_12</item>
         <item>@color/color_tag_13</item>
     </array>
+    
+    <color name="color_silver_start">#E6E6E7</color>
+    <color name="color_silver_end">#BBBBBB</color>
+
+    <color name="color_blue_start">#5BC4FF</color>
+    <color name="color_blue_end">#5599FF</color>
+
+    <color name="color_pink_start">#E85BFF</color>
+    <color name="color_pink_end">#A71CD8</color>
+
+    <color name="color_red_start">#FF5B65</color>
+    <color name="color_red_end">#E23842</color>
+
+    <color name="color_gold_start">#FAD722</color>
+    <color name="color_gold_end">#F2BD00</color>
+
+    <color name="color_white_start">#FFFFFF</color>
+    <color name="color_white_end">#FFFFFF</color>
+
+    <color name="color_black_start">#696969</color>
+    <color name="color_black_end">#131313</color>
+
+    <color name="color_green_start">#18FB8E</color>
+    <color name="color_green_end">#07B418</color>
+
 
 </resources>

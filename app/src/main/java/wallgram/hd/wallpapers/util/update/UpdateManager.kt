@@ -91,8 +91,6 @@ class UpdateManager private constructor(private val activity: Activity,
         }
     }
 
-
-
     companion object {
         const val UPDATE_REQ_CODE = 1010
     }

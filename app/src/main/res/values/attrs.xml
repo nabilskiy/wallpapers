@@ -12,41 +12,6 @@
         <attr name="period_field" format="string"/>
         <attr name="discount_field" format="string"/>
     </declare-styleable>
-    <declare-styleable name="BigImageView">
-        <attr format="enum" name="initScaleType">
-            <enum name="center" value="0"/>
-            <enum name="centerCrop" value="1"/>
-            <enum name="centerInside" value="2"/>
-            <enum name="fitCenter" value="3"/>
-            <enum name="fitEnd" value="4"/>
-            <enum name="fitStart" value="5"/>
-            <enum name="fitXY" value="6"/>
-            <enum name="custom" value="7"/>
-            <enum name="start" value="8"/>
-        </attr>
-        <attr format="boolean" name="tapToRetry"/>
-        <attr format="boolean" name="optimizeDisplay"/>
-        <!-- A drawable to be be used as a failure image. -->
-        <attr name="failureImage" format="reference"/>
-        <attr name="failureImageInitScaleType" format="enum">
-            <enum name="center" value="0" />
-            <enum name="centerCrop" value="1" />
-            <enum name="centerInside" value="2" />
-            <enum name="fitCenter" value="3" />
-            <enum name="fitEnd" value="4" />
-            <enum name="fitStart" value="5" />
-            <enum name="fitXY" value="6" />
-        </attr>
-        <attr name="thumbnailScaleType" format="enum">
-            <enum name="center" value="0" />
-            <enum name="centerCrop" value="1" />
-            <enum name="centerInside" value="2" />
-            <enum name="fitCenter" value="3" />
-            <enum name="fitEnd" value="4" />
-            <enum name="fitStart" value="5" />
-            <enum name="fitXY" value="6" />
-        </attr>
-    </declare-styleable>
 
     <declare-styleable name="FlowLayout">
         <attr name="flFlow" format="boolean"/>
@@ -95,5 +60,49 @@
         </attr>
         <attr name="umanoScrollInterpolator" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="Blur">
+
+        <attr name="useTextureView" format="boolean" />
+        <attr name="blurRadius" format="float" />
+        <attr name="blurTextureScale" format="float" />
+        <attr name="blurPaddingVertical" format="float" />
+        <attr name="useChildAlphaAsMask" format="boolean" />
+        <attr name="updateMode" format="enum">
+            <enum name="continuously" value="0" />
+            <enum name="onScroll" value="1" />
+            <enum name="manually" value="2" />
+        </attr>
+
+    </declare-styleable>
+
+    <declare-styleable name="attr">
+        <!-- Page switching time, default 1200ms -->
+        <attr name="switchTime" format="integer" />
+
+        <!-- Page expanding time, default 700ms -->
+        <attr name="expandTime" format="integer" />
+
+        <!-- Page expanding mode, click or slide up to expand, default slide_up -->
+        <attr name="expandMode">
+            <enum name="slide_up" value="10" />
+            <enum name="click" value="11" />
+        </attr>
+
+        <!-- The number of pages outside the screen, default 3 -->
+        <attr name="preloadPageNum" format="integer" />
+
+        <!-- The shortest sliding distance to trigger the switch, default context.getScaledTouchSlop() -->
+        <attr name="touchSlop" format="integer" />
+
+        <!-- The maximum angle of rotation, default 5 -->
+        <attr name="maxRotateY" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="attr_layout">
+        <!-- The duration of Page switching animation, default 300ms -->
+        <attr name="switchAnimTime" format="integer" />
+    </declare-styleable>
+
 
 </resources>

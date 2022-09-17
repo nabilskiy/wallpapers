@@ -81,7 +81,7 @@
 
     <string name="red" translatable="false">Red</string>
     <string name="orange" translatable="false">Orange</string>
-    <string name="yellow" translatable="false">Yellow</string>
+    <string name="gold" translatable="false">Gold</string>
     <string name="green" translatable="false">Green</string>
     <string name="blue" translatable="false">Blue</string>
     <string name="violet" translatable="false">Violet</string>
@@ -96,7 +96,7 @@
     <string-array name="colors_name">
         <item>@string/red</item>
         <item>@string/orange</item>
-        <item>@string/yellow</item>
+        <item>@string/gold</item>
         <item>@string/green</item>
         <item>@string/turquoise</item>
         <item>@string/blue</item>
@@ -123,5 +123,7 @@
     <string name="wallpaper_setted">Wallpaper setted</string>
     <string name="image_dowloaded">Image downloaded</string>
     <string name="recommend">Recommend</string>
+    <string name="connection_error">Connection error</string>
+    <string name="discover">Discover</string>
 
 </resources>

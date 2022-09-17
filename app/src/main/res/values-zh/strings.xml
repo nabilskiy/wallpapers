@@ -68,4 +68,5 @@
     <string name="wallpaper_setted">墙纸集</string>
     <string name="image_dowloaded">图片已上传</string>
     <string name="recommend">推荐</string>
+    <string name="connection_error">Connection error</string>
 </resources>

@@ -55,19 +55,6 @@
     <string name="install_wallpaper">Установить</string>
     <string name="download">Загрузить</string>
 
-    <string name="red">Красный</string>
-    <string name="orange">Оранжевый</string>
-    <string name="yellow">Желтый</string>
-    <string name="green">Зеленый</string>
-    <string name="blue">Голубой</string>
-    <string name="violet">Фиолетовый</string>
-    <string name="pink">Розовый</string>
-    <string name="brown">Коричневый</string>
-    <string name="black">Черный</string>
-    <string name="white">Белый</string>
-    <string name="gray">Серый</string>
-    <string name="turquoise">Бирюзовый</string>
-    <string name="silver">Серебряный</string>
     <string name="all">Все</string>
     <string name="color">Цвет</string>
     <string name="best_wallpaper">ЛУЧШИЕ ОБОИ ДЛЯ</string>
@@ -83,4 +70,5 @@
     <string name="wallpaper_setted">Обои установлены</string>
     <string name="image_dowloaded">Изображение загружено</string>
     <string name="recommend">Рекомендуем</string>
+    <string name="connection_error">Connection error</string>
 </resources>
