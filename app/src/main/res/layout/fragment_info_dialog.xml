@@ -10,5 +10,5 @@
     android:paddingStart="22dp"
     android:paddingTop="36dp"
     android:paddingEnd="22dp"
-    android:paddingBottom="34dp"
+    android:paddingBottom="90dp"
     tools:listitem="@layout/item_info" />

@@ -26,8 +26,8 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="56dp"
-                android:layout_marginBottom="118dp"
+                android:layout_marginTop="76dp"
+                android:layout_marginBottom="128dp"
                 android:orientation="horizontal"
                 android:paddingStart="54dp"
                 android:paddingEnd="54dp" />
@@ -42,48 +42,47 @@
             app:menu="@menu/wallpaper_menu"
             app:navigationIcon="@drawable/ic_back" />
 
-        <wallgram.hd.wallpapers.presentation.base.FavoriteView
-            android:id="@+id/favorite_btn"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/buttons_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:outlineProvider="none"
-            android:src="@drawable/ic_not_favorite"
-            app:backgroundTint="#4D000000"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toBottomOf="@id/download_btn"
-            app:layout_constraintEnd_toStartOf="@id/download_btn"
-            app:layout_constraintTop_toTopOf="@id/download_btn"
-            app:tint="@android:color/white" />
+            android:layout_marginBottom="26dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent">
 
+            <wallgram.hd.wallpapers.presentation.base.FavoriteView
+                android:id="@+id/favorite_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:outlineProvider="none"
+                android:src="@drawable/ic_not_favorite"
+                app:backgroundTint="#4D000000"
+                app:fabSize="mini"
+                app:tint="@android:color/white" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/download_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:outlineProvider="none"
-            android:src="@drawable/ic_file_download"
-            app:backgroundTint="#4D000000"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:tint="@android:color/white" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/download_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:outlineProvider="none"
+                android:src="@drawable/ic_file_download"
+                app:backgroundTint="#4D000000"
+                app:fabSize="normal"
+                app:tint="@android:color/white" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/similar_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:outlineProvider="none"
-            android:src="@drawable/ic_similar"
-            app:backgroundTint="#4D000000"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toBottomOf="@id/download_btn"
-            app:layout_constraintStart_toEndOf="@id/download_btn"
-            app:layout_constraintTop_toTopOf="@id/download_btn"
-            app:tint="@android:color/white" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/similar_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:outlineProvider="none"
+                android:src="@drawable/ic_similar"
+                app:backgroundTint="#4D000000"
+                app:fabSize="mini"
+                app:tint="@android:color/white" />
 
+        </LinearLayout>
 
     </wallgram.hd.wallpapers.views.WindowInsetsConstraintLayout>
 

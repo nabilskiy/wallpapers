@@ -277,19 +277,18 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 windowInsetsCompat
             }
 
+            slidingUpPanelFragmentContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
+                view.updatePadding(top = rect.top + windowInsetsCompat.systemWindowInsetTop)
+                windowInsetsCompat
+            }
+
             list.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
                 view.updatePadding(top = rect.top + windowInsetsCompat.systemWindowInsetTop, bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
                 windowInsetsCompat
             }
 
-            slidingUpPanelFragmentContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
-                view.updatePadding(top = rect.top + windowInsetsCompat.systemWindowInsetTop, bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
-                windowInsetsCompat
-            }
-
-
-            content.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
-                view.updatePadding(top = 0, bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
+            buttonsContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
+                view.updatePadding(bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
                 windowInsetsCompat
             }
 
