@@ -15,7 +15,7 @@ class BaseFiltersRepository @Inject constructor(
 ) : CategoriesRepository {
 
     override suspend fun filters(): CategoriesDomain {
-        val categories = cloudDataSource.filters()
+        val categories = cloudDataSource.categories()
         val colors = colorsDataSource.colors()
         return CategoriesDomain.Base(categories.map { it.map(mapper) }, colors.map { it.map(colorMapper) })
     }

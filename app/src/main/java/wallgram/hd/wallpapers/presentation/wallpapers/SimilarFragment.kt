@@ -50,14 +50,6 @@ class SimilarFragment : BaseFragment<SimilarViewModel, FragmentSimilarBinding>(
             override fun click(item: Pair<Int, Int>) {
                 viewModel.itemClicked(wallpaperRequest, item.first - 1)
             }
-
-        }, object: GenericAdapter.ClickListener<Unit>{
-            override fun click(item: Unit) {
-                if (parentFragment is ISlidingUpPanelLayoutHost) {
-                    (parentFragment as ISlidingUpPanelLayoutHost).hide()
-                }
-            }
-
         })
 
         viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
@@ -66,6 +58,11 @@ class SimilarFragment : BaseFragment<SimilarViewModel, FragmentSimilarBinding>(
 
         with(binding) {
 
+            toolbar.handleClick {
+                if (parentFragment is ISlidingUpPanelLayoutHost) {
+                    (parentFragment as ISlidingUpPanelLayoutHost).hide()
+                }
+            }
 
             val gridLayoutManager =
                 GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false).apply {

@@ -36,8 +36,7 @@ class SimilarViewModel @Inject constructor(
     val wallpapersLiveData: MutableLiveData<GalleriesUi> get() = wallpapersLiveDataPrivate
 
     init {
-        wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(ToolbarUi(resourceProvider.string(
-            R.string.similar_wallpapers)), ProgressUi()))
+        wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(ProgressUi()))
     }
 
     fun fetch(wallpaperRequest: WallpaperRequest) {

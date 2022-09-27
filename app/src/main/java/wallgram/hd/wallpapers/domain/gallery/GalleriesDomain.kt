@@ -109,8 +109,6 @@ interface GalleriesDomain {
             ): GalleriesUi {
                 val result = mutableListOf<ItemUi>()
 
-                result.add(ToolbarUi(resourceProvider.string(R.string.similar_wallpapers)))
-
                 when {
                     source.isEmpty() -> result.add(ProgressUi())
                     source.size == 1 && source[0] is GalleryDomain.Error ->

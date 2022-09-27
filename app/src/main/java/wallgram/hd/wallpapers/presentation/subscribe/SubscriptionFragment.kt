@@ -66,9 +66,6 @@ class SubscriptionFragment : BaseFragment<SubscriptionViewModel, FragmentSubscri
                 viewModel.buySku(requireActivity(), sub, currentSub)
             }
 
-            radioGroup.setSelectedButton(yearSub)
-            setSubText(yearSub)
-
             radioGroup.setOnClickListener(object : OnCustomRadioButtonListener {
                 override fun onClick(view: View) {
                     val v = when (view.id) {
@@ -86,6 +83,12 @@ class SubscriptionFragment : BaseFragment<SubscriptionViewModel, FragmentSubscri
                 override fun map(data: List<Subscription>) {
                     binding.monthSub.map(data[0])
                     binding.yearSub.map(data[1])
+
+                    if(!binding.monthSub.isSelected && !binding.yearSub.isSelected){
+                        binding.radioGroup.setSelectedButton(binding.yearSub)
+                        setSubText(binding.yearSub)
+                    }
+
                 }
             })
         }
@@ -93,22 +96,6 @@ class SubscriptionFragment : BaseFragment<SubscriptionViewModel, FragmentSubscri
         viewModel.init()
     }
 
-        override fun onStart() {
-        super.onStart()
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireContext(), R.color.color_status_bar)
-        requireActivity().window.setFlags(
-            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-            WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
-        )
-    }
-
-    override fun onStop() {
-        super.onStop()
-        requireActivity().window.statusBarColor =
-            ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark)
-        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
-    }
 
     private fun setSubText(view: OneFieldCustomRadioButton) {
         binding.textSub.text = getString(

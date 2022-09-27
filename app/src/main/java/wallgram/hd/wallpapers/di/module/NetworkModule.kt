@@ -7,10 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import wallgram.hd.wallpapers.BuildConfig
 import wallgram.hd.wallpapers.DisplayProvider
-import wallgram.hd.wallpapers.core.data.ProvideConverterFactory
-import wallgram.hd.wallpapers.core.data.ProvideInterceptor
-import wallgram.hd.wallpapers.core.data.ProvideOkHttpClientBuilder
-import wallgram.hd.wallpapers.core.data.ProvideRetrofitBuilder
+import wallgram.hd.wallpapers.core.data.*
 import wallgram.hd.wallpapers.data.filters.FiltersService
 import wallgram.hd.wallpapers.data.pic.PicService
 import wallgram.hd.wallpapers.data.remote.LanguageInterceptor
@@ -34,8 +31,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClientBuilder(interceptor: ProvideInterceptor): ProvideOkHttpClientBuilder =
-        ProvideOkHttpClientBuilder.Base(interceptor)
+    fun provideOkHttpClientBuilder(interceptor: ProvideInterceptor,
+    languageInterceptor: ProvideLanguageInterceptor,
+    resolutionInterceptor: ProvideResolutionInterceptor): ProvideOkHttpClientBuilder =
+        ProvideOkHttpClientBuilder.Base(interceptor, languageInterceptor, resolutionInterceptor)
 
     @Provides
     @Singleton
@@ -81,12 +80,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideLanguageInterceptor(locale: LocalizationApplicationDelegate): Interceptor =
-        LanguageInterceptor(locale)
+    fun provideLanguageInterceptor(locale: LocalizationApplicationDelegate): ProvideLanguageInterceptor =
+        ProvideLanguageInterceptor.Base(locale)
 
     @Provides
     @Singleton
-    fun provideResolutionInterceptor(displayProvider: DisplayProvider): Interceptor =
-        ResolutionInterceptor(displayProvider)
+    fun provideResolutionInterceptor(displayProvider: DisplayProvider): ProvideResolutionInterceptor =
+        ProvideResolutionInterceptor.Base(displayProvider)
 
 }

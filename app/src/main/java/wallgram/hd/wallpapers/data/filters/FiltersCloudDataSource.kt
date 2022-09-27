@@ -6,6 +6,7 @@ import wallgram.hd.wallpapers.core.HandleError
 interface FiltersCloudDataSource {
 
     suspend fun filters(): List<FiltersCloud>
+    suspend fun categories(): List<FiltersCloud>
 
     class Base(
         private val filtersService: FiltersService,
@@ -14,6 +15,10 @@ interface FiltersCloudDataSource {
 
         override suspend fun filters() = handle {
             filtersService.filters()
+        }
+
+        override suspend fun categories() = handle {
+            filtersService.categories()
         }
     }
 

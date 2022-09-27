@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -50,11 +51,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
         }
 
         binding.toolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.action_search) {
-                viewModel.search()
+            when(it.itemId){
+                R.id.action_search -> viewModel.search()
+                R.id.action_premium -> viewModel.navigateSubscriptions()
             }
+
             false
         }
+
+
 
         val recycledViewPool: RecyclerView.RecycledViewPool = NoLimitRecycledViewPool()
 

@@ -9,12 +9,10 @@ import wallgram.hd.wallpapers.presentation.base.adapter.ViewHolderFactoryChain
 import wallgram.hd.wallpapers.presentation.gallery.*
 
 class SimilarAdapter(
-    clickListener: ClickListener<Pair<Int, Int>>,
-    toolbarClickListener: ClickListener<Unit>
+    clickListener: ClickListener<Pair<Int, Int>>
 ) : GenericAdapter.Base(
     ProgressViewHolderChain(
-        ToolbarViewHolderChain(
-            toolbarClickListener,
+
             FullSizeErrorViewHolderChain(
                 BottomErrorViewHolderChain(
                     BottomProgressViewHolderChain(
@@ -23,7 +21,6 @@ class SimilarAdapter(
                             clickListener,
                             ViewHolderFactoryChain.Exception()
                         )
-                    )
                 )
             )
         )

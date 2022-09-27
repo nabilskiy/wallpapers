@@ -54,5 +54,9 @@ class HomeViewModel @Inject constructor(
         modo.forward(Screens.Search())
     }
 
+    fun navigateSubscriptions(){
+        modo.forward(Screens.Subscription())
+    }
+
 
 }

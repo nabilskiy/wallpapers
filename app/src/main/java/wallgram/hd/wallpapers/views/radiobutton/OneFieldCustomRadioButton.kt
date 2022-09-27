@@ -86,8 +86,7 @@ class OneFieldCustomRadioButton @JvmOverloads constructor(
         check(isPurchased)
     }
 
-
-    fun check(isChecked: Boolean){
+    fun check(isChecked: Boolean) {
         radioButton.isChecked = isChecked
     }
 

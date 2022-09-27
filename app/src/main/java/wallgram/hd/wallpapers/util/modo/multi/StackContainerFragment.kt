@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.presentation.base.Screens
 import wallgram.hd.wallpapers.presentation.feed.FeedsFragment
 import wallgram.hd.wallpapers.presentation.history.HistoryFragment
 import wallgram.hd.wallpapers.presentation.main.MainFragment

@@ -65,7 +65,7 @@ interface GalleryUi: ItemUi {
             changeFavorite.changeFavorite(map(Mapper.History()))
         }
 
-        override fun uri() = Pair(preview, original)
+        override fun uri() = Pair(preview, links.portrait ?: original)
         override fun isFavorite() = isFavorite
     }
 
