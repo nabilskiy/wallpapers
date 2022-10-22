@@ -222,6 +222,10 @@ public class ECardFlowLayout extends FrameLayout {
     private void startTrans(int targetPosition, ImageView targetImage, RecyclingBitmapDrawable startBp, RecyclingBitmapDrawable endBp) {
         if (endBp == null)
             endBp = loadBitmap(targetPosition);
+
+        if(startBp == null || endBp == null)
+            return;
+
         TransitionDrawable td = new TransitionDrawable(new Drawable[]{startBp, endBp});
         targetImage.setImageDrawable(td);
         td.setCrossFadeEnabled(true);

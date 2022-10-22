@@ -11,6 +11,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/subscribe_bg" />
 
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,22 +26,13 @@
             android:visibility="visible"
             tools:context=".presentation.subscribe.SubscriptionFragment">
 
-            <ImageButton
-                android:id="@+id/back_btn"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_clear"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="#E6FFFFFF" />
 
             <TextView
                 android:id="@+id/title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="180dp"
+                android:layout_marginTop="160dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Wallgram Pro"
                 android:textSize="30sp"
@@ -52,21 +44,77 @@
                 android:id="@+id/description_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="56dp"
+                android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="40dp"
-                android:layout_marginEnd="56dp"
+                android:drawablePadding="8dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="10dp"
                 android:maxLines="4"
-                android:text="100% No Ads \nUnlimited Wallpaper Downloads\nDaily Wallpapers Update\nFull access to the wallpaper changer"
+                android:text="100% No Ads"
                 android:textColor="#E9E9EB"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_text" />
+                app:drawableStartCompat="@drawable/ic_check_small" />
 
+            <TextView
+                android:id="@+id/description_text_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="10dp"
+                android:maxLines="4"
+                android:text="Unlimited Wallpaper Downloads"
+                android:textColor="#E9E9EB"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_check_small" />
+
+            <TextView
+                android:id="@+id/description_text_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="10dp"
+                android:maxLines="4"
+                android:text="Daily Wallpapers Update"
+                android:textColor="#E9E9EB"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_check_small" />
+
+            <TextView
+                android:id="@+id/description_text_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.01"
+                android:lineSpacingExtra="10dp"
+                android:maxLines="4"
+                android:text="Full access to the wallpaper changer"
+                android:textColor="#E9E9EB"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_check_small" />
 
             <wallgram.hd.wallpapers.views.radiobutton.CustomRadioGroup
                 android:id="@+id/radio_group"
@@ -134,4 +182,12 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:src="@drawable/ic_clear"
+        app:tint="#E6FFFFFF" />
 </FrameLayout>

@@ -75,13 +75,13 @@ class SplashActivity : AppCompatActivity() {
                     return
                 }
 
-                application.showAdIfAvailable(
-                    this@SplashActivity,
-                    object : App.OnShowAdCompleteListener {
-                        override fun onShowAdComplete() {
-                            startMainActivity()
-                        }
-                    })
+//                application.showAdIfAvailable(
+//                    this@SplashActivity,
+//                    object : App.OnShowAdCompleteListener {
+//                        override fun onShowAdComplete() {
+//                            startMainActivity()
+//                        }
+//                    })
             }
         }
         countDownTimer.start()

@@ -2,6 +2,7 @@ package wallgram.hd.wallpapers.domain.gallery
 
 import wallgram.hd.wallpapers.data.favorites.FavoritesCacheDataSource
 import wallgram.hd.wallpapers.data.favorites.IsFavorite
+import wallgram.hd.wallpapers.data.gallery.SaveSelect
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.model.Links
 import wallgram.hd.wallpapers.presentation.favorite.ChangeFavorite
@@ -19,11 +20,12 @@ interface GalleryDomain {
         private val preview: String,
         private val original: String,
         private val links: Links,
-        private val filter: Int
+        private val filter: Int,
+        private val requestId: String = ""
     ) :
         GalleryDomain {
         override fun <T> map(mapper: Mapper<T>): T =
-            mapper.map(id, width, height, preview, original, links, filter)
+            mapper.map(id, width, height, preview, original, links, filter, requestId)
     }
 
     class Error(private val e: Exception) : GalleryDomain {
@@ -37,10 +39,11 @@ interface GalleryDomain {
         private val preview: String,
         private val original: String,
         private val links: Links,
-        private val filter: Int
+        private val filter: Int,
+        private val requestId: String
     ) : GalleryDomain {
         override fun <T> map(mapper: Mapper<T>) =
-            mapper.map(id, width, height, preview, original, links, filter)
+            mapper.map(id, width, height, preview, original, links, filter, requestId)
     }
 
     interface Mapper<T> {
@@ -51,14 +54,16 @@ interface GalleryDomain {
             preview: String,
             original: String,
             links: Links,
-            filter: Int
+            filter: Int,
+            requestId: String
         ): T
 
         fun map(e: Exception): T
 
         class Base @Inject constructor(
             private val cacheDataSource: FavoritesCacheDataSource,
-            private val changeFavorite: ChangeFavorite
+            private val changeFavorite: ChangeFavorite,
+            private val navigateGallery: NavigateGallery
         ) :
             Mapper<GalleryUi> {
 
@@ -68,7 +73,8 @@ interface GalleryDomain {
                 height: Int,
                 preview: String,
                 original: String,
-                links: Links, filter: Int
+                links: Links, filter: Int,
+                requestId: String
             ) = GalleryUi.Base(
                 id,
                 width,
@@ -77,8 +83,10 @@ interface GalleryDomain {
                 original,
                 links,
                 filter,
+                requestId,
                 cacheDataSource.isFavorite(id),
                 changeFavorite,
+                navigateGallery,
             )
 
             override fun map(e: Exception): GalleryUi = GalleryUi.Error(e)

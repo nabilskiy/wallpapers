@@ -15,6 +15,11 @@ object Features {
         override val anchorPoint: Float = 1f
     }
 
+    class Wallpaper(private val wallpaperRequest: WallpaperRequest): Feature{
+        override val fragment: BaseFragment<*, *> = WallpapersFragment.newInstance(wallpaperRequest)
+        override val anchorPoint: Float = 1f
+    }
+
     class Info(private val id: Int): Feature{
         override val fragment: BaseFragment<*, *> = InfoDialogFragment.create(id)
         override val anchorPoint: Float = 1f

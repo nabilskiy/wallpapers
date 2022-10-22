@@ -2,6 +2,7 @@ package wallgram.hd.wallpapers.presentation.gallery
 
 import android.util.Log
 import wallgram.hd.wallpapers.data.gallery.GalleryCache
+import wallgram.hd.wallpapers.data.gallery.SaveSelect
 import wallgram.hd.wallpapers.domain.gallery.GalleryDomain
 import wallgram.hd.wallpapers.model.Links
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
@@ -9,11 +10,11 @@ import wallgram.hd.wallpapers.presentation.base.adapter.MyView
 import wallgram.hd.wallpapers.presentation.favorite.ChangeFavorite
 import wallgram.hd.wallpapers.presentation.filters.FilterUi
 
-interface GalleryUi: ItemUi {
+interface GalleryUi : ItemUi {
 
     fun <T> map(mapper: Mapper<T>): T
 
-    class Error(private val e: Exception): ItemUi, GalleryUi{
+    class Error(private val e: Exception) : ItemUi, GalleryUi {
         override fun type(): Int {
             return 12
         }
@@ -37,8 +38,10 @@ interface GalleryUi: ItemUi {
         private val original: String,
         private val links: Links,
         private val filter: Int,
+        private val requestId: String,
         private val isFavorite: Boolean,
-        private val changeFavorite: ChangeFavorite
+        private val changeFavorite: ChangeFavorite,
+        private val navigateGallery: NavigateGallery
     ) : ItemUi, GalleryUi {
 
         override fun getSpanSize(spanCount: Int, position: Int) = 1
@@ -47,6 +50,9 @@ interface GalleryUi: ItemUi {
 
         override fun show(vararg views: MyView) {
             views[0].loadImage(preview, original)
+            views[0].handleClick {
+                navigateGallery.navigate(id, requestId)
+            }
         }
 
         override fun id(): String = id.toString()
@@ -78,6 +84,7 @@ interface GalleryUi: ItemUi {
             original: String,
             links: Links
         ): T
+
         fun map(e: Exception): T
 
         class Favorite : Mapper<GalleryCache.Base> {
@@ -89,14 +96,27 @@ interface GalleryUi: ItemUi {
                 original: String,
                 links: Links
             ): GalleryCache.Base =
-                GalleryCache.Base(id, width, height, preview, original, 0, width, height, links, false)
+                GalleryCache.Base(
+                    id,
+                    width,
+                    height,
+                    preview,
+                    original,
+                    0,
+                    width,
+                    height,
+                    links,
+                    false
+                )
 
-            override fun map(e: Exception) = GalleryCache.Base(-1, 0, 0, "", "", 0, 0, 0, Links("", "", ""), false)
+            override fun map(e: Exception) =
+                GalleryCache.Base(-1, 0, 0, "", "", 0, 0, 0, Links("", "", ""), false)
 
         }
 
-        class History: Mapper<GalleryCache.Base>{
-            override fun map(e: Exception) = GalleryCache.Base(-1, 0, 0, "", "", 0, 0, 0, Links("", "", ""), true)
+        class History : Mapper<GalleryCache.Base> {
+            override fun map(e: Exception) =
+                GalleryCache.Base(-1, 0, 0, "", "", 0, 0, 0, Links("", "", ""), true)
 
 
             override fun map(
@@ -107,7 +127,18 @@ interface GalleryUi: ItemUi {
                 original: String,
                 links: Links
             ): GalleryCache.Base =
-                GalleryCache.Base(id, width, height, preview, original, 0, width, height, links, true)
+                GalleryCache.Base(
+                    id,
+                    width,
+                    height,
+                    preview,
+                    original,
+                    0,
+                    width,
+                    height,
+                    links,
+                    true
+                )
 
         }
 

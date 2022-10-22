@@ -70,5 +70,6 @@
     <string name="image_dowloaded">Image downloaded</string>
     <string name="recommend">Recommend</string>
     <string name="connection_error">Connection error</string>
+    <string name="wallpaper_resolution">Wallpaper resolution</string>
 
 </resources>

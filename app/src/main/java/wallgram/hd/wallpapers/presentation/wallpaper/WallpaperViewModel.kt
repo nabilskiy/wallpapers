@@ -98,21 +98,11 @@ class WallpaperViewModel @Inject constructor(
         return downloadManager.apply(url, i)
     }
 
-    fun save(position: Int){
-        val request = interactor.read().third
-        interactor.clear()
-        interactor.save(request, position)
-    }
-
-    fun update(position: Int){
-        val request = interactor.read().third
-        interactor.update(request, position)
-    }
-
     fun loadMoreData(lastVisibleItemPosition: Int) {
-        if (interactor.read().third.needToLoadMore())
+        val request = interactor.read().third
+        if (request.needToLoadMore())
             if (lastVisibleItemPosition != lastVisibleItemPos) {
-                if (interactor.needToLoadMoreData(lastVisibleItemPosition)) {
+                if (interactor.needToLoadMoreData(request.itemId(), lastVisibleItemPosition)) {
                     lastVisibleItemPos = lastVisibleItemPosition
                     loadData()
                 }

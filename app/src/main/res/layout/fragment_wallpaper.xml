@@ -59,7 +59,9 @@
                 android:src="@drawable/ic_not_favorite"
                 app:backgroundTint="#4D000000"
                 app:fabSize="mini"
-                app:tint="@android:color/white" />
+                app:maxImageSize="18dp"
+                app:tint="@android:color/white"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/download_btn"
@@ -69,7 +71,9 @@
                 android:src="@drawable/ic_file_download"
                 app:backgroundTint="#4D000000"
                 app:fabSize="normal"
-                app:tint="@android:color/white" />
+                app:maxImageSize="24dp"
+                app:tint="@android:color/white"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/similar_btn"
@@ -77,10 +81,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:outlineProvider="none"
+                app:maxImageSize="18dp"
                 android:src="@drawable/ic_similar"
                 app:backgroundTint="#4D000000"
                 app:fabSize="mini"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </LinearLayout>
 

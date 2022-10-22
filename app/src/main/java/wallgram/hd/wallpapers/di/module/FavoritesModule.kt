@@ -51,17 +51,15 @@ class FavoritesModule {
 
     @Provides
     fun provideFavoritesInteractor(
-        favoritesRepository: FavoritesRepository,
+        repository: GalleryRepository,
         dispatchers: Dispatchers,
         handleError: HandleDomainError,
-        mapper: GalleryDomain.Mapper<GalleryUi>,
-        resourceProvider: ResourceProvider
+        mapper: GalleryDomain.Mapper<GalleryUi>
     ): FavoritesInteractor = FavoritesInteractor.Base(
-        GalleriesDomain.Mapper.Favorites(mapper, resourceProvider),
-        favoritesRepository,
+        GalleriesDomain.Mapper.Favorites(mapper),
+        repository,
         dispatchers, handleError
     )
-
 
     @Provides
     @Singleton

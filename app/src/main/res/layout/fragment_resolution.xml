@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="@string/wallpaper_resolution"
+            app:titleTextAppearance="@style/ToolbarTextStyle"
+            app:titleTextColor="#E6FFFFFF" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/resolutions_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="76dp"
+            android:paddingHorizontal="4dp" />
+
+        <!--        <RadioGroup-->
+        <!--            android:id="@+id/lang_group"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="16dp"-->
+        <!--            android:layout_marginTop="76dp"-->
+        <!--            android:layout_marginEnd="16dp"-->
+        <!--            android:paddingStart="4dp"-->
+        <!--            android:paddingEnd="4dp">-->
+
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/ukraine_item"-->
+        <!--                style="@style/LanguageRadioStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="1080x2400"-->
+        <!--                tools:ignore="HardcodedText" />-->
+
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/russia_item"-->
+        <!--                style="@style/LanguageRadioStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="1080x2340"-->
+        <!--                tools:ignore="HardcodedText" />-->
+
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/english_item"-->
+        <!--                style="@style/LanguageRadioStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="1080x1920"-->
+        <!--                tools:ignore="HardcodedText" />-->
+
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/deutsch_item"-->
+        <!--                style="@style/LanguageRadioStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="1080x2160"-->
+        <!--                tools:ignore="HardcodedText" />-->
+
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/espanol_item"-->
+        <!--                style="@style/LanguageRadioStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="720x1280"-->
+        <!--                tools:ignore="HardcodedText" />-->
+
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/fr_item"-->
+        <!--                style="@style/LanguageRadioStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="1080x2220"-->
+        <!--                tools:ignore="HardcodedText" />-->
+
+        <!--            <RadioButton-->
+        <!--                android:id="@+id/china_item"-->
+        <!--                style="@style/LanguageRadioStyle"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="720x1480"-->
+        <!--                tools:ignore="HardcodedText" />-->
+
+        <!--        </RadioGroup>-->
+
+    </FrameLayout>
+</androidx.core.widget.NestedScrollView>

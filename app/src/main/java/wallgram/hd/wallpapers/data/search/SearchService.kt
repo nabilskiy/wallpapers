@@ -1,11 +1,9 @@
 package wallgram.hd.wallpapers.data.search
 
-import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-import wallgram.hd.wallpapers.data.DisplayResolution
+import wallgram.hd.wallpapers.data.resolution.DisplayResolution
 import wallgram.hd.wallpapers.data.gallery.GalleryCloud
-import wallgram.hd.wallpapers.model.ServerResponse
 
 interface SearchService {
 

@@ -20,6 +20,7 @@ import kotlinx.android.parcel.RawValue
 import kotlinx.parcelize.Parcelize
 import wallgram.hd.wallpapers.presentation.history.HistoryFragment
 import wallgram.hd.wallpapers.presentation.settings.language.LanguageFragment
+import wallgram.hd.wallpapers.presentation.settings.resolution.ResolutionFragment
 import wallgram.hd.wallpapers.presentation.wallpapers.WallpapersFragment
 import kotlin.random.Random
 
@@ -83,6 +84,11 @@ object Screens {
     @Parcelize
     class Language: AppScreen("Language"){
         override fun create() = LanguageFragment()
+    }
+
+    @Parcelize
+    class Resolution: AppScreen("Resolution"){
+        override fun create() = ResolutionFragment()
     }
 
     @Parcelize

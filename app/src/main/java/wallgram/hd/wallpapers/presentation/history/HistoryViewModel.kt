@@ -23,24 +23,19 @@ class HistoryViewModel @Inject constructor(
     private val wallpapersLiveDataPrivate = MutableLiveData<GalleriesUi>()
     val wallpapersLiveData: MutableLiveData<GalleriesUi> get() = wallpapersLiveDataPrivate
 
+    init {
+        fetch()
+    }
+
     fun fetch() {
         wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(ProgressUi()))
-        loadData()
-    }
-
-    fun itemClicked(wallpaperRequest: WallpaperRequest, position: Int) {
-        interactor.save(wallpaperRequest, position)
-        modo.externalForward(Screens.Wallpaper())
-    }
-
-    fun observeUpdate(owner: LifecycleOwner, observer: Observer<Boolean>) =
-        update.observe(owner, observer)
-
-    private fun loadData() {
         handle {
             interactor.history(atFinish) { wallpapersLiveDataPrivate.value = it }
         }
     }
+    
+    fun observeUpdate(owner: LifecycleOwner, observer: Observer<Boolean>) =
+        update.observe(owner, observer)
 
     private val atFinish = {
 

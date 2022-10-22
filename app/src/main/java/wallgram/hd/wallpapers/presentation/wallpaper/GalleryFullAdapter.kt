@@ -1,5 +1,7 @@
 package wallgram.hd.wallpapers.presentation.wallpaper
 
+import wallgram.hd.wallpapers.presentation.ads.AdBannerUi
+import wallgram.hd.wallpapers.presentation.ads.AdBannerViewHolderChain
 import wallgram.hd.wallpapers.presentation.base.BottomProgressViewHolderChain
 import wallgram.hd.wallpapers.presentation.base.ProgressViewHolderChain
 import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
@@ -10,9 +12,11 @@ import wallgram.hd.wallpapers.presentation.gallery.GalleryViewHolderChain
 class GalleryFullAdapter(clickListener: ClickListener<GalleryUi>) : GenericAdapter.Base(
     ProgressViewHolderChain(
         BottomFullProgressViewHolderChain(
-            GalleryFullViewHolderChain(
-                clickListener,
-                ViewHolderFactoryChain.Exception()
+            AdBannerViewHolderChain(
+                GalleryFullViewHolderChain(
+                    clickListener,
+                    ViewHolderFactoryChain.Exception()
+                )
             )
         )
     )

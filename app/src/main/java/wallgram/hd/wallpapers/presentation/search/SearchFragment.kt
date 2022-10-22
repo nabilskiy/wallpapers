@@ -40,12 +40,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
 
         with(binding) {
 
-            val galleryAdapter = SearchAdapter(object : GenericAdapter.ClickListener<Pair<Int, Int>> {
-                override fun click(item: Pair<Int, Int>) {
-                    viewModel.itemClicked(WallpaperRequest.SEARCH(""), item.first)
-                }
-
-            })
+            val galleryAdapter = SearchAdapter()
 
             toolbar.setNavigationOnClickListener { viewModel.back() }
 
@@ -54,18 +49,20 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
                 it.map(galleryAdapter)
             }
 
+            viewModel.progressLiveData.observe(viewLifecycleOwner){ refreshing ->
+                refreshing.apply(binding.swipeRefreshLayout)
+            }
+
             searchText.isIconified = false
             searchText.setOnQueryTextListener(SimpleQueryListener(viewModel))
 
-            swipeRefreshLayout.setColorSchemeResources(R.color.colorYellow)
-            swipeRefreshLayout.setOnRefreshListener {
-                // wallpapersAdapter.refresh()
+            swipeRefreshLayout.apply {
+                setColorSchemeResources(R.color.colorYellow)
+                setOnRefreshListener {
+                    viewModel.reset()
+                    viewModel.search(query())
+                }
             }
-
-//            searchField.setStartIconOnClickListener {
-//                requireActivity().onBackPressed()
-//            }
-
 
             val gridLayoutManager =
                 GridLayoutManager(requireContext(), 3, GridLayoutManager.VERTICAL, false).apply {
@@ -80,7 +77,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
                         viewModel.loadMoreData(
-                            binding.searchText.query.toString(),
+                            query(),
                             gridLayoutManager.findLastVisibleItemPosition()
                         )
                     }
@@ -95,6 +92,8 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
 
         viewModel.init()
     }
+
+    private fun query() = binding.searchText.query.toString()
 
     override fun onDestroyView() {
         binding.searchText.setOnQueryTextListener(null)

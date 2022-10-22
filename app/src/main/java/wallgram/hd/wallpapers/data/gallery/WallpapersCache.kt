@@ -10,9 +10,9 @@ interface WallpapersCache {
     interface Save : wallgram.hd.wallpapers.core.Save<WallpaperCache>
     interface Read : wallgram.hd.wallpapers.core.Read<WallpaperCache>
     interface Remove : wallgram.hd.wallpapers.core.Remove<WallpaperCache>
-    interface Update : wallgram.hd.wallpapers.core.Update<WallpaperCache>
+  //  interface Update : wallgram.hd.wallpapers.core.Update<WallpaperCache>
 
-    interface Mutable : Save, Read, Remove, Update
+    interface Mutable : Save, Read, Remove
 
     class Base @Inject constructor() : Mutable {
 
@@ -26,14 +26,6 @@ interface WallpapersCache {
 
         override fun removeLast() {
             deque.pollLast()
-        }
-
-        override fun update(data: WallpaperCache) {
-            if (deque.isNotEmpty()) {
-                val index = deque.lastIndex
-                if (index > 0)
-                    deque[index - 1] = data
-            }
         }
 
     }

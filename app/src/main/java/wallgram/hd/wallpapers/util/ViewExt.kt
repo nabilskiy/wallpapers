@@ -10,9 +10,8 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.os.Build
 import android.os.Handler
-import android.text.Editable
-import android.text.InputFilter
-import android.text.TextWatcher
+import android.text.*
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -37,6 +36,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.presentation.start.ClickSpan
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
@@ -204,4 +204,27 @@ internal fun View?.findSuitableParent(): ViewGroup? {
 
     // If we reach here then we didn't find a CoL or a suitable content view so we'll fallback
     return fallback
+}
+
+fun TextView.makeClickable(
+    clickableText: String,
+    listener: () -> Unit
+) {
+    val text = this.text
+    val string = text.toString()
+    val span = ClickSpan(listener)
+    val start = string.indexOf(clickableText)
+    val end = start + clickableText.length
+    if (start == -1) return
+    if (text is Spannable) {
+        text.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    } else {
+        val s = SpannableString.valueOf(text)
+        s.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        this.text = s
+    }
+    val m = this.movementMethod
+    if (m !is LinkMovementMethod) {
+        this.movementMethod = LinkMovementMethod.getInstance()
+    }
 }

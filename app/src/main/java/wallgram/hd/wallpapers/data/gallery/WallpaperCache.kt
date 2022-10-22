@@ -4,24 +4,20 @@ import wallgram.hd.wallpapers.WallpaperRequest
 
 interface WallpaperCache {
 
-    fun list(): List<GalleryData>
-    fun position(): Int
-    fun wallpaperRequest(): WallpaperRequest
+    fun id(): Int
+    fun request(): WallpaperRequest
 
     data class Base(
-        val list: List<GalleryData>,
-        val position: Int,
-        val wallpaperRequest: WallpaperRequest
+        private val id: Int,
+        private val request: WallpaperRequest
     ) : WallpaperCache {
-        override fun list() = list
-        override fun position() = position
-        override fun wallpaperRequest() = wallpaperRequest
+        override fun id() = id
+        override fun request() = request
     }
 
     class Empty : WallpaperCache {
-        override fun list() = listOf<GalleryData>()
-        override fun position() = 0
-        override fun wallpaperRequest() = WallpaperRequest.DATE()
+        override fun request() = WallpaperRequest.DATE()
+        override fun id() = 0
     }
 
 }

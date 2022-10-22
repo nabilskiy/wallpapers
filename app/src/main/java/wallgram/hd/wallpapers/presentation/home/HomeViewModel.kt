@@ -30,32 +30,23 @@ class HomeViewModel @Inject constructor(
         loadData()
     }
 
-    fun loadData(){
+    fun loadData() {
         categoriesLiveDataPrivate.value = FiltersUi.Base(listOf(ProgressUi()))
         handle {
-            homeInteractor.filters({ progressLiveDataPrivate.value = Refreshing.Done() }) { categoriesLiveDataPrivate.value = it }
+            homeInteractor.filters({ atFinish.invoke() }) { categoriesLiveDataPrivate.value = it }
         }
     }
 
     private val atFinish = {
-
-    }
-
-    fun open(item: Pair<Int, String>) {
-        modo.forward(Screens.CategoriesList(WallpaperRequest.CATEGORY(item.first, item.second)))
-    }
-
-    fun itemClicked(wallpaperRequest: WallpaperRequest, position: Int, filter: Int) {
-        homeInteractor.save(wallpaperRequest, position, filter)
-        modo.externalForward(Screens.Wallpaper())
+        progressLiveDataPrivate.value = Refreshing.Done()
     }
 
     fun search() {
-        modo.forward(Screens.Search())
+        showScreen(Screens.Search())
     }
 
-    fun navigateSubscriptions(){
-        modo.forward(Screens.Subscription())
+    fun navigateSubscriptions() {
+        showScreen(Screens.Subscription())
     }
 
 

@@ -32,21 +32,32 @@ class BaseHomeRepository @Inject constructor(
         return HomesDomain.Base(categories.map { it.map(mapper) })
     }
 
-    override fun save(wallpaperRequest: WallpaperRequest, position: Int, filter: Int) {
-        dataList.find { it.map(FiltersCloud.Mapper.Id(filter)) }?.let { item ->
-            val wallpaperCache = WallpaperCache.Base(
-                item.map(FiltersCloud.Mapper.Test()),
-                position,
-                wallpaperRequest
-            )
+    override fun save(id: Int, requestId: String) {
+        dataList.find { it.map(FiltersCloud.Mapper.Id(id)) }?.let { item ->
+            val request = WallpaperRequest.DATE()
+            val wallpaperCache = WallpaperCache.Base(id, request)
             cache.save(wallpaperCache)
         }
     }
 
+    override fun save(wallpaperRequest: WallpaperRequest, position: Int, filter: Int) {
+        dataList.find { it.map(FiltersCloud.Mapper.Id(filter)) }?.let { item ->
+
+            val wallpaperCache = WallpaperCache.Base(position, wallpaperRequest)
+            cache.save(wallpaperCache)
+            /* val wallpaperCache = WallpaperCache.Base(
+                 item.map(FiltersCloud.Mapper.Test()),
+                 position,
+                 wallpaperRequest
+             )
+             cache.save(wallpaperCache)*/
+        }
+    }
+
     override fun read(): GalleriesDomain {
-        val list = cache.read().list()
+        val list = cache.read().request().data()
         return GalleriesDomain.Base(list.map { it.map(domainMapper) }, list.isEmpty())
     }
 
-    override fun position() = cache.read().position()
+    override fun position() = 0
 }

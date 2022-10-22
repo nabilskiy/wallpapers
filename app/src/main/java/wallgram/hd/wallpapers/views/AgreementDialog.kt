@@ -38,7 +38,7 @@ class AgreementDialog : DialogFragment() {
     private fun loadPage() {
         binding?.apply {
             webView.apply {
-                loadUrl(Common.getSiteUrl() + "privacy")
+                loadUrl(Common.getSiteUrl() + "terms")
                 webViewClient = mWebViewClient
             }
         }

@@ -48,6 +48,7 @@ interface GalleryCloud {
             links: Links
         ): T
 
+
         class Base: Mapper<GalleryData>{
             override fun map(
                 id: Int,
@@ -58,5 +59,6 @@ interface GalleryCloud {
                 links: Links
             ): GalleryData.Base = GalleryData.Base(id, width, height, preview, original ?: "", links)
         }
+
     }
 }

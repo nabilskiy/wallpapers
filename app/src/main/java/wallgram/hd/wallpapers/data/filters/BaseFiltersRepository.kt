@@ -19,4 +19,8 @@ class BaseFiltersRepository @Inject constructor(
         val colors = colorsDataSource.colors()
         return CategoriesDomain.Base(categories.map { it.map(mapper) }, colors.map { it.map(colorMapper) })
     }
+
+    override fun save(id: Int, requestId: String) {
+        TODO("Not yet implemented")
+    }
 }

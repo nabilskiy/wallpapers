@@ -1,6 +1,7 @@
 package wallgram.hd.wallpapers.data.filters
 
 import com.google.gson.annotations.SerializedName
+import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.data.gallery.GalleryCloud
 import wallgram.hd.wallpapers.data.gallery.GalleryData
 import wallgram.hd.wallpapers.domain.filters.CategoryDomain
@@ -56,20 +57,23 @@ interface FiltersCloud {
                 sample: List<GalleryCloud>
             ): HomeDomain {
                 val sampleData = sample.map { it.map(GalleryCloud.Mapper.Base()) }
-                val list = sampleData.map { it.map(galleryMapper, id) }
+                val list = sampleData.map { it.map(galleryMapper, id, "filter_$id") }
                 return HomeDomain.Base(id, title, background, list)
             }
         }
 
         class Test :
-            Mapper<List<GalleryData>> {
+            Mapper<WallpaperRequest> {
             override fun map(
                 id: Int,
                 title: String,
                 background: String,
                 sample: List<GalleryCloud>
-            ): List<GalleryData> {
-                return sample.map { it.map(GalleryCloud.Mapper.Base()) }
+            ): WallpaperRequest {
+                return WallpaperRequest.Filter(id, title).apply {
+                    setData(sample.map { it.map(GalleryCloud.Mapper.Base()) })
+                    nextPage()
+                }
             }
         }
 

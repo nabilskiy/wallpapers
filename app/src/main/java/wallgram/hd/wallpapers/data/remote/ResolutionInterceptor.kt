@@ -1,11 +1,12 @@
 package wallgram.hd.wallpapers.data.remote
 
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import retrofit2.Invocation
 import wallgram.hd.wallpapers.DisplayProvider
-import wallgram.hd.wallpapers.data.DisplayResolution
+import wallgram.hd.wallpapers.data.resolution.DisplayResolution
 import javax.inject.Inject
 
 class ResolutionInterceptor @Inject constructor(
@@ -24,6 +25,8 @@ class ResolutionInterceptor @Inject constructor(
 
         if(newAuth != null)
             url.addQueryParameter(PARAMETER_NAME, displayProvider.getScreenSizeRequest())
+
+        Log.d("LOADED_RESOLUTION", displayProvider.getScreenSizeRequest())
 
         val requestBuilder: Request.Builder = originalRequest.newBuilder()
             .url(url.build())

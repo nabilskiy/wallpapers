@@ -17,9 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkInfo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
@@ -30,8 +28,6 @@ import wallgram.hd.wallpapers.DEFAULT_SKU
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.Mapper
-import wallgram.hd.wallpapers.core.data.ads.interstitial.AdInterstitial
-import wallgram.hd.wallpapers.core.data.ads.interstitial.AdInterstitialCallback
 import wallgram.hd.wallpapers.core.data.permissions.Permission
 import wallgram.hd.wallpapers.core.data.permissions.PermissionProvider
 import wallgram.hd.wallpapers.data.workers.WallpaperApplier.Companion.APPLY_EXTERNAL_KEY
@@ -53,6 +49,7 @@ import wallgram.hd.wallpapers.views.blur.DrawableImageProvider
 import wallgram.hd.wallpapers.views.blur.GlideProvider
 import wallgram.hd.wallpapers.views.blur.mode.BlurAnimMode
 import java.io.File
+import java.util.*
 
 @AndroidEntryPoint
 class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWallpaperBinding>(
@@ -63,8 +60,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     private var isLoadingAds = false
     private var rewardedInterstitialAd: RewardedInterstitialAd? = null
-    private var mAdIsLoading: Boolean = false
-    private var timeRemaining: Long = 0L
 
     private val dialog: DownloadPopup by lazy {
         DownloadPopup.Base(binding.root, layoutInflater.inflate(R.layout.view_loading, null, false))
@@ -72,7 +67,12 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     private lateinit var permissionProvider: PermissionProvider
 
-    private val adInterstitial = AdInterstitial.Base()
+    //private val adInterstitial = AdInterstitial.Base()
+
+    private val adInterstitial by lazy {
+        wallgram.hd.wallpapers.data.ads.interstitial.InterstitialAd.Base(requireActivity())
+    }
+
 
     //private val itemId: Int by args(ITEM_ID, 0)
 
@@ -84,12 +84,16 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     override fun onDestroyView() {
         dialog.hide()
-        adInterstitial.show(requireActivity())
+        adInterstitial.show()
+        //  adInterstitial.show(requireActivity())
+        //binding.ecardflowLayout.onDestroy()
+
 
         super.onDestroyView()
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
         viewModel.cancelWorkManagerTasks()
     }
@@ -212,10 +216,12 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         permissionProvider =
             PermissionProvider.Base(this)
 
-        adInterstitial.load(requireActivity(), null)
+        adInterstitial.load()
+        //  adInterstitial.load(requireActivity(), null)
     }
 
     private fun currentItem(): ItemUi {
@@ -244,17 +250,24 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
         with(binding) {
 
-           // intArrayOf(R.drawable.background_subscription, R.drawable.category_frame, R.drawable.subscribe_bg)
+            // intArrayOf(R.drawable.background_subscription, R.drawable.category_frame, R.drawable.subscribe_bg)
 
 
             viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
                 it.map(galleryAdapter)
-                it.map(object: Mapper.Unit<List<ItemUi>>{
+                it.map(object : Mapper.Unit<List<ItemUi>> {
                     override fun map(data: List<ItemUi>) {
                         val list = data.map { item -> item.uri().first }
                         ecardflowLayout.apply {
                             setAnimMode(BlurAnimMode())
-                            setImageProvider(GlideProvider(requireContext(), list.toTypedArray(), 1080, 1920), binding.list.currentItem)
+                            setImageProvider(
+                                GlideProvider(
+                                    requireContext(),
+                                    list.toTypedArray(),
+                                    1080,
+                                    1920
+                                ), binding.list.currentItem
+                            )
                         }
                     }
 
@@ -283,7 +296,10 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
             }
 
             list.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
-                view.updatePadding(top = rect.top + windowInsetsCompat.systemWindowInsetTop, bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
+                view.updatePadding(
+                    top = rect.top + windowInsetsCompat.systemWindowInsetTop,
+                    bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom
+                )
                 windowInsetsCompat
             }
 
@@ -304,9 +320,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 true
             }
 
-
-//            blurLayout.viewBehind = viewToBlur
-//            blurLayout.updateForMilliSeconds(1000)
 
             list.clipToPadding = false
             list.clipChildren = false

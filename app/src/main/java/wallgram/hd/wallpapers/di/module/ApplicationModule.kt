@@ -9,7 +9,6 @@ import com.bumptech.glide.RequestManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.GlobalScope
 import wallgram.hd.wallpapers.DisplayProvider
@@ -25,16 +24,19 @@ import wallgram.hd.wallpapers.data.remote.LanguageInterceptor
 
 import wallgram.hd.wallpapers.data.remote.ResolutionInterceptor
 import wallgram.hd.wallpapers.data.colors.ColorsDataSource
-import wallgram.hd.wallpapers.data.colors.ColorsRepository
 import wallgram.hd.wallpapers.data.billing.BillingRepository
 import wallgram.hd.wallpapers.data.colors.ColorMapper
+import wallgram.hd.wallpapers.data.device.DeviceName
 import wallgram.hd.wallpapers.data.filters.BaseFiltersRepository
 import wallgram.hd.wallpapers.data.filters.FiltersCloud
 import wallgram.hd.wallpapers.data.filters.FiltersCloudDataSource
 import wallgram.hd.wallpapers.data.filters.ProvideFiltersService
 import wallgram.hd.wallpapers.data.gallery.GalleryData
+import wallgram.hd.wallpapers.data.gallery.SaveSelect
 import wallgram.hd.wallpapers.data.gallery.WallpapersCache
 import wallgram.hd.wallpapers.data.home.BaseHomeRepository
+import wallgram.hd.wallpapers.data.resolution.ResolutionCacheDataSource
+import wallgram.hd.wallpapers.data.resolution.ResolutionsCache
 import wallgram.hd.wallpapers.data.settings.FileCacheSource
 import wallgram.hd.wallpapers.domain.filters.CategoryDomain
 import wallgram.hd.wallpapers.domain.filters.CategoriesDomain
@@ -51,9 +53,15 @@ import wallgram.hd.wallpapers.presentation.gallery.GalleriesUi
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.presentation.settings.SettingsCommunication
 import wallgram.hd.wallpapers.data.workers.DownloadManager
+import wallgram.hd.wallpapers.domain.gallery.GalleryRepository
+import wallgram.hd.wallpapers.domain.resolution.ResolutionsInteractor
 import wallgram.hd.wallpapers.presentation.colors.NavigateColor
 import wallgram.hd.wallpapers.presentation.filters.NavigateCarousel
 import wallgram.hd.wallpapers.presentation.filters.NavigateFilter
+import wallgram.hd.wallpapers.presentation.main.FirstLaunch
+import wallgram.hd.wallpapers.presentation.main.LaunchCacheDataSource
+import wallgram.hd.wallpapers.presentation.main.MainCommunication
+import wallgram.hd.wallpapers.presentation.start.StartCommunication
 
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 
@@ -79,7 +87,19 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun providePreferenceDataStore(sharedPreferences: SharedPreferences): PreferenceDataStore = PreferenceDataStore.Base(sharedPreferences)
+    fun providePreferenceDataStore(sharedPreferences: SharedPreferences): PreferenceDataStore =
+        PreferenceDataStore.Base(sharedPreferences)
+
+
+    @Provides
+    @Singleton
+    fun provideLaunchCacheDataSource(firstLaunch: FirstLaunch.Mutable): LaunchCacheDataSource =
+        LaunchCacheDataSource.Base(firstLaunch)
+
+    @Provides
+    @Singleton
+    fun provideFirstLaunch(preferences: PreferenceDataStore): FirstLaunch.Mutable =
+        FirstLaunch.Base(preferences)
 
     @Singleton
     @Provides
@@ -90,9 +110,20 @@ class ApplicationModule {
     }
 
     @Provides
+    @Singleton
+    fun provideDeviceName(application: Application): DeviceName = DeviceName(application)
+
+
+    @Provides
     fun provideSettingsCommunication(): SettingsCommunication =
         SettingsCommunication.Base()
 
+    @Provides
+    fun provideMainCommunication(): MainCommunication =
+        MainCommunication.Base()
+
+    @Provides
+    fun provideStartCommunication(): StartCommunication = StartCommunication.Base()
 
     @Provides
     @Singleton
@@ -175,9 +206,8 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideHomeInteractor(
-        homeRepository: HomeRepository,
+        repository: GalleryRepository,
         dispatchers: Dispatchers,
-        galleriesMapper: GalleriesDomain.Mapper<GalleriesUi>,
         mapper: GalleryDomain.Mapper<GalleryUi>,
         navigateCarousel: NavigateCarousel,
         handleError: HandleDomainError
@@ -188,8 +218,7 @@ class ApplicationModule {
                 navigateCarousel
             )
         ),
-        galleriesMapper,
-        homeRepository,
+        repository,
         dispatchers, handleError
     )
 
@@ -234,8 +263,11 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideDisplayProvider(context: Application): DisplayProvider =
-        DisplayProvider.Base(context)
+    fun provideDisplayProvider(
+        context: Application,
+        interactor: ResolutionsInteractor
+    ): DisplayProvider =
+        DisplayProvider.Base(context, interactor)
 
     @Provides
     @Singleton

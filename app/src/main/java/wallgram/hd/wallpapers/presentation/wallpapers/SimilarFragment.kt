@@ -2,10 +2,12 @@ package wallgram.hd.wallpapers.presentation.wallpapers
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import wallgram.hd.wallpapers.DisplayProvider
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.databinding.FragmentSimilarBinding
 import wallgram.hd.wallpapers.databinding.FragmentWallpapersBinding
@@ -13,8 +15,10 @@ import wallgram.hd.wallpapers.presentation.base.BaseFragment
 import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
 import wallgram.hd.wallpapers.presentation.base.views.slidinguppanel.ISlidingUpPanelLayoutHost
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
+import wallgram.hd.wallpapers.presentation.gallery.GalleryViewType
 import wallgram.hd.wallpapers.presentation.wallpaper.WallpaperItemDecoration
 import wallgram.hd.wallpapers.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SimilarFragment : BaseFragment<SimilarViewModel, FragmentSimilarBinding>(
@@ -46,11 +50,7 @@ class SimilarFragment : BaseFragment<SimilarViewModel, FragmentSimilarBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val galleryAdapter = SimilarAdapter(object : GenericAdapter.ClickListener<Pair<Int, Int>> {
-            override fun click(item: Pair<Int, Int>) {
-                viewModel.itemClicked(wallpaperRequest, item.first - 1)
-            }
-        })
+        val galleryAdapter = GalleryAdapter()
 
         viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
             it.map(galleryAdapter)
@@ -93,6 +93,11 @@ class SimilarFragment : BaseFragment<SimilarViewModel, FragmentSimilarBinding>(
             (parentFragment as ISlidingUpPanelLayoutHost).onRecyclerViewAttached(binding.list)
         }
 
+    }
+
+    override fun onDestroy() {
+        viewModel.clear(wallpaperRequest)
+        super.onDestroy()
     }
 
     override val viewModel: SimilarViewModel by viewModels()

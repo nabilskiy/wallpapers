@@ -21,7 +21,6 @@ interface FilterUi {
             views[0].loadImage(background)
             views[1].show(name)
             views[0].handleClick {
-
                 navigateFilter.navigate(Pair(id, name))
             }
         }

@@ -5,6 +5,7 @@ import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.core.domain.Interactor
 import wallgram.hd.wallpapers.core.HandleError
 import wallgram.hd.wallpapers.domain.gallery.GalleriesDomain
+import wallgram.hd.wallpapers.domain.gallery.GalleryRepository
 import wallgram.hd.wallpapers.presentation.gallery.GalleriesUi
 import javax.inject.Inject
 
@@ -15,14 +16,9 @@ interface HistoryInteractor {
         successful: (GalleriesUi) -> Unit
     )
 
-
-    fun save(wallpaperRequest: WallpaperRequest, position: Int)
-    fun read(): GalleriesUi
-    fun position(): Int
-
     class Base @Inject constructor(
         private val mapper: GalleriesDomain.Mapper<GalleriesUi>,
-        private val repository: HistoryRepository,
+        private val repository: GalleryRepository,
         dispatchers: Dispatchers,
         handleError: HandleError
     ) : Interactor.Abstract(dispatchers, handleError), HistoryInteractor {
@@ -34,11 +30,6 @@ interface HistoryInteractor {
             val data = repository.history()
             return@handle data.map(mapper)
         }
-
-
-        override fun save(wallpaperRequest: WallpaperRequest, position: Int) = repository.save(wallpaperRequest, position)
-        override fun read(): GalleriesUi = repository.read().map(mapper)
-        override fun position() = repository.position()
 
     }
 }

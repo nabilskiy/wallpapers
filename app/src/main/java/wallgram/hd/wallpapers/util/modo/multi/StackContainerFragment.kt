@@ -13,6 +13,7 @@ import wallgram.hd.wallpapers.presentation.feed.FeedsFragment
 import wallgram.hd.wallpapers.presentation.history.HistoryFragment
 import wallgram.hd.wallpapers.presentation.main.MainFragment
 import wallgram.hd.wallpapers.presentation.settings.language.LanguageFragment
+import wallgram.hd.wallpapers.presentation.settings.resolution.ResolutionFragment
 import wallgram.hd.wallpapers.presentation.subscribe.SubscriptionFragment
 import wallgram.hd.wallpapers.util.modo.AppScreen
 import wallgram.hd.wallpapers.util.modo.MultiScreen
@@ -32,7 +33,9 @@ class StackContainerFragment : Fragment() {
                 newFragment: Fragment
             ) {
                 if (newFragment is LanguageFragment || newFragment is SubscriptionFragment
-                    || newFragment is FeedsFragment || newFragment is HistoryFragment) {
+                    || newFragment is FeedsFragment || newFragment is HistoryFragment
+                    || newFragment is ResolutionFragment
+                ) {
                     transaction.setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,

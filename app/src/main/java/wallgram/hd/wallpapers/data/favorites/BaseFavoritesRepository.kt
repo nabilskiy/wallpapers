@@ -38,7 +38,7 @@ class BaseFavoritesRepository @Inject constructor(
     }
 
     override fun save(wallpaperRequest: WallpaperRequest, position: Int) {
-        val wallpaperCache = WallpaperCache.Base(dataList, position, wallpaperRequest)
+        val wallpaperCache = WallpaperCache.Base(position, wallpaperRequest)
         cache.save(wallpaperCache)
     }
 
@@ -48,7 +48,6 @@ class BaseFavoritesRepository @Inject constructor(
         return GalleriesDomain.Base(listOf(), true)
     }
 
-    override fun position() = cache.read().position()
 
 }
 

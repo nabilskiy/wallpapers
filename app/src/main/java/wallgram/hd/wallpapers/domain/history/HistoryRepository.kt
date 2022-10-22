@@ -9,6 +9,5 @@ interface HistoryRepository {
 
     fun save(wallpaperRequest: WallpaperRequest, position: Int)
     fun read(): GalleriesDomain
-    fun position(): Int
 
 }

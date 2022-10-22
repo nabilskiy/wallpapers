@@ -11,8 +11,11 @@ import wallgram.hd.wallpapers.core.domain.HandleDomainError
 import wallgram.hd.wallpapers.core.HandleError
 import wallgram.hd.wallpapers.core.data.ProvideRetrofitBuilder
 import wallgram.hd.wallpapers.data.favorites.FavoritesCacheDataSource
+import wallgram.hd.wallpapers.data.filters.FiltersCloud
+import wallgram.hd.wallpapers.data.filters.FiltersCloudDataSource
 import wallgram.hd.wallpapers.data.gallery.*
 import wallgram.hd.wallpapers.domain.gallery.*
+import wallgram.hd.wallpapers.domain.home.HomeRepository
 import wallgram.hd.wallpapers.presentation.dialogs.UpdateDownload
 import wallgram.hd.wallpapers.presentation.favorite.ChangeFavorite
 import wallgram.hd.wallpapers.presentation.favorite.UpdateFavorites
@@ -41,31 +44,44 @@ class GalleryModule {
         GalleryCloudDataSource.Base(galleryService.galleryService(), handleError)
 
     @Provides
+    @Singleton
     fun provideGalleryRepository(
-        galleryCloudDataSource: GalleryCloudDataSource,
+        cloudDataSource: GalleryCloudDataSource,
+        cacheDataSource: FavoritesCacheDataSource,
+        filtersCloudDataSource: FiltersCloudDataSource,
         wallpapersCache: WallpapersCache.Mutable
     ): GalleryRepository =
         BaseGalleryRepository(
-            galleryCloudDataSource,
+            cloudDataSource,
+            cacheDataSource,
+            filtersCloudDataSource,
+            FiltersCloud.Mapper.Home(GalleryData.Mapper.Base()),
             wallpapersCache,
             GalleryCloud.Mapper.Base(),
+            GalleryCache.Mapper.Base(),
             GalleryData.Mapper.Base()
         )
 
     @Provides
     @Singleton
     fun provideNavigateGallery(
-        updateSave: UpdateSave.Update
-    ): NavigateGallery = NavigateGallery.Base(updateSave)
+        updateSave: UpdateSave.Update,
+        saveSelect: SaveSelect,
+    ): NavigateGallery = NavigateGallery.Base(saveSelect, updateSave)
+
+    @Provides
+    fun provideSaveSelect(repository: GalleryRepository): SaveSelect = repository
 
     @Provides
     fun provideGalleryMapper(
         cacheDataSource: FavoritesCacheDataSource,
-        updateFavorites: UpdateFavorites.Update
+        updateFavorites: UpdateFavorites.Update,
+        navigateGallery: NavigateGallery
     ): GalleryDomain.Mapper<GalleryUi> {
         return GalleryDomain.Mapper.Base(
             cacheDataSource,
-            ChangeFavorite.Combo(cacheDataSource, updateFavorites)
+            ChangeFavorite.Combo(cacheDataSource, updateFavorites),
+            navigateGallery,
         )
     }
 
@@ -74,6 +90,7 @@ class GalleryModule {
         GalleriesDomain.Mapper.Base(mapper)
 
     @Provides
+    @Singleton
     fun provideGalleryInteractor(
         galleryRepository: GalleryRepository,
         dispatchers: Dispatchers,
@@ -81,19 +98,6 @@ class GalleryModule {
         galleriesMapper: GalleriesDomain.Mapper<GalleriesUi>
     ): GalleryInteractor = GalleryInteractor.Base(
         galleriesMapper,
-        galleryRepository,
-        dispatchers, handleError
-    )
-
-    @Provides
-    fun provideSimilarInteractor(
-        galleryRepository: GalleryRepository,
-        dispatchers: Dispatchers,
-        handleError: HandleDomainError,
-        mapper: GalleryDomain.Mapper<GalleryUi>,
-        resourceProvider: ResourceProvider
-    ): SimilarInteractor = SimilarInteractor.Base(
-        GalleriesDomain.Mapper.Similar(mapper, resourceProvider),
         galleryRepository,
         dispatchers, handleError
     )
@@ -112,11 +116,13 @@ class GalleryModule {
 
     @Provides
     @Singleton
-    fun provideUpdateDownloadObserve(updateDownload: UpdateDownload.Base): UpdateDownload.Observe = updateDownload
+    fun provideUpdateDownloadObserve(updateDownload: UpdateDownload.Base): UpdateDownload.Observe =
+        updateDownload
 
     @Provides
     @Singleton
-    fun provideUpdateDownloadUpdate(updateDownload: UpdateDownload.Base): UpdateDownload.Update = updateDownload
+    fun provideUpdateDownloadUpdate(updateDownload: UpdateDownload.Base): UpdateDownload.Update =
+        updateDownload
 
     @Provides
     @Singleton

@@ -3,6 +3,7 @@ package wallgram.hd.wallpapers.domain.gallery
 import dagger.hilt.InstallIn
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.ResourceProvider
+import wallgram.hd.wallpapers.presentation.ads.AdBannerUi
 import wallgram.hd.wallpapers.presentation.base.*
 import wallgram.hd.wallpapers.presentation.gallery.GalleriesUi
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
@@ -36,6 +37,8 @@ interface GalleriesDomain {
             ): GalleriesUi {
                 val result = mutableListOf<ItemUi>()
 
+                val isAds = false
+
                 when {
                     source.isEmpty() -> result.add(ProgressUi())
                     source.size == 1 && source[0] is GalleryDomain.Error ->
@@ -55,13 +58,17 @@ interface GalleriesDomain {
                     }
                 }
 
+                if(isAds){
+                    result.add(9, AdBannerUi())
+                }
+
+
                 return GalleriesUi.Base(result)
             }
         }
 
         class Favorites @Inject constructor(
-            private val galleryMapper: GalleryDomain.Mapper<GalleryUi>,
-            private val resourceProvider: ResourceProvider
+            private val galleryMapper: GalleryDomain.Mapper<GalleryUi>
         ) :
             Mapper<GalleriesUi> {
 
@@ -70,9 +77,6 @@ interface GalleriesDomain {
                 isEmpty: Boolean
             ): GalleriesUi {
                 val result = mutableListOf<ItemUi>()
-
-                result.add(HeaderUi(resourceProvider.string(R.string.menu_favorites)))
-
                 if (source.isEmpty())
                     result.add(FavoritesEmptyUi())
                 result.addAll(source.map { it.map(galleryMapper) })
@@ -97,39 +101,5 @@ interface GalleriesDomain {
             }
         }
 
-        class Similar @Inject constructor(
-            private val galleryMapper: GalleryDomain.Mapper<GalleryUi>,
-            private val resourceProvider: ResourceProvider
-        ) :
-            Mapper<GalleriesUi> {
-
-            override fun map(
-                source: List<GalleryDomain>,
-                isEmpty: Boolean
-            ): GalleriesUi {
-                val result = mutableListOf<ItemUi>()
-
-                when {
-                    source.isEmpty() -> result.add(ProgressUi())
-                    source.size == 1 && source[0] is GalleryDomain.Error ->
-                        result.add(FullSizeErrorUi())
-
-                    source.last() is GalleryDomain.Base -> {
-                        result.addAll(source.map { it.map(galleryMapper) })
-
-                        if (!isEmpty)
-                            result.add(BottomProgressUi())
-                    }
-                    source.last() is GalleryDomain.Error -> {
-                        for (item in source)
-                            if (item is GalleryDomain.Base)
-                                result.add(item.map(galleryMapper))
-                        result.add(BottomErrorUi())
-                    }
-                }
-
-                return GalleriesUi.Base(result)
-            }
-        }
     }
 }

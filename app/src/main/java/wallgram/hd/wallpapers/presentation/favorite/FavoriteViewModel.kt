@@ -6,6 +6,7 @@ import wallgram.hd.wallpapers.presentation.base.BaseViewModel
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.domain.favorites.FavoritesInteractor
+import wallgram.hd.wallpapers.domain.gallery.GalleryInteractor
 import wallgram.hd.wallpapers.presentation.base.ProgressUi
 import wallgram.hd.wallpapers.presentation.base.Screens
 import wallgram.hd.wallpapers.presentation.gallery.GalleriesUi
@@ -23,14 +24,13 @@ class FavoriteViewModel @Inject constructor(
     private val wallpapersLiveDataPrivate = MutableLiveData<GalleriesUi>()
     val wallpapersLiveData: MutableLiveData<GalleriesUi> get() = wallpapersLiveDataPrivate
 
+    init {
+        fetch()
+    }
+
     fun fetch() {
         wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(ProgressUi()))
         loadData()
-    }
-
-    fun itemClicked(wallpaperRequest: WallpaperRequest, position: Int) {
-        interactor.save(wallpaperRequest, position -1)
-        modo.externalForward(Screens.Wallpaper())
     }
 
     fun observeUpdate(owner: LifecycleOwner, observer: Observer<Boolean>) =

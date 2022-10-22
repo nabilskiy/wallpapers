@@ -5,15 +5,21 @@ import android.graphics.Point
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.data.resolution.ResolutionCacheDataSource
+import wallgram.hd.wallpapers.domain.resolution.ResolutionsInteractor
 
 interface DisplayProvider {
 
     fun getScreenSize(): Point
+    fun getScreen(): String
     fun getScreenSizeUi(): String
     fun getScreenSizeRequest(): String
     fun getWallpaperHeight(): Point
 
-    class Base(private var context: Context) : DisplayProvider {
+    class Base(
+        private var context: Context,
+        private val interactor: ResolutionsInteractor
+    ) : DisplayProvider {
         override fun getScreenSize() =
             (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
                 .run { DisplayMetrics().also { defaultDisplay.getRealMetrics(it) } }
@@ -24,7 +30,12 @@ interface DisplayProvider {
             return "${screenSize.x} x ${screenSize.y}"
         }
 
-        override fun getScreenSizeRequest() = getScreenSizeUi().replace(" ", "")
+        override fun getScreen(): String {
+            val screenSize = getScreenSize()
+            return "${screenSize.x}x${screenSize.y}"
+        }
+
+        override fun getScreenSizeRequest() = interactor.currentResolution()
 
         override fun getWallpaperHeight(): Point {
             val localPoint: Point = getHeight()
@@ -34,7 +45,7 @@ interface DisplayProvider {
             return Point(i, localPoint.y * i / localPoint.x)
         }
 
-        private fun getHeight(): Point{
+        private fun getHeight(): Point {
             val localPoint = Point()
             val window = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             window.defaultDisplay?.getRealSize(localPoint)

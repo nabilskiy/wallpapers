@@ -2,7 +2,7 @@ package wallgram.hd.wallpapers.data.gallery
 
 import retrofit2.http.GET
 import retrofit2.http.Query
-import wallgram.hd.wallpapers.data.DisplayResolution
+import wallgram.hd.wallpapers.data.resolution.DisplayResolution
 import wallgram.hd.wallpapers.model.ServerResponse
 
 interface GalleryService {

@@ -3,24 +3,24 @@ package wallgram.hd.wallpapers.presentation.home
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.WindowManager
+import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import wallgram.hd.wallpapers.DisplayProvider
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
 import wallgram.hd.wallpapers.databinding.FragmentHomeBinding
 import wallgram.hd.wallpapers.presentation.base.NoLimitRecycledViewPool
 import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
-import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
-import wallgram.hd.wallpapers.presentation.home.scroll.HomeCarouselUi
+import wallgram.hd.wallpapers.presentation.gallery.GalleryViewType
 import wallgram.hd.wallpapers.util.dp
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
@@ -28,6 +28,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
 ) {
 
     override val viewModel: HomeViewModel by viewModels()
+
+    @Inject
+    lateinit var displayProvider: DisplayProvider
 
     private val mPermissionResult =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
@@ -51,7 +54,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
         }
 
         binding.toolbar.setOnMenuItemClickListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.action_search -> viewModel.search()
                 R.id.action_premium -> viewModel.navigateSubscriptions()
             }
@@ -59,16 +62,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
             false
         }
 
-
-
         val recycledViewPool: RecyclerView.RecycledViewPool = NoLimitRecycledViewPool()
 
-        val homeAdapter = HomeAdapter(object : GenericAdapter.ClickListener<Pair<Int, Int>> {
-            override fun click(item: Pair<Int, Int>) {
-                viewModel.itemClicked(WallpaperRequest.DATE(), item.first, item.second)
-            }
+        //   val displaySize = displayProvider.getScreenSize()
 
-        }, recycledViewPool)
+
+        val homeAdapter = HomeAdapter(recycledViewPool)
 
         with(binding) {
             swipeRefreshLayout.apply {

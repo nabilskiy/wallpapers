@@ -71,4 +71,5 @@
     <string name="image_dowloaded">Изображение загружено</string>
     <string name="recommend">Рекомендуем</string>
     <string name="connection_error">Connection error</string>
+    <string name="wallpaper_resolution">Разрешение обоев</string>
 </resources>

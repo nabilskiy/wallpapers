@@ -29,6 +29,8 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import wallgram.hd.wallpapers.util.modo.*
 import wallgram.hd.wallpapers.App
+import wallgram.hd.wallpapers.core.data.PreferenceDataStore
+import wallgram.hd.wallpapers.data.ads.appopen.OnShowAdCompleteListener
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
 import wallgram.hd.wallpapers.presentation.wallpaper.WallpaperFragment
 import wallgram.hd.wallpapers.util.modo.multi.StackContainerFragment
@@ -41,6 +43,9 @@ class MainActivity :
     val modo = App.modo
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    @Inject
+    lateinit var preferenceDataStore: PreferenceDataStore
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -61,82 +66,18 @@ class MainActivity :
     }
 
 
-    private fun showRateDialog() {
-        val inflater = this.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.rating_layout, findViewById(R.id.layout_root))
-        val ratingBar = view.findViewById<RatingBar>(R.id.rating_bar)
-        val feedbackText: TextInputLayout = view.findViewById(R.id.feedback_text)
-        ratingBar.onRatingBarChangeListener =
-            OnRatingBarChangeListener { ratingBar1: RatingBar?, rating: Float, fromUser: Boolean ->
-                feedbackText.visibility = if (rating <= 3.0f) View.VISIBLE else View.GONE
-            }
-        wallgram.hd.wallpapers.views.ratedialog.AppRate.with(this)
-            .setView(view)
-            .setCancelable(true)
-            .setInstallDays(0)
-            .setLaunchTimes(2)
-            .setRemindInterval(2)
-            .setShowLaterButton(true)
-            .setDebug(false)
-            .setOnClickButtonListener { which: Int ->
-                if (which == AlertDialog.BUTTON_POSITIVE) {
-                    if (ratingBar.rating >= 4.0f) {
-                        try {
-                            startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("market://details?id=$packageName")
-                                )
-                            )
-                        } catch (anfe: ActivityNotFoundException) {
-                            startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-                                )
-                            )
-                        }
-                    } else {
-                        val emailIntent =
-                            Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "info@akspic.com"))
-                        emailIntent.putExtra(
-                            Intent.EXTRA_SUBJECT,
-                            resources.getString(R.string.email_subject)
-                        )
-                        emailIntent.putExtra(
-                            Intent.EXTRA_TEXT,
-                            wallgram.hd.wallpapers.util.Common.getInfo(feedbackText.editText!!.text.toString())
-                        )
-                        try {
-                            startActivity(
-                                Intent.createChooser(
-                                    emailIntent,
-                                    resources.getString(R.string.send_feedback)
-                                )
-                            )
-                        } catch (ex: ActivityNotFoundException) {
-                            Toast.makeText(this, R.string.email_error, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            }
-        wallgram.hd.wallpapers.views.ratedialog.AppRate.showRateDialogIfMeetsConditions(this)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
+        (application as App).showAd(this, object : OnShowAdCompleteListener{
+            override fun onShowAdComplete() {
+                setTheme(R.style.AppTheme)
+            }
+
+        })
+
         checkUpdate()
-
-        showRateDialog()
-
-        MobileAds.initialize(this)
-
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf("553F078B738FD74B93AFF838615C6149"))
-                .build()
-        )
 
 
         firebaseAnalytics = Firebase.analytics
@@ -168,9 +109,10 @@ class MainActivity :
                 ).show()
             }
 
-        modo.init(
-            savedInstanceState, Screens.MultiStack()
-        )
+        viewModel.observe(this){
+            modo.init(savedInstanceState, it.screen())
+        }
+
     }
 
     override fun onUpdateAvailable(appUpdateInfo: AppUpdateInfo, updateAvailable: Boolean) {

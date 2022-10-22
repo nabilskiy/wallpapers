@@ -31,6 +31,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
             reviewItem.setOnClickListener { onReviewClicked() }
             siteItem.setOnClickListener { viewModel.showScreen(Screens.Browser(Common.getSiteUrl())) }
             langItem.setOnClickListener { viewModel.showScreen(Screens.Language()) }
+            resolutionItem.setOnClickListener { viewModel.showScreen(Screens.Resolution()) }
 
             viewModel.observe(viewLifecycleOwner){
                 it.show(binding.cacheValue)

@@ -53,6 +53,12 @@
             app:drawableStartCompat="@drawable/ic_translate" />
 
         <TextView
+            android:id="@+id/resolution_item"
+            style="@style/MenuTextStyle"
+            android:text="@string/wallpaper_resolution"
+            app:drawableStartCompat="@drawable/ic_screen_resolution" />
+
+        <TextView
             android:id="@+id/cache_title"
             style="@style/MenuTextStyle"
             android:layout_width="wrap_content"

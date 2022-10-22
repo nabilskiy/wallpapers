@@ -16,7 +16,6 @@ import wallgram.hd.wallpapers.data.favorites.FavoriteWallpapers
 import wallgram.hd.wallpapers.data.favorites.FavoritesCacheDataSource
 import wallgram.hd.wallpapers.data.favorites.FavoritesDao
 import wallgram.hd.wallpapers.data.gallery.*
-import wallgram.hd.wallpapers.data.history.BaseHistoryRepository
 import wallgram.hd.wallpapers.domain.favorites.FavoritesInteractor
 import wallgram.hd.wallpapers.domain.favorites.FavoritesRepository
 import wallgram.hd.wallpapers.domain.gallery.GalleriesDomain
@@ -38,19 +37,14 @@ class HistoryModule {
 
     @Provides
     @ViewModelScoped
-    fun provideHistoryRepository(cacheDataSource: FavoritesCacheDataSource, wallpapersCache: WallpapersCache.Mutable): HistoryRepository =
-        BaseHistoryRepository(cacheDataSource, GalleryCache.Mapper.Base(), GalleryData.Mapper.Base(), wallpapersCache)
-
-    @Provides
-    @ViewModelScoped
     fun provideHistoryInteractor(
-        historyRepository: HistoryRepository,
+        repository: GalleryRepository,
         dispatchers: Dispatchers,
         handleError: HandleDomainError,
         mapper: GalleryDomain.Mapper<GalleryUi>
     ): HistoryInteractor = HistoryInteractor.Base(
         GalleriesDomain.Mapper.History(mapper),
-        historyRepository,
+        repository,
         dispatchers, handleError
     )
 

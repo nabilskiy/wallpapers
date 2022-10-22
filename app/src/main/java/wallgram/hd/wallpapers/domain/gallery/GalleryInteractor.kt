@@ -16,12 +16,21 @@ interface GalleryInteractor {
         successful: (GalleriesUi) -> Unit
     )
 
-    fun needToLoadMoreData(lastVisibleItemPosition: Int): Boolean
+    suspend fun favorites(
+        atFinish: () -> Unit,
+        successful: (GalleriesUi) -> Unit
+    )
 
-    fun save(wallpaperRequest: WallpaperRequest, position: Int)
-    fun update(wallpaperRequest: WallpaperRequest, position: Int)
+//    suspend fun history(
+//        atFinish: () -> Unit,
+//        successful: (GalleriesUi) -> Unit
+//    )
+
+    fun needToLoadMoreData(id: String, lastVisibleItemPosition: Int): Boolean
+
     fun read(): Triple<GalleriesUi, Int, WallpaperRequest>
     fun clear()
+    fun clear(request: WallpaperRequest)
 
     class Base @Inject constructor(
         private val mapper: GalleriesDomain.Mapper<GalleriesUi>,
@@ -43,22 +52,24 @@ interface GalleryInteractor {
                 val data = GalleriesUi.Base(listOf(GalleryUi.Error(error)))
                 dispatchers.changeToUI { successful.invoke(data) }
                 handleError.handle(error)
-            }
-            finally {
+            } finally {
                 dispatchers.changeToUI { atFinish.invoke() }
             }
         }
 
-        override fun needToLoadMoreData(lastVisibleItemPosition: Int): Boolean =
-            with(repository.getCachedData()) {
+        override suspend fun favorites(
+            atFinish: () -> Unit,
+            successful: (GalleriesUi) -> Unit,
+        ) = handle(successful, atFinish) {
+            val data = repository.favorites()
+            return@handle data.map(mapper)
+        }
+
+
+        override fun needToLoadMoreData(id: String, lastVisibleItemPosition: Int): Boolean =
+            with(repository.getCachedData(id)) {
                 return isNotEmpty() && size - 1 == lastVisibleItemPosition
             }
-
-        override fun save(wallpaperRequest: WallpaperRequest, position: Int) =
-            repository.save(wallpaperRequest, position)
-
-        override fun update(wallpaperRequest: WallpaperRequest, position: Int) =
-            repository.update(wallpaperRequest, position)
 
         override fun read(): Triple<GalleriesUi, Int, WallpaperRequest> {
             val cache = repository.read()
@@ -69,6 +80,8 @@ interface GalleryInteractor {
         }
 
         override fun clear() = repository.clear()
+
+        override fun clear(request: WallpaperRequest) = repository.clear(request)
 
     }
 }

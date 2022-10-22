@@ -32,7 +32,17 @@ class LocalizationApplicationDelegate(private val context: Context) {
     fun getSupportedLanguage(): String{
         val defaultLocale = LanguageSetting.getDefaultLanguage(context)
         val locale = LanguageSetting.getLanguageWithDefault(context, defaultLocale)
-        return if(supportedLanguages.contains(locale.language)) locale.language else "en"
+        return map(locale.language)
+    }
+
+    private fun map(locale: String): String{
+        if(supportedLanguages.contains(locale)){
+            return when(locale){
+                "uk" -> "ua"
+                else -> locale
+            }
+        }
+        return "en"
     }
 
     private val supportedLanguages = listOf("en", "es", "zh", "de", "fr", "uk", "pt", "ru")

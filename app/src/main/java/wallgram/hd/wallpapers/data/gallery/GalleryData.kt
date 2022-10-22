@@ -10,7 +10,7 @@ import javax.inject.Inject
 interface GalleryData {
 
     fun <T> map(mapper: Mapper<T>): T
-    fun <T> map(mapper: Mapper<T>, filter: Int): T
+    fun <T> map(mapper: Mapper<T>, filter: Int = 0, requestId: String = ""): T
 
     class Base(
         private val id: Int,
@@ -22,10 +22,11 @@ interface GalleryData {
     ) : GalleryData {
 
         override fun <T> map(mapper: Mapper<T>) =
-            mapper.map(id, width, height, preview, original, links, 0)
+            mapper.map(id, width, height, preview, original, links)
 
-        override fun <T> map(mapper: Mapper<T>, filter: Int) =
-            mapper.map(id, width, height, preview, original, links, filter)
+        override fun <T> map(mapper: Mapper<T>, filter: Int, requestId: String) =
+            mapper.map(id, width, height, preview, original, links, filter, requestId)
+
 
     }
 
@@ -37,7 +38,8 @@ interface GalleryData {
             preview: String,
             original: String,
             links: Links,
-            filter: Int
+            filter: Int = 0,
+            requestId: String = ""
         ): T
 
         class Base @Inject constructor() :
@@ -50,9 +52,25 @@ interface GalleryData {
                 preview: String,
                 original: String,
                 links: Links,
-                filter: Int
+                filter: Int,
+                requestId: String
             ) =
-                GalleryDomain.Base(id, width, height, preview, original, links, filter)
+                GalleryDomain.Base(id, width, height, preview, original, links, filter, requestId)
+
+        }
+
+        class Id(private val data: Int): Mapper<Boolean>{
+            override fun map(
+                id: Int,
+                width: Int,
+                height: Int,
+                preview: String,
+                original: String,
+                links: Links,
+                filter: Int,
+                requestId: String
+            ) = data == id
+
         }
     }
 

@@ -52,6 +52,7 @@ class WallpaperDownloader(context: Context, params: WorkerParameters) :
         val downloadId = try {
             downloadManager.enqueue(request)
         } catch (e: Exception) {
+            Log.d("DOWNLOAD_EXCEPTION", e.message ?: "")
             e.printStackTrace()
             return -1L
         }

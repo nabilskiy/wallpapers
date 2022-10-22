@@ -15,6 +15,7 @@ import wallgram.hd.wallpapers.presentation.base.adapter.HeaderItemDecoration
 import wallgram.hd.wallpapers.presentation.favorite.FavoriteAdapter
 import wallgram.hd.wallpapers.presentation.favorite.FavoriteViewModel
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
+import wallgram.hd.wallpapers.presentation.gallery.GalleryViewType
 import wallgram.hd.wallpapers.presentation.wallpaper.WallpaperItemDecoration
 import wallgram.hd.wallpapers.util.*
 
@@ -28,22 +29,10 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>(
         viewModel.back()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel.fetch()
-    }
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val galleryAdapter = FavoriteAdapter(object : GenericAdapter.ClickListener<Pair<Int, Int>>{
-            override fun click(item: Pair<Int, Int>) {
-                viewModel.itemClicked(WallpaperRequest.FAVORITES(), item.first)
-            }
-
-        })
+        val galleryAdapter = FavoriteAdapter()
 
         viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
             it.map(galleryAdapter)
@@ -55,13 +44,6 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>(
 
         with(binding) {
 
-
-
-//            swipeRefreshLayout.setColorSchemeResources(wallgram.hd.wallpapers.R.color.colorYellow)
-//            swipeRefreshLayout.setOnRefreshListener {
-//                //wallpapersAdapter.refresh()
-//            }
-
             backBtn.setOnClickListener {
                 viewModel.back()
             }
@@ -71,21 +53,8 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>(
                     spanSizeLookup = galleryAdapter.getSpanSizeLookup(3)
                 }
 
-
-
             historyList.apply {
                 layoutManager = gridLayoutManager
-
-                addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        super.onScrolled(recyclerView, dx, dy)
-//                        viewModel.loadMoreData(
-//                            wallpaper,
-//                            gridLayoutManager.findLastVisibleItemPosition()
-//                        )
-                    }
-                })
-
                 itemAnimator = null
                 addItemDecoration(HeaderItemDecoration(12.dp, 0))
                 addItemDecoration(WallpaperItemDecoration(2.dp, 6))

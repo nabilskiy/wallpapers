@@ -6,4 +6,6 @@ object ViewIds {
 
     val FAVORITES_EMPTY = 14
     val TOOLBAR = 15
+    val RESOLUTION = 16
+    val AD_BANNER = 17
 }

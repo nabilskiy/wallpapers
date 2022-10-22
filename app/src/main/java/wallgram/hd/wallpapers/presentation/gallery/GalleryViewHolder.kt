@@ -1,35 +1,31 @@
 package wallgram.hd.wallpapers.presentation.gallery
 
-import android.view.View
-import com.google.android.material.shape.CornerSize
-import wallgram.hd.wallpapers.R
+import android.graphics.Point
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import wallgram.hd.wallpapers.databinding.ItemPhotoBinding
+import wallgram.hd.wallpapers.databinding.ItemSmallPhotoBinding
 import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
 import wallgram.hd.wallpapers.presentation.base.adapter.GenericViewHolder
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
+import wallgram.hd.wallpapers.util.dp
 
 class GalleryViewHolder(
-    private val binding: ItemPhotoBinding,
-    private val galleryViewType: GalleryViewType,
-    private val clickListener: GenericAdapter.ClickListener<Pair<Int, Int>>
+    private val binding: ItemPhotoBinding
 ) : GenericViewHolder<ItemUi>(binding.root) {
 
-    init {
-        val size = galleryViewType.size()
-
-        itemView.layoutParams.apply {
-            width = size.x
-            height = size.y
-        }
+    override fun bind(item: ItemUi) = with(binding) {
+        item.show(ivPhoto)
     }
+}
+
+class GallerySmallViewHolder(
+    private val binding: ItemSmallPhotoBinding
+) : GenericViewHolder<ItemUi>(binding.root) {
 
     override fun bind(item: ItemUi) = with(binding) {
         ivPhoto.shapeAppearanceModel = ivPhoto.shapeAppearanceModel.toBuilder()
-            .setAllCornerSizes(galleryViewType.corners()).build()
+            .setAllCornerSizes(4f.dp).build()
         item.show(ivPhoto)
-        ivPhoto.setOnClickListener {
-            val id = item.filter()
-            clickListener.click(Pair(bindingAdapterPosition, id))
-        }
     }
 }

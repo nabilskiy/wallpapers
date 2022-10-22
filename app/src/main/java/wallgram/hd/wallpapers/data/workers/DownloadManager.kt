@@ -19,6 +19,7 @@ interface DownloadManager {
         private val workManager = WorkManager.getInstance(context)
 
         override fun download(url: String): LiveData<WorkInfo> {
+            cancelWorkManagerTasks()
             val newDownloadTask =
                 WallpaperDownloader.buildRequest(url)
             newDownloadTask?.let { task ->

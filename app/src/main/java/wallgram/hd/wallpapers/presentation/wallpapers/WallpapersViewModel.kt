@@ -39,26 +39,23 @@ class WallpapersViewModel @Inject constructor(
         loadData(wallpaperRequest)
     }
 
+    fun clear(request: WallpaperRequest){
+        interactor.clear(request)
+    }
+
     private val atFinish = {
         progressLiveDataPrivate.value = Refreshing.Done()
     }
 
-    fun save(request: WallpaperRequest) {
-        interactor.save(request, 0)
-    }
-
-    fun itemClicked(wallpaperRequest: WallpaperRequest, position: Int) {
-        interactor.save(wallpaperRequest, position)
-        modo.externalForward(Screens.Wallpaper())
-    }
-
     fun loadMoreData(wallpaperRequest: WallpaperRequest, lastVisibleItemPosition: Int) {
         if (lastVisibleItemPosition != lastVisibleItemPos)
-            if (interactor.needToLoadMoreData(lastVisibleItemPosition)) {
+            if (interactor.needToLoadMoreData(wallpaperRequest.itemId(), lastVisibleItemPosition)) {
                 lastVisibleItemPos = lastVisibleItemPosition
                 loadData(wallpaperRequest)
             }
     }
+
+
 
     private fun loadData(wallpaperRequest: WallpaperRequest) {
         handle {
