@@ -6,6 +6,7 @@ import wallgram.hd.wallpapers.presentation.base.adapter.MyView
 
 class ResolutionUi(
     private val text: String,
+    private val value: String,
     private val isSelected: Boolean,
     private val changeResolution: ChangeResolution
 ) : ItemUi {
@@ -16,7 +17,7 @@ class ResolutionUi(
         views[0].show(text)
         views[0].check(isSelected)
         views[0].handleClick {
-            changeResolution.changeResolution(text)
+            changeResolution.changeResolution(value)
         }
     }
 

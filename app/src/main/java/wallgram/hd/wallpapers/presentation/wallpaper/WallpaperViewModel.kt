@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.*
 import androidx.work.WorkInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.core.Mapper
 import wallgram.hd.wallpapers.data.billing.BillingRepository
 import wallgram.hd.wallpapers.data.workers.DownloadManager
+import wallgram.hd.wallpapers.data.workers.WallpaperDownloader
 import wallgram.hd.wallpapers.domain.gallery.GalleryInteractor
 import wallgram.hd.wallpapers.model.Pic
 import wallgram.hd.wallpapers.model.Tag
@@ -42,6 +44,9 @@ class WallpaperViewModel @Inject constructor(
     private val picLiveDataPrivate = MutableLiveData<Pic>()
     val picLiveData: LiveData<Pic> get() = picLiveDataPrivate
 
+    private val downloadLiveDataPrivate = MutableLiveData<WallpaperDownloader.Result>()
+    val downloadLiveData: LiveData<WallpaperDownloader.Result> get() = downloadLiveDataPrivate
+
     fun clear() {
         interactor.clear()
     }
@@ -61,10 +66,13 @@ class WallpaperViewModel @Inject constructor(
         wallpapersLiveDataPrivate.value = interactor.read().first as GalleriesUi
     }
 
-    fun download(id: Int): LiveData<WorkInfo> {
+    fun download(id: Int) {
         val data = interactor.read()
         val url = data.first.map(GalleriesUi.Mapper.Link(id))
-        return downloadManager.download(url)
+
+        val result = downloadManager.download(url)
+
+        downloadLiveDataPrivate.postValue(result)
     }
 
     fun getCurrentSub(): LiveData<String> {
@@ -74,22 +82,17 @@ class WallpaperViewModel @Inject constructor(
     fun observeUpdate(owner: LifecycleOwner, observer: Observer<Boolean>) =
         update.observe(owner, observer)
 
-    fun itemClicked(position: Int, id: Int) {
-        // cacheManager.similarData = similarLiveDataPrivate
-        //modo.forward(Screens.Wallpaper(position, id, WallType.SIMILAR))
-    }
-
-
-    fun onTagClicked(tag: Tag) {
-        //modo.forward(Screens.CategoriesList(FeedRequest(type = WallType.TAG, category = tag.id, categoryName = tag.name)))
-    }
-
     fun changeFavorite(currentItem: ItemUi) {
         currentItem.changeFavorite()
     }
 
     fun cancelWorkManagerTasks() {
         downloadManager.cancelWorkManagerTasks()
+    }
+
+    fun cancelDownload(id: Long){
+        downloadManager.cancel(id)
+        //downloadLiveDataPrivate.postValue(WallpaperDownloader.Result.Failure())
     }
 
     fun install(i: Int, id: Int): LiveData<WorkInfo> {

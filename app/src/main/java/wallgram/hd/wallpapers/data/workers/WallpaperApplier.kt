@@ -38,6 +38,8 @@ class WallpaperApplier(context: Context, params: WorkerParameters) :
         }
         bitmap ?: return false
 
+        val context = weakContext.get() ?: return false
+
         val wallpaperManager = try {
             WallpaperManager.getInstance(context)
         } catch (e: Exception) {
@@ -84,9 +86,11 @@ class WallpaperApplier(context: Context, params: WorkerParameters) :
         val applyOption: Int = inputData.getInt(APPLY_OPTION_KEY, -1)
         if (!url.hasContent()) return@coroutineScope Result.failure()
         if (applyOption < 0) return@coroutineScope Result.failure()
+        val context = weakContext.get() ?: return@coroutineScope Result.failure()
 
         val (_, extension) = url.filenameAndExtension
-        val filePath = "${context?.cacheDir}${File.separator}to-apply$extension"
+
+        val filePath = "${context.cacheDir}${File.separator}to-apply$extension"
 
         val file = File(filePath)
         try {

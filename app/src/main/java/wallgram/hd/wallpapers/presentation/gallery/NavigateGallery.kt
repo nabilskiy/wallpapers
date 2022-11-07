@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.presentation.gallery
 
+import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.data.gallery.SaveSelect

@@ -6,4 +6,5 @@ import wallgram.hd.wallpapers.data.resolution.Resolution
 interface ResolutionRepository {
     fun resolutions(): ResolutionsDomain
     fun currentResolution(): String
+    fun screenResolution(): String
 }

@@ -1,7 +1,7 @@
 package wallgram.hd.wallpapers.data.settings
 
 import android.content.Context
-import com.bumptech.glide.Glide
+import coil.imageLoader
 import java.io.File
 import java.lang.Math.log10
 import java.text.DecimalFormat
@@ -22,10 +22,14 @@ interface FileCacheSource {
             return DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups.toDouble())) + " " + units[digitGroups]
         }
 
-        override suspend fun folderSize() = getFolderSize(context.cacheDir)
+        //override suspend fun folderSize() = getFolderSize(context.cacheDir)
+
+        override suspend fun folderSize(): Long {
+            return context.imageLoader.diskCache?.size ?: 0L
+        }
 
         override suspend fun clear() {
-            Glide.get(context).clearDiskCache()
+            context.imageLoader.diskCache?.clear()
         }
 
         private fun getFolderSize(dir: File): Long {

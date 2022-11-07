@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import wallgram.hd.wallpapers.ResourceProvider
 import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.core.HandleError
 import wallgram.hd.wallpapers.core.data.ProvideRetrofitBuilder
@@ -58,7 +59,7 @@ class PicModule {
 
     @Provides
     @ViewModelScoped
-    fun provideInfoMapper(navigateTag: NavigateTag): PicDomain.Mapper<InfoListUi> = PicDomain.Mapper.Info(navigateTag)
+    fun provideInfoMapper(navigateTag: NavigateTag, resourceProvider: ResourceProvider): PicDomain.Mapper<InfoListUi> = PicDomain.Mapper.Info(navigateTag, resourceProvider)
 
     @Provides
     @ViewModelScoped

@@ -9,13 +9,9 @@ import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 
 class GalleryFullViewHolder(
-    private val binding: ItemFullPhotoBinding,
-    private val clickListener: GenericAdapter.ClickListener<GalleryUi>
+    private val binding: ItemFullPhotoBinding
 ) : GenericViewHolder<ItemUi>(binding.root) {
     override fun bind(item: ItemUi) = with(binding){
         item.show(ivPhoto)
-        ivPhoto.setOnClickListener {
-            clickListener.click(item as GalleryUi)
-        }
     }
 }

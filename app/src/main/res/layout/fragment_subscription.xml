@@ -34,7 +34,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="160dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Wallgram Pro"
+                android:text="@string/wallgram_pro"
                 android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="10dp"
                 android:maxLines="4"
-                android:text="100% No Ads"
+                android:text="@string/no_ads_100"
                 android:textColor="#E9E9EB"
                 android:textSize="16sp"
                 app:drawableStartCompat="@drawable/ic_check_small" />
@@ -73,7 +73,7 @@
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="10dp"
                 android:maxLines="4"
-                android:text="Unlimited Wallpaper Downloads"
+                android:text="@string/unlimited_wallpaper_downloads"
                 android:textColor="#E9E9EB"
                 android:textSize="16sp"
                 app:drawableStartCompat="@drawable/ic_check_small" />
@@ -92,7 +92,7 @@
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="10dp"
                 android:maxLines="4"
-                android:text="Daily Wallpapers Update"
+                android:text="@string/daily_wallpapers_update"
                 android:textColor="#E9E9EB"
                 android:textSize="16sp"
                 app:drawableStartCompat="@drawable/ic_check_small" />
@@ -111,7 +111,7 @@
                 android:letterSpacing="0.01"
                 android:lineSpacingExtra="10dp"
                 android:maxLines="4"
-                android:text="Full access to the wallpaper changer"
+                android:text="@string/full_access_to_the_wallpaper_changer"
                 android:textColor="#E9E9EB"
                 android:textSize="16sp"
                 app:drawableStartCompat="@drawable/ic_check_small" />

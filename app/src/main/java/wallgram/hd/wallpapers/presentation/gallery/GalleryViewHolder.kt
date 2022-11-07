@@ -24,8 +24,6 @@ class GallerySmallViewHolder(
 ) : GenericViewHolder<ItemUi>(binding.root) {
 
     override fun bind(item: ItemUi) = with(binding) {
-        ivPhoto.shapeAppearanceModel = ivPhoto.shapeAppearanceModel.toBuilder()
-            .setAllCornerSizes(4f.dp).build()
         item.show(ivPhoto)
     }
 }

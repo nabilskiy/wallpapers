@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="103dp"
-            android:text="Ваше устройство"
+            android:text="@string/your_device"
             android:fontFamily="@font/roboto_medium"
             android:textAlignment="center"
             android:letterSpacing="0.01"

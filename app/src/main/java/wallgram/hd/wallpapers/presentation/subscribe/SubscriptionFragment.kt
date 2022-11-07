@@ -41,7 +41,7 @@ class SubscriptionFragment : BaseFragment<SubscriptionViewModel, FragmentSubscri
         }
 
         val paint: TextPaint = binding.titleText.paint
-        val width: Float = paint.measureText("Wallgram Pro")
+        val width: Float = paint.measureText(getString(R.string.wallgram_pro))
 
         val textShader: Shader = LinearGradient(
             0f, 0f, width, binding.titleText.getLineHeight().toFloat(), intArrayOf(

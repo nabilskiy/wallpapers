@@ -70,12 +70,12 @@ class MainActivity :
 
         super.onCreate(savedInstanceState)
 
-        (application as App).showAd(this, object : OnShowAdCompleteListener{
-            override fun onShowAdComplete() {
-                setTheme(R.style.AppTheme)
-            }
-
-        })
+//        (application as App).showAd(this, object : OnShowAdCompleteListener{
+//            override fun onShowAdComplete() {
+//                setTheme(R.style.AppTheme)
+//            }
+//
+//        })
 
         checkUpdate()
 

@@ -16,9 +16,10 @@ interface DisplayProvider {
     fun getScreenSizeRequest(): String
     fun getWallpaperHeight(): Point
 
+
     class Base(
         private var context: Context,
-        private val interactor: ResolutionsInteractor
+        private val resolutionsCacheDataSource: ResolutionCacheDataSource
     ) : DisplayProvider {
         override fun getScreenSize() =
             (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
@@ -35,7 +36,7 @@ interface DisplayProvider {
             return "${screenSize.x}x${screenSize.y}"
         }
 
-        override fun getScreenSizeRequest() = interactor.currentResolution()
+        override fun getScreenSizeRequest() = resolutionsCacheDataSource.currentResolution()
 
         override fun getWallpaperHeight(): Point {
             val localPoint: Point = getHeight()

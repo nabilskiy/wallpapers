@@ -76,6 +76,7 @@ interface GalleryInteractor {
             val galleriesUi = cache.first.map(mapper)
             val position = cache.second
             val request = cache.third
+
             return Triple(galleriesUi, position, request)
         }
 

@@ -1,7 +1,9 @@
 package wallgram.hd.wallpapers.presentation.wallpaper
 
+import android.app.DownloadManager
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.BlurMaskFilter.Blur
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,47 +11,37 @@ import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkInfo
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import wallgram.hd.wallpapers.DEFAULT_SKU
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.Mapper
 import wallgram.hd.wallpapers.core.data.permissions.Permission
 import wallgram.hd.wallpapers.core.data.permissions.PermissionProvider
+import wallgram.hd.wallpapers.data.workers.DownloadProgressLiveData
 import wallgram.hd.wallpapers.data.workers.WallpaperApplier.Companion.APPLY_EXTERNAL_KEY
 import wallgram.hd.wallpapers.data.workers.WallpaperApplier.Companion.APPLY_OPTION_KEY
-import wallgram.hd.wallpapers.data.workers.WallpaperDownloader.Companion.DOWNLOAD_FILE_EXISTED
+import wallgram.hd.wallpapers.data.workers.WallpaperDownloader
 import wallgram.hd.wallpapers.data.workers.WallpaperDownloader.Companion.DOWNLOAD_PATH_KEY
 import wallgram.hd.wallpapers.databinding.FragmentWallpaperBinding
 import wallgram.hd.wallpapers.presentation.base.BaseSlidingUpFragment
-import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.base.views.slidinguppanel.Features
 import wallgram.hd.wallpapers.presentation.dialogs.DownloadAction
-import wallgram.hd.wallpapers.presentation.dialogs.DownloadPopup
-import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.util.*
-import wallgram.hd.wallpapers.util.blurhash.BlurHash
-import wallgram.hd.wallpapers.util.blurhash.blurPlaceHolder
-import wallgram.hd.wallpapers.views.blur.DrawableImageProvider
-import wallgram.hd.wallpapers.views.blur.GlideProvider
+import wallgram.hd.wallpapers.views.ChefSnackbar
+import wallgram.hd.wallpapers.views.blur.CoilProvider
 import wallgram.hd.wallpapers.views.blur.mode.BlurAnimMode
 import java.io.File
-import java.util.*
+
 
 @AndroidEntryPoint
 class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWallpaperBinding>(
@@ -61,10 +53,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     private var isLoadingAds = false
     private var rewardedInterstitialAd: RewardedInterstitialAd? = null
 
-    private val dialog: DownloadPopup by lazy {
-        DownloadPopup.Base(binding.root, layoutInflater.inflate(R.layout.view_loading, null, false))
-    }
-
+    private lateinit var snackbar: ChefSnackbar
     private lateinit var permissionProvider: PermissionProvider
 
     //private val adInterstitial = AdInterstitial.Base()
@@ -83,18 +72,17 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     }
 
     override fun onDestroyView() {
-        dialog.hide()
+        snackbar.dismiss()
         adInterstitial.show()
         //  adInterstitial.show(requireActivity())
-        //binding.ecardflowLayout.onDestroy()
-
-
+        // binding.ecardflowLayout.onDestroy()
         super.onDestroyView()
+
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
+
         viewModel.cancelWorkManagerTasks()
     }
 
@@ -229,11 +217,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     }
 
     private val galleryAdapter =
-        GalleryFullAdapter(object : GenericAdapter.ClickListener<GalleryUi> {
-            override fun click(item: GalleryUi) {
-
-            }
-        })
+        GalleryFullAdapter()
 
     override fun back() {
         if (panelShowed()) {
@@ -248,32 +232,30 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         checkSubscriptionAndLoadAds()
 
 
+
         with(binding) {
+            snackbar = ChefSnackbar.make(root)
 
             // intArrayOf(R.drawable.background_subscription, R.drawable.category_frame, R.drawable.subscribe_bg)
 
+            ecardflowLayout.setAnimMode(BlurAnimMode())
 
             viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
                 it.map(galleryAdapter)
+
                 it.map(object : Mapper.Unit<List<ItemUi>> {
                     override fun map(data: List<ItemUi>) {
                         val list = data.map { item -> item.uri().first }
-                        ecardflowLayout.apply {
-                            setAnimMode(BlurAnimMode())
-                            setImageProvider(
-                                GlideProvider(
-                                    requireContext(),
-                                    list.toTypedArray(),
-                                    1080,
-                                    1920
-                                ), binding.list.currentItem
-                            )
-                        }
+                        ecardflowLayout.setImages(list, binding.list.currentItem)
                     }
-
                 })
-
             }
+
+            viewModel.downloadLiveData.observe(viewLifecycleOwner) {
+                Log.d("RESULT", it.toString())
+                onDownloadResult(it)
+            }
+
 
             viewModel.observeUpdate(viewLifecycleOwner) { isFavorite ->
                 favoriteBtn.check(isFavorite)
@@ -282,7 +264,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
             viewModel.positionLiveData.observe(viewLifecycleOwner) {
                 binding.list.setCurrentItem(it, false)
-                binding.ecardflowLayout.switchBgToNext(it - 1)
+                // binding.ecardflowLayout.switchBgToNext(it - 1)
             }
 
             toolbar.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
@@ -320,7 +302,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 true
             }
 
-
             list.clipToPadding = false
             list.clipChildren = false
             list.offscreenPageLimit = 3
@@ -336,6 +317,12 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
             list.setPageTransformer(compositePageTransformer)
 
+//            background.apply {
+//                offscreenPageLimit = 1
+//                // layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+//                adapter = backgroundAdapter
+//            }
+
             list.apply {
                 adapter = galleryAdapter
 
@@ -350,6 +337,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                         )
 
                     }
+
                 })
             }
 
@@ -432,28 +420,55 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 }
             }
             is DownloadAction.Download -> viewModel.download(id)
-                .observe(viewLifecycleOwner) { info ->
-                    onDownloadResult(info)
-                }
+//            is DownloadAction.Download -> downloadImageNew(
+//                id.toString(),
+//                currentItem().uri().second
+//            )
+//            is DownloadAction.Download -> viewModel.download(id)
+//                .observe(viewLifecycleOwner) { info ->
+//                    onDownloadResult(info)
+//                }
         }
     }
 
-    private fun onDownloadResult(info: WorkInfo?) {
-        if (info != null) {
-            val path = info.outputData.getString(DOWNLOAD_PATH_KEY) ?: ""
-            when (info.state) {
-                WorkInfo.State.FAILED -> onDownloadError()
-                WorkInfo.State.ENQUEUED -> onDownloadQueued()
-                WorkInfo.State.SUCCEEDED -> {
-                    val existed = info.outputData.getBoolean(DOWNLOAD_FILE_EXISTED, false)
-                    if (existed) onDownloadExistent(path, "Изображение уже загружено")
-                    else onDownloadExistent(path, "Изображение загружено")
-                }
-                else -> {
+    private fun onDownloadResult(info: WallpaperDownloader.Result) {
+        val path = info.path()
+        val id = info.id()
 
+        when (info) {
+            is WallpaperDownloader.Result.Failure -> onDownloadError(id)
+            is WallpaperDownloader.Result.Enqueue -> {
+                onDownloadQueued(id)
+                val live = DownloadProgressLiveData(requireContext(), id)
+                live.observe(viewLifecycleOwner) {
+                    when (it.status) {
+                        DownloadManager.STATUS_SUCCESSFUL ->
+                            onDownloadSuccess(info, path)
+                        DownloadManager.STATUS_FAILED -> onDownloadError(id)
+                        DownloadManager.STATUS_PAUSED -> onDownloadPaused()
+                        DownloadManager.STATUS_PENDING -> onDownloadPending(id)
+                        32 -> onDownloadCancelled()
+                        else -> {
+                            onDownloadQueued(id)
+                        }
+                    }
                 }
+
+            }
+            is WallpaperDownloader.Result.Success -> {
+                onDownloadSuccess(info, path)
             }
         }
+    }
+
+    private fun onDownloadSuccess(
+        info: WallpaperDownloader.Result,
+        path: String
+    ) {
+        val id = info.id()
+        val existed = info.existed()
+        if (existed) onDownloadExistent(id, path, R.string.image_already_downloaded)
+        else onDownloadExistent(id, path, R.string.image_downloaded)
     }
 
     private fun onApplyResult(info: WorkInfo?) {
@@ -467,7 +482,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                         )
                     } else onWallpaperApplied()
                 } else if (info.state == WorkInfo.State.FAILED) {
-                    onDownloadError()
+                    onApplyError()
                 }
             } else if (info.state == WorkInfo.State.ENQUEUED) {
                 onWallpaperApplicationEnqueued(0)
@@ -476,18 +491,23 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     }
 
     private fun cancelWorkManagerTasks() {
-        dialog.hide()
+        snackbar.dismiss()
         viewModel.cancelWorkManagerTasks()
     }
 
-    private fun onWallpaperApplicationEnqueued(applyOption: Int) {
-        dialog.setState(WallpaperApplication.Enqueued {
+    private fun onWallpaperApplicationEnqueued(applyOption: Int) =
+        snackbar.state(WallpaperApplication.Enqueued {
             cancelWorkManagerTasks()
         })
-    }
+
 
     private fun onWallpaperApplied() {
-        dialog.setState(WallpaperApplication.Applied())
+        snackbar.state(WallpaperApplication.Applied())
+        viewModel.cancelWorkManagerTasks()
+    }
+
+    private fun onApplyError() {
+        snackbar.state(WallpaperApplication.Error())
         viewModel.cancelWorkManagerTasks()
     }
 
@@ -495,28 +515,44 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     }
 
-    private fun onDownloadError() {
-        dialog.setState(WallpaperApplication.Error())
-        viewModel.cancelWorkManagerTasks()
+    private fun onDownloadError(id: Long) {
+        snackbar.state(Downloading.Error())
+
     }
 
-    private fun onDownloadQueued() {
-        dialog.setState(Downloading.Enqueued {
+    private fun onDownloadQueued(id: Long) {
+        snackbar.state(Downloading.Enqueued {
+            viewModel.cancelDownload(id)
+        })
+    }
+
+    private fun onDownloadPending(id: Long) {
+        snackbar.state(Downloading.Pending {
+            viewModel.cancelDownload(id)
+        })
+    }
+
+    private fun onDownloadPaused() {
+        snackbar.state(Downloading.Paused {
             cancelWorkManagerTasks()
         })
     }
 
-    private fun onDownloadExistent(path: String, message: String) {
+    private fun onDownloadCancelled() {
+        snackbar.state(Downloading.Cancelled())
+    }
+
+    private fun onDownloadExistent(id: Long, path: String, message: Int) {
         try {
             val file = File(path)
             val fileUri: Uri? = file.getUri(requireContext()) ?: Uri.fromFile(file)
-            dialog.setState(Downloading.Existent(message) {
+            snackbar.state(Downloading.Existent(message) {
                 openFile(fileUri, file)
             })
         } catch (e: Exception) {
             Log.d("ERROR", e.message ?: "")
         }
-        viewModel.cancelWorkManagerTasks()
+        //viewModel.cancelDownload(id)
     }
 
     private fun openFile(fileUri: Uri?, file: File) {

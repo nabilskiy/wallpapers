@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.domain.gallery
 
+import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.data.favorites.FavoritesCacheDataSource
 import wallgram.hd.wallpapers.data.favorites.IsFavorite
 import wallgram.hd.wallpapers.data.gallery.SaveSelect

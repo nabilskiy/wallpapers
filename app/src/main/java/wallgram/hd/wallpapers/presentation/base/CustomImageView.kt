@@ -5,12 +5,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.imageview.ShapeableImageView
+import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import wallgram.hd.wallpapers.DisplayProvider
 import wallgram.hd.wallpapers.presentation.base.adapter.MyView
@@ -35,12 +31,11 @@ class CustomImageView @JvmOverloads constructor(
         }
     }
 
-
     override fun loadImage(preview: String, original: String) {
-        Glide.with(context).load(preview)
-            .apply(RequestOptions().placeholder(ColorDrawable(Color.parseColor("#222222"))))
-            .transition(DrawableTransitionOptions.withCrossFade(100))
-            .into(this)
+        load(preview){
+            memoryCacheKey(preview)
+            placeholder(ColorDrawable(Color.parseColor("#222222")))
+        }
     }
 
     override fun handleClick(listener: OnClickListener) {

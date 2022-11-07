@@ -1,5 +1,7 @@
 package wallgram.hd.wallpapers.domain.pic
 
+import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.ResourceProvider
 import wallgram.hd.wallpapers.data.filters.FiltersCloud
 import wallgram.hd.wallpapers.model.Links
 import wallgram.hd.wallpapers.model.PicMeta
@@ -92,7 +94,8 @@ interface PicDomain {
         }
 
         class Info(
-            private val navigateTag: NavigateTag
+            private val navigateTag: NavigateTag,
+            private val resourceProvider: ResourceProvider
         ) : Mapper<InfoListUi> {
             override fun map(
                 id: Int,
@@ -110,23 +113,58 @@ interface PicDomain {
                 val result = mutableListOf<ItemUi>()
 
                 val date = published
-                val resolution = width.toString() + "x" + height.toString()
+                val resolution = "${width}x$height"
 
                 result.add(TagsUi(0, "", tags, navigateTag))
 
                 if (!meta.author.isNullOrEmpty())
-                    result.add(InfoUi(1, "Автор", meta.author, navigateTag))
+                    result.add(
+                        InfoUi(
+                            1,
+                            resourceProvider.string(R.string.author),
+                            meta.author,
+                            navigateTag
+                        )
+                    )
                 else if (user != null)
-                    result.add(InfoUi(1, "Автор", user.nick, navigateTag))
+                    result.add(
+                        InfoUi(
+                            1,
+                            resourceProvider.string(R.string.author),
+                            user.nick,
+                            navigateTag
+                        )
+                    )
 
                 if (!meta.author_source.isNullOrEmpty())
-                    result.add(InfoUi(2, "Источник", meta.author_source, navigateTag))
+                    result.add(
+                        InfoUi(
+                            2,
+                            resourceProvider.string(R.string.source),
+                            meta.author_source,
+                            navigateTag
+                        )
+                    )
 
                 if (!meta.license.isNullOrEmpty())
-                    result.add(InfoUi(3, "Лицензия", meta.license, navigateTag))
+                    result.add(
+                        InfoUi(
+                            3,
+                            resourceProvider.string(R.string.license),
+                            meta.license,
+                            navigateTag
+                        )
+                    )
 
-                result.add(InfoUi(4, "Дата", date, navigateTag))
-                result.add(InfoUi(5, "Разрешение", resolution, navigateTag))
+                result.add(InfoUi(4, resourceProvider.string(R.string.date), date, navigateTag))
+                result.add(
+                    InfoUi(
+                        5,
+                        resourceProvider.string(R.string.resolution),
+                        resolution,
+                        navigateTag
+                    )
+                )
 
                 return InfoListUi.Base(result)
             }

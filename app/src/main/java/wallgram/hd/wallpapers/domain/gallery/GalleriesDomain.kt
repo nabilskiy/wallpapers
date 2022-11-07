@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.domain.gallery
 
+import coil.memory.MemoryCache
 import dagger.hilt.InstallIn
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.ResourceProvider
@@ -26,7 +27,10 @@ interface GalleriesDomain {
     }
 
     interface Mapper<T> {
-        fun map(source: List<GalleryDomain>, isEmpty: Boolean): T
+        fun map(
+            source: List<GalleryDomain>,
+            isEmpty: Boolean
+        ): T
 
         class Base @Inject constructor(private val galleryMapper: GalleryDomain.Mapper<GalleryUi>) :
             Mapper<GalleriesUi> {
@@ -58,7 +62,7 @@ interface GalleriesDomain {
                     }
                 }
 
-                if(isAds){
+                if (isAds) {
                     result.add(9, AdBannerUi())
                 }
 

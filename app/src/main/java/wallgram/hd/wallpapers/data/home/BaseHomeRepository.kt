@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.data.home
 
+import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.data.filters.FiltersCloud
 import wallgram.hd.wallpapers.data.filters.FiltersCloudDataSource

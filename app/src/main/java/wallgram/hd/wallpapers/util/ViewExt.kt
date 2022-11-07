@@ -46,11 +46,6 @@ val Int.px: Int
 val Float.dp: Float
     get() = this * Resources.getSystem().displayMetrics.density
 
-private fun defaultColor(context: Context) = ContextCompat.getColor(context, android.R.color.black)
-
-private fun defaultDoneImage(resources: Resources) =
-    BitmapFactory.decodeResource(resources, R.drawable.ic_pregnant_woman_white_48dp)
-
 fun RadioGroup.setCustomChecked(id: Int, listener: RadioGroup.OnCheckedChangeListener){
     setOnCheckedChangeListener(null)
     check(id)

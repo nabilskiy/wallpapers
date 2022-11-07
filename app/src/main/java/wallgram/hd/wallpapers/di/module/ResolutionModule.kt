@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import wallgram.hd.wallpapers.DisplayProvider
 import wallgram.hd.wallpapers.ResourceProvider
 import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.core.domain.HandleDomainError
@@ -42,8 +43,10 @@ class ResolutionModule {
 
     @Provides
     @Singleton
-    fun provideChangeResolution(cacheDataSource: ResolutionCacheDataSource,
-    updateResolutions: UpdateResolutions.Update): ChangeResolution = ChangeResolution.Combo(cacheDataSource, updateResolutions)
+    fun provideChangeResolution(
+        cacheDataSource: ResolutionCacheDataSource,
+        updateResolutions: UpdateResolutions.Update
+    ): ChangeResolution = ChangeResolution.Combo(cacheDataSource, updateResolutions)
 
     @Provides
     @Singleton
@@ -63,13 +66,20 @@ class ResolutionModule {
     @Provides
     fun provideUiMapper(
         cacheDataSource: ResolutionCacheDataSource,
-        changeResolution: ChangeResolution
-    ): ResolutionsDomain.Mapper<ResolutionsUi> = ResolutionsDomain.Mapper.Base(cacheDataSource, changeResolution)
+        changeResolution: ChangeResolution,
+        resourceProvider: ResourceProvider
+    ): ResolutionsDomain.Mapper<ResolutionsUi> =
+        ResolutionsDomain.Mapper.Base(cacheDataSource, changeResolution, resourceProvider)
 
     @Provides
     @Singleton
-    fun provideResolutionRepository(dataSource: ResolutionsDataSource, cacheDataSource: ResolutionCacheDataSource, mapper: Resolution.Mapper<ResolutionsDomain>): ResolutionRepository =
-        BaseResolutionRepository(dataSource, cacheDataSource, mapper)
+    fun provideResolutionRepository(
+        dataSource: ResolutionsDataSource,
+        cacheDataSource: ResolutionCacheDataSource,
+        mapper: Resolution.Mapper<ResolutionsDomain>,
+        displayProvider: DisplayProvider
+    ): ResolutionRepository =
+        BaseResolutionRepository(dataSource, cacheDataSource, mapper, displayProvider)
 
     @Provides
     fun provideResolutionInteractor(
@@ -98,11 +108,13 @@ class ResolutionModule {
 
     @Provides
     @Singleton
-    fun provideUpdateResolutionsObserve(updateResolutions: UpdateResolutions.Base): UpdateResolutions.Observe = updateResolutions
+    fun provideUpdateResolutionsObserve(updateResolutions: UpdateResolutions.Base): UpdateResolutions.Observe =
+        updateResolutions
 
     @Provides
     @Singleton
-    fun provideUpdateResolutionsUpdate(updateResolutions: UpdateResolutions.Base): UpdateResolutions.Update = updateResolutions
+    fun provideUpdateResolutionsUpdate(updateResolutions: UpdateResolutions.Base): UpdateResolutions.Update =
+        updateResolutions
 
     @Provides
     @Singleton
@@ -110,6 +122,7 @@ class ResolutionModule {
 
     @Provides
     @Singleton
-    fun provideResolutionsCommunication(): ResolutionsCommunication = ResolutionsCommunication.Base()
+    fun provideResolutionsCommunication(): ResolutionsCommunication =
+        ResolutionsCommunication.Base()
 
 }

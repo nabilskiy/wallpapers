@@ -10,23 +10,28 @@ import javax.inject.Inject
 
 interface DownloadManager {
 
-    fun download(url: String): LiveData<WorkInfo>
+    fun download(url: String): WallpaperDownloader.Result
     fun apply(url: String, option: Int): LiveData<WorkInfo>
     fun cancelWorkManagerTasks()
+    fun cancel(id: Long)
 
     class Base @Inject constructor(context: Context) : DownloadManager {
 
         private val workManager = WorkManager.getInstance(context)
+        private val downloader = WallpaperDownloader(context)
 
-        override fun download(url: String): LiveData<WorkInfo> {
+        override fun download(url: String): WallpaperDownloader.Result {
             cancelWorkManagerTasks()
             val newDownloadTask =
-                WallpaperDownloader.buildRequest(url)
-            newDownloadTask?.let { task ->
-                workManager.enqueue(task)
-                return workManager.getWorkInfoByIdLiveData(task.id)
-            }
-            return MutableLiveData()
+                downloader.download(url)
+
+
+
+//            newDownloadTask?.let { task ->
+//                workManager.enqueue(task)
+//                return workManager.getWorkInfoByIdLiveData(task.id)
+//            }
+            return newDownloadTask
         }
 
         override fun apply(url: String, option: Int): LiveData<WorkInfo> {
@@ -42,6 +47,13 @@ interface DownloadManager {
             try {
                 workManager.cancelAllWork()
                 workManager.pruneWork()
+            } catch (e: Exception) {
+            }
+        }
+
+        override fun cancel(id: Long) {
+            try {
+               downloader.cancel(id)
             } catch (e: Exception) {
             }
         }

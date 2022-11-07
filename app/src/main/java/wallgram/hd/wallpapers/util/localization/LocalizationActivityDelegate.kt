@@ -3,11 +3,14 @@ package wallgram.hd.wallpapers.util.localization
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.BadParcelableException
 import android.os.Handler
 import android.os.Looper
+import wallgram.hd.wallpapers.presentation.main.MainActivity
+import wallgram.hd.wallpapers.util.restart
 import java.util.*
 
 open class LocalizationActivityDelegate(val activity: Activity) {
@@ -136,13 +139,7 @@ open class LocalizationActivityDelegate(val activity: Activity) {
     // Let's take it change! (Using recreate method that available on API 11 or more.
     private fun notifyLanguageChanged() {
         sendOnBeforeLocaleChangedEvent()
-        if (activity.intent == null) {
-            activity.intent = Intent()
-        }
-        activity.intent.putExtra(KEY_ACTIVITY_LOCALE_CHANGED, true)
-        activity.startActivity(activity.intent)
-        activity.finish()
-        activity.overridePendingTransition(0, 0)
+        activity.restart()
     }
 
     // Check if locale has change while this activity was run to back stack.

@@ -26,8 +26,6 @@ class ResolutionInterceptor @Inject constructor(
         if(newAuth != null)
             url.addQueryParameter(PARAMETER_NAME, displayProvider.getScreenSizeRequest())
 
-        Log.d("LOADED_RESOLUTION", displayProvider.getScreenSizeRequest())
-
         val requestBuilder: Request.Builder = originalRequest.newBuilder()
             .url(url.build())
         val request: Request = requestBuilder.build()

@@ -3,8 +3,6 @@ package wallgram.hd.wallpapers.di.module
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 
 import dagger.Module
 import dagger.Provides
@@ -79,7 +77,6 @@ class ApplicationModule {
     @Provides
     fun provideDownloadManager(context: Context): DownloadManager = DownloadManager.Base(context)
 
-
     @Provides
     @Singleton
     fun provideSharedPreferences(context: Context): SharedPreferences =
@@ -100,14 +97,6 @@ class ApplicationModule {
     @Singleton
     fun provideFirstLaunch(preferences: PreferenceDataStore): FirstLaunch.Mutable =
         FirstLaunch.Base(preferences)
-
-    @Singleton
-    @Provides
-    fun provideRequestManager(
-        application: Application
-    ): RequestManager {
-        return Glide.with(application)
-    }
 
     @Provides
     @Singleton
@@ -265,9 +254,9 @@ class ApplicationModule {
     @Singleton
     fun provideDisplayProvider(
         context: Application,
-        interactor: ResolutionsInteractor
+        resolutionCacheDataSource: ResolutionCacheDataSource
     ): DisplayProvider =
-        DisplayProvider.Base(context, interactor)
+        DisplayProvider.Base(context, resolutionCacheDataSource)
 
     @Provides
     @Singleton

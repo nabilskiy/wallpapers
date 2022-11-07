@@ -2,8 +2,7 @@ package wallgram.hd.wallpapers.presentation.base.adapter
 
 import android.view.View
 import androidx.annotation.DrawableRes
-import androidx.recyclerview.widget.RecyclerView
-import wallgram.hd.wallpapers.presentation.colors.ColorUi
+import coil.memory.MemoryCache
 
 interface MyView {
 

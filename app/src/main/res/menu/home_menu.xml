@@ -6,11 +6,10 @@
         android:id="@+id/action_premium"
         android:icon="@drawable/ic_premium"
         android:orderInCategory="0"
-        android:title="Описание"
+        android:title="@string/action_subscription"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_changer"
         android:icon="@drawable/ic_changer"
         android:orderInCategory="1"
         android:title="Описание"
@@ -20,7 +19,7 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search_menu"
         android:orderInCategory="2"
-        android:title="Описание"
+        android:title="@string/search"
         app:showAsAction="always" />
 
 

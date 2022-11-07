@@ -4,39 +4,34 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.google.android.material.imageview.ShapeableImageView
+import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.presentation.base.adapter.MyView
+import wallgram.hd.wallpapers.presentation.base.views.coil.transform.ColorFilterTransformation
+import wallgram.hd.wallpapers.util.dp
 
 class CustomShapeableImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ShapeableImageView(context, attrs, defStyleAttr), MyView {
+) : AppCompatImageView(context, attrs, defStyleAttr), MyView {
 
     override fun loadImage(url: String) {
-        Glide.with(context).load(url)
-
-            .apply(
-                RequestOptions.bitmapTransform(
-                    wallgram.hd.wallpapers.util.ColorFilterTransformation(
-                        Color.argb(80, 0, 0, 0)
-                    )
-                )
+        load(url) {
+            placeholder(ColorDrawable(Color.parseColor("#222222")))
+            transformations(
+                RoundedCornersTransformation(4f.dp),
+                ColorFilterTransformation(0xC1C1C1)
             )
-            .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-            .apply(RequestOptions().format(DecodeFormat.PREFER_RGB_565))
-            .apply(RequestOptions().placeholder(ColorDrawable(Color.parseColor("#252831"))))
-            .transition(DrawableTransitionOptions.withCrossFade(100))
-            .into(this)
+        }
     }
 
     override fun handleClick(listener: OnClickListener) {
         setOnClickListener(listener)
     }
-
 
 }
 

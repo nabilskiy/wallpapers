@@ -1,6 +1,8 @@
 package wallgram.hd.wallpapers.domain.resolution
 
 import wallgram.hd.wallpapers.DisplayProvider
+import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.ResourceProvider
 import wallgram.hd.wallpapers.data.resolution.ChangeResolution
 import wallgram.hd.wallpapers.data.resolution.ResolutionCacheDataSource
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
@@ -23,17 +25,23 @@ interface ResolutionsDomain {
 
         class Base(
             private val cacheDataSource: ResolutionCacheDataSource,
-            private val changeResolution: ChangeResolution
+            private val changeResolution: ChangeResolution,
+            private val resourceProvider: ResourceProvider
         ) : Mapper<ResolutionsUi> {
             override fun map(
                 list: List<String>
             ): ResolutionsUi {
                 val finalList = mutableListOf<ItemUi>()
 
-                finalList.addAll(list.map {
-                   ResolutionUi(
-                        it,
-                        cacheDataSource.isSelected(it), changeResolution
+                finalList.addAll(list.mapIndexed { index, s ->
+
+                    val title = if (index == 0)
+                        resourceProvider.string(R.string.my_screen, s)
+                    else s
+
+                    ResolutionUi(
+                        title, s,
+                        cacheDataSource.isSelected(s), changeResolution
                     )
 
                 })

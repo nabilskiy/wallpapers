@@ -2,8 +2,11 @@ package wallgram.hd.wallpapers.data.workers
 
 import android.app.DownloadManager
 import android.content.Context
+import android.database.CursorIndexOutOfBoundsException
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
@@ -17,9 +20,14 @@ import wallgram.hd.wallpapers.util.getDefaultWallpapersDownloadFolder
 import wallgram.hd.wallpapers.util.hasContent
 import java.io.File
 
-class WallpaperDownloader(context: Context, params: WorkerParameters) :
-    ContextAwareWorker(context, params),
+class WallpaperDownloader(private val context: Context) :
     DownloadListenerThread.DownloadListener {
+
+    fun cancel(id: Long){
+        val downloadManager: DownloadManager? =
+            context.getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
+        downloadManager?.remove(id)
+    }
 
     @Suppress("DEPRECATION")
     private fun downloadUsingNotificationManager(url: String, file: File): Long {
@@ -45,8 +53,9 @@ class WallpaperDownloader(context: Context, params: WorkerParameters) :
                 allowScanningByMediaScanner()
             }
 
+
         val downloadManager: DownloadManager? =
-            context?.getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
+            context.getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
         downloadManager ?: return -1L
 
         val downloadId = try {
@@ -57,11 +66,6 @@ class WallpaperDownloader(context: Context, params: WorkerParameters) :
             return -1L
         }
 
-        val thread =
-            DownloadListenerThread(
-                context, downloadManager, downloadId, file.absolutePath, this
-            )
-        thread.start()
         return downloadId
     }
 
@@ -72,37 +76,38 @@ class WallpaperDownloader(context: Context, params: WorkerParameters) :
     }
 
 
-    override suspend fun doWork(): Result = coroutineScope {
-        val url: String = inputData.getString(DOWNLOAD_URL_KEY) ?: ""
-        if (!url.hasContent()) return@coroutineScope Result.failure()
+    fun download(url: String): Result {
+        if (!url.hasContent()) return Result.Failure()
 
         val (filename, extension) = url.filenameAndExtension
         val folder = downloadsFolder
-            ?: context?.externalCacheDir ?: context?.cacheDir
+            ?: context.externalCacheDir ?: context.cacheDir
         val filePath = "$folder${File.separator}$filename$extension"
 
         val file = File(filePath)
         if (file.exists() && file.length() > 0L) {
             onSuccess(filePath)
-            val outputData = workDataOf(
-                DOWNLOAD_PATH_KEY to file.absolutePath,
-                DOWNLOAD_FILE_EXISTED to true
+            return Result.Success(
+                listOf(
+                    DOWNLOAD_PATH_KEY to file.absolutePath,
+                    DOWNLOAD_FILE_EXISTED to true
+                )
             )
-            return@coroutineScope Result.success(outputData)
         }
 
         file.parentFile?.createIfDidNotExist()
         file.delete()
 
         val downloadId = downloadUsingNotificationManager(url, file)
-        if (downloadId == -1L) return@coroutineScope Result.failure()
+        if (downloadId == -1L) return Result.Failure()
 
-        val outputData = workDataOf(
-            DOWNLOAD_PATH_KEY to filePath,
-            DOWNLOAD_TASK_KEY to downloadId,
-            DOWNLOAD_FILE_EXISTED to false
+        return Result.Enqueue(
+            listOf(
+                DOWNLOAD_PATH_KEY to filePath,
+                DOWNLOAD_TASK_KEY to downloadId,
+                DOWNLOAD_FILE_EXISTED to false
+            )
         )
-        return@coroutineScope Result.success(outputData)
     }
 
     override fun onSuccess(path: String) {
@@ -128,19 +133,56 @@ class WallpaperDownloader(context: Context, params: WorkerParameters) :
         internal const val DOWNLOAD_TASK_KEY = "download_task"
         internal const val DOWNLOAD_FILE_EXISTED = "download_file_existed"
 
+
         fun buildRequest(url: String): OneTimeWorkRequest? {
             if (!url.hasContent()) return null
-            return try {
-                val constraints = Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
-                OneTimeWorkRequest.Builder(WallpaperDownloader::class.java)
-                    .setConstraints(constraints)
-                    .setInputData(workDataOf(DOWNLOAD_URL_KEY to url))
-                    .build()
-            } catch (e: Exception) {
-                null
-            }
+            return null
+//            return try {
+//                val constraints = Constraints.Builder()
+//                    .setRequiredNetworkType(NetworkType.CONNECTED)
+//                    .build()
+////                OneTimeWorkRequest.Builder(WallpaperDownloader::class.java)
+////                    .setConstraints(constraints)
+////                    .setInputData(workDataOf(DOWNLOAD_URL_KEY to url))
+////                    .build()
+//            } catch (e: Exception) {
+//                null
+//            }
         }
+    }
+
+    sealed class Result {
+
+        open fun path(): String = ""
+        open fun existed(): Boolean = false
+        open fun id(): Long = -1L
+
+        class Success(private val pairs: List<Pair<String, Any?>> = listOf()) : Result() {
+
+            override fun path() =
+                pairs.find { it.first == DOWNLOAD_PATH_KEY }?.second.toString() ?: ""
+
+            override fun existed() =
+                pairs.find { it.first == DOWNLOAD_FILE_EXISTED }?.second as Boolean? ?: false
+
+            override fun id() =
+                pairs.find { it.first == DOWNLOAD_TASK_KEY }?.second as Long? ?: -1L
+
+        }
+
+        class Enqueue(private val pairs: List<Pair<String, Any?>> = listOf()) : Result() {
+
+            override fun path() =
+                pairs.find { it.first == DOWNLOAD_PATH_KEY }?.second.toString() ?: ""
+
+            override fun existed() =
+                pairs.find { it.first == DOWNLOAD_FILE_EXISTED }?.second as Boolean? ?: false
+
+            override fun id() =
+                pairs.find { it.first == DOWNLOAD_TASK_KEY }?.second as Long? ?: -1L
+
+        }
+
+        class Failure() : Result()
     }
 }

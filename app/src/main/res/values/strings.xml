@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">Wallgram</string>
+
     <string name="action_settings">Settings</string>
-
-    <string name="ad_attribution" translatable="false">Ad</string>
     <string name="user_agreement">By launching the application, you accept the terms of the user agreement</string>
-
     <string name="menu_favorites">Favorites</string>
     <string name="menu_history">History</string>
     <string name="menu_feedback">Leave a review</string>
@@ -22,22 +20,10 @@
     <string name="retry_button">Retry</string>
     <string name="lang_title">Language</string>
 
-    <!--    <string-array name="feed_list">-->
-    <!--        <item>@string/category_title</item>-->
-    <!--        <item>@string/news_title</item>-->
-    <!--        <item>@string/popular_title</item>-->
-    <!--        <item>@string/random_title</item>-->
-    <!--    </string-array>-->
-
     <string-array name="feed_list">
         <item>@string/news_title</item>
         <item>@string/popular_title</item>
         <item>@string/random_title</item>
-    </string-array>
-
-    <string-array name="favorite_list">
-        <item>@string/menu_favorites</item>
-        <item>@string/menu_history</item>
     </string-array>
 
     <string name="similar_wallpapers">Similar Wallpapers</string>
@@ -45,86 +31,62 @@
     <string name="home_screen">Home screen</string>
     <string name="lock_screen">Lock screen</string>
     <string name="both_screens">Both screens</string>
-    <string name="clear">Clear</string>
-    <string name="cancel">Cancel</string>
     <string name="clear_cache_title">Clear cache</string>
     <string name="cache_size">Cache size: %1$s</string>
-    <string name="crop_image_key">Crop an image</string>
     <string name="action_subscription">Subscription</string>
     <string name="continue_key">Сontinue</string>
-    <string name="free_days">And get 3 free days as a gift</string>
     <string name="sub_text">Subscription renews automatically. You can turn off automatic renewal at any time.\n\n %1$s for %2$s. Provides access to all wallpapers without limitations and ads. User payments are charged from their Google Play account upon confirmation of payment. Subscriptions renew automatically unless the user cancels the subscription no later than 24 hours before the end date of the current subscription period. Subscription renewals will be charged within 24 hours prior to the end date of the current subscription period. Users can change and cancel subscriptions in their Google Play account settings.\n</string>
     <string name="year">/ year</string>
     <string name="month">/ month</string>
     <string name="error_msg">Failed to load wallpapers</string>
 
-    <string name="feedback_title">Leave a review</string>
-    <string name="rate_title">Rate the app</string>
-    <string name="ok_btn">OK</string>
-    <string name="rate_neutral">No, thanks</string>
-    <string name="rate_later">Later</string>
-    <string name="send_feedback">Send feedback</string>
-    <string name="email_error">There are no email clients installed</string>
-    <string name="email_subject" translatable="false">Akspic_feedback</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="rate_dialog_message" translatable="false">Rate Dialog</string>
-    <string name="clear_confirm">Are you sure you want to clear history?</string>
     <string name="save_50">Save 50%</string>
-    <string name="portrait">Portrait</string>
-    <string name="landscape">Landscape</string>
-    <string name="original">Original size</string>
-    <string name="install_wallpaper">Set</string>
     <string name="download">Download</string>
 
-
-    <string name="error" translatable="false">Error</string>
-
     <string name="red" translatable="false">Red</string>
-    <string name="orange" translatable="false">Orange</string>
     <string name="gold" translatable="false">Gold</string>
     <string name="green" translatable="false">Green</string>
     <string name="blue" translatable="false">Blue</string>
-    <string name="violet" translatable="false">Violet</string>
     <string name="pink" translatable="false">Pink</string>
-    <string name="brown" translatable="false">Brown</string>
     <string name="black" translatable="false">Black</string>
     <string name="white" translatable="false">White</string>
-    <string name="gray" translatable="false">Gray</string>
-    <string name="turquoise" translatable="false">Turquoise</string>
     <string name="silver" translatable="false">Silver</string>
 
-    <string-array name="colors_name">
-        <item>@string/red</item>
-        <item>@string/orange</item>
-        <item>@string/gold</item>
-        <item>@string/green</item>
-        <item>@string/turquoise</item>
-        <item>@string/blue</item>
-        <item>@string/violet</item>
-        <item>@string/pink</item>
-        <item>@string/brown</item>
-        <item>@string/black</item>
-        <item>@string/white</item>
-        <item>@string/gray</item>
-        <item>@string/silver</item>
-    </string-array>
     <string name="home">Home</string>
-    <string name="all">All</string>
-    <string name="color">Colour</string>
-    <string name="best_wallpaper">BEST WALLPAPERS FOR</string>
     <string name="cache">Application cache</string>
-    <string name="choose_plan">Choose your plan</string>
     <string name="free">Free</string>
     <string name="downloads_limit_10">Up to 10 downloads a day</string>
     <string name="integrated_ads">With integrated ads</string>
     <string name="current">Current</string>
-    <string name="pro">No download limitations\nNo ads</string>
     <string name="subscribe_now">Subscribe now</string>
-    <string name="wallpaper_setted">Wallpaper setted</string>
-    <string name="image_dowloaded">Image downloaded</string>
-    <string name="recommend">Recommend</string>
     <string name="connection_error">Connection error</string>
+
     <string name="discover">Discover</string>
     <string name="wallpaper_resolution">Wallpaper resolution</string>
+    <string name="my_screen">My screen (%1$s)</string>
+    <string name="image_downloaded">Изображение загружено</string>
+    <string name="image_already_downloaded">Изображение уже загружено</string>
+    <string name="wallpaper_applied">Обои установлены</string>
+    <string name="wallpaper_apply_error">Ошибка установки</string>
+    <string name="wallpaper_application">Применение обоев…</string>
+    <string name="wallgram_pro">Wallgram Pro</string>
+    <string name="author">Автор</string>
+    <string name="source">Источник</string>
+    <string name="license">Лицензия</string>
+    <string name="date">Дата</string>
+    <string name="resolution">Разрешение</string>
+    <string name="downloading">Загрузка…</string>
+    <string name="download_waiting">Ожидание загрузки…</string>
+    <string name="download_paused">Загрузка приостановлена…</string>
+    <string name="download_canceled">Загрузка отменена</string>
+    <string name="download_error">Ошибка загрузки</string>
+    <string name="your_device">Ваше устройство</string>
+    <string name="no_ads_100">100% No Ads</string>
+    <string name="unlimited_wallpaper_downloads">Unlimited Wallpaper Downloads</string>
+    <string name="daily_wallpapers_update">Daily Wallpapers Update</string>
+    <string name="full_access_to_the_wallpaper_changer">Full access to the wallpaper changer</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="start_search">Начните искать</string>
 
 </resources>

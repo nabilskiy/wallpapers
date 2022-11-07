@@ -91,17 +91,6 @@ open class MainFragment : MultiStackFragment() {
 
     }
 
-    private fun showRateAppFallbackDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.rate_title)
-            .setMessage("If you are enjoying our app, please take a moment to rate it on PlayStore. Thanks for your support!")
-            .setPositiveButton("Rate Now") { dialog, which -> redirectToPlayStore() }
-            .setNegativeButton("Remind me later") { dialog, which -> }
-            .setNeutralButton("No, Thanks") { dialog, which -> }
-            .setOnDismissListener(DialogInterface.OnDismissListener { dialog: DialogInterface? -> })
-            .show()
-    }
-
     private fun redirectToPlayStore() {
         val appPackageName: String = requireContext().packageName
         try {

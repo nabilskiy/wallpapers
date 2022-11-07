@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DrawableImageProvider implements ImageProvider{
@@ -39,5 +41,10 @@ public class DrawableImageProvider implements ImageProvider{
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<String> keys() {
+        return new ArrayList<>();
     }
 }

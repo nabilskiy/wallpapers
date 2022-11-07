@@ -1,19 +1,15 @@
 package wallgram.hd.wallpapers.presentation.settings.resolution
 
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import wallgram.hd.wallpapers.R
-import wallgram.hd.wallpapers.databinding.FragmentLanguageBinding
 import wallgram.hd.wallpapers.databinding.FragmentResolutionBinding
-import wallgram.hd.wallpapers.presentation.base.BaseActivity
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
-import wallgram.hd.wallpapers.util.setCustomChecked
+import wallgram.hd.wallpapers.util.restart
 
 @AndroidEntryPoint
 class ResolutionFragment : BaseFragment<ResolutionViewModel, FragmentResolutionBinding>(
@@ -25,7 +21,6 @@ class ResolutionFragment : BaseFragment<ResolutionViewModel, FragmentResolutionB
 
         val resolutionsAdapter = ResolutionsAdapter()
 
-
         with(binding) {
             toolbar.setNavigationOnClickListener { viewModel.back() }
 
@@ -36,14 +31,19 @@ class ResolutionFragment : BaseFragment<ResolutionViewModel, FragmentResolutionB
             }
         }
 
-        viewModel.observe(viewLifecycleOwner){ resolutionsUi ->
+        viewModel.observe(viewLifecycleOwner) { resolutionsUi ->
             resolutionsUi.map(resolutionsAdapter)
         }
 
-        viewModel.observeUpdate(viewLifecycleOwner){
+        viewModel.observeUpdate(viewLifecycleOwner) {
             viewModel.update()
+            notifyResolutionChanged()
         }
 
+    }
+
+    private fun notifyResolutionChanged() {
+        requireActivity().restart()
     }
 
     override fun invalidate() {

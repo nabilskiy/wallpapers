@@ -12,14 +12,13 @@ import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.presentation.gallery.GalleryViewHolder
 
 class GalleryFullViewHolderChain(
-    private val clickListener: GenericAdapter.ClickListener<GalleryUi>,
     private val viewHolderFactoryChain: ViewHolderFactoryChain<ItemUi>
 ) : ViewHolderFactoryChain<ItemUi> {
 
     override fun viewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder<ItemUi> =
         if (viewType == 6)
             GalleryFullViewHolder(
-                ItemFullPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false), clickListener
+                ItemFullPhotoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         else viewHolderFactoryChain.viewHolder(parent, viewType)
 }

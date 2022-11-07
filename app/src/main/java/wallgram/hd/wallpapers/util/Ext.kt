@@ -1,6 +1,8 @@
 package wallgram.hd.wallpapers.util
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
@@ -12,6 +14,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.presentation.main.MainActivity
+import wallgram.hd.wallpapers.util.localization.LocalizationActivityDelegate
 import java.net.MalformedURLException
 
 //fun Context.getResolution(): String{
@@ -21,6 +25,15 @@ import java.net.MalformedURLException
 //
 //    return "${outMetrics.widthPixels}x${outMetrics.heightPixels}"
 //}
+
+fun Activity.restart(){
+    val KEY_ACTIVITY_LOCALE_CHANGED = "activity_locale_changed"
+    val intent = Intent(this, MainActivity::class.java)
+    intent.putExtra(KEY_ACTIVITY_LOCALE_CHANGED, true)
+    this.startActivity(intent)
+    this.finish()
+    this.overridePendingTransition(0, 0)
+}
 
 fun Context.getAppName(): String {
     var name: String = try {

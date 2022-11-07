@@ -1,14 +1,11 @@
 package wallgram.hd.wallpapers.presentation.gallery
 
-import android.util.Log
+import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.data.gallery.GalleryCache
-import wallgram.hd.wallpapers.data.gallery.SaveSelect
-import wallgram.hd.wallpapers.domain.gallery.GalleryDomain
 import wallgram.hd.wallpapers.model.Links
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.base.adapter.MyView
 import wallgram.hd.wallpapers.presentation.favorite.ChangeFavorite
-import wallgram.hd.wallpapers.presentation.filters.FilterUi
 
 interface GalleryUi : ItemUi {
 
@@ -48,14 +45,15 @@ interface GalleryUi : ItemUi {
 
         override fun type(): Int = 6
 
-        override fun show(vararg views: MyView) {
-            views[0].loadImage(preview, original)
-            views[0].handleClick {
+        override fun show(vararg views: MyView) = with(views[0]) {
+            loadImage(preview, original)
+            handleClick {
                 navigateGallery.navigate(id, requestId)
             }
         }
 
         override fun id(): String = id.toString()
+
         override fun filter() = filter
 
         override fun content(): String = id.toString() + isFavorite

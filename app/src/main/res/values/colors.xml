@@ -7,51 +7,25 @@
     <color name="color_status_bar">#0004030C</color>
     <color name="color_white">#FFFFFF</color>
     <color name="color_black">#000000</color>
-    <color name="colorGray">#5c5e65</color>
     <color name="colorYellow">#FFCC00</color>
     <color name="colorGrayText">#929498</color>
 
     <color name="colorBackground">#1C1C1E</color>
     <color name="colorNavigationBar">#141414</color>
-    <color name="colorButtonBackground">#B304030C</color>
 
 
-    <color name="grey_60">#666666</color>
-
-    <color name="color_info_background">#1F2127</color>
     <color name="color_info_title_text">#A5A5A5</color>
 
 
     <color name="color_tag_1">#f44336</color>
-    <color name="color_tag_2">#ffa500</color>
     <color name="color_tag_3">#ffeb3b</color>
     <color name="color_tag_4">#4caf50</color>
-    <color name="color_tag_5">#009688</color>
     <color name="color_tag_6">#2196f3</color>
     <color name="color_tag_7">#673ab7</color>
-    <color name="color_tag_8">#e91e63</color>
-    <color name="color_tag_9">#795548</color>
     <color name="color_tag_10">#000000</color>
     <color name="color_tag_11">#ffffff</color>
-    <color name="color_tag_12">#808080</color>
     <color name="color_tag_13">#C0C0C0</color>
 
-    <array name="color_tags">
-        <item>@color/color_tag_1</item>
-        <item>@color/color_tag_2</item>
-        <item>@color/color_tag_3</item>
-        <item>@color/color_tag_4</item>
-        <item>@color/color_tag_5</item>
-        <item>@color/color_tag_6</item>
-        <item>@color/color_tag_7</item>
-        <item>@color/color_tag_8</item>
-        <item>@color/color_tag_9</item>
-        <item>@color/color_tag_10</item>
-        <item>@color/color_tag_11</item>
-        <item>@color/color_tag_12</item>
-        <item>@color/color_tag_13</item>
-    </array>
-    
     <color name="color_silver_start">#E6E6E7</color>
     <color name="color_silver_end">#BBBBBB</color>
 

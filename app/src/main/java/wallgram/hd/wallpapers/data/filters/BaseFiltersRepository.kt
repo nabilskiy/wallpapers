@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.data.filters
 
+import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.data.colors.ColorMapper
 import wallgram.hd.wallpapers.data.colors.ColorsDataSource
 import wallgram.hd.wallpapers.domain.filters.CategoryDomain
@@ -21,6 +22,6 @@ class BaseFiltersRepository @Inject constructor(
     }
 
     override fun save(id: Int, requestId: String) {
-        TODO("Not yet implemented")
+
     }
 }
