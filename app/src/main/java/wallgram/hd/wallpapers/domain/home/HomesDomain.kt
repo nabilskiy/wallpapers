@@ -21,7 +21,8 @@ interface HomesDomain {
     interface Mapper<T> {
         fun map(categories: List<HomeDomain>): T
 
-        class Base(private val homeMapper: HomeDomain.Mapper<HomeCarouselUi.Base>) : Mapper<FiltersUi> {
+        class Base(private val homeMapper: HomeDomain.Mapper<HomeCarouselUi.Base>) :
+            Mapper<FiltersUi> {
             override fun map(categories: List<HomeDomain>): FiltersUi {
                 return FiltersUi.Base(categories.map { it.map(homeMapper) })
             }

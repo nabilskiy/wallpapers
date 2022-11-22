@@ -8,11 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.lifecycle.*
-import coil.ImageLoader
-import coil.ImageLoaderFactory
-import coil.disk.DiskCache
-import coil.memory.MemoryCache
-import coil.util.DebugLogger
+import com.bumptech.glide.Glide
 import com.google.android.gms.ads.*
 import wallgram.hd.wallpapers.util.modo.Modo
 import wallgram.hd.wallpapers.util.modo.MultiReducer
@@ -32,42 +28,35 @@ import javax.inject.Inject
 
 
 @HiltAndroidApp
-class App : Application(), ImageLoaderFactory {
-
-    fun showAd(activity: Activity, listener: OnShowAdCompleteListener){
-        appOpenAdManager.showAdIfAvailable(activity, listener)
-    }
+class App : Application() {
 
     private val localizationDelegate = LocalizationApplicationDelegate(this)
 
-    private var currentActivity: Activity? = null
+    @Inject
+    lateinit var appOpenAdManager: AppOpenAdManager
 
-    private lateinit var appOpenAdManager: AppOpenAdManager
 
     override fun onCreate() {
         modo = Modo(LogReducer(AppReducer(this, MultiReducer())))
-        super<Application>.onCreate()
-
-      //  registerActivityLifecycleCallbacks(this)
-
-//        MobileAds.setRequestConfiguration(
-//            RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("F54E65E1F95728FDA49814E0D2CEBB65")).build()
-//        )
+        super.onCreate()
 
         MobileAds.initialize(this) {}
 
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("5DFEFD9479D0674E03C1C60DAFD07107")).build()
-        )
+//        MobileAds.setRequestConfiguration(
+//            RequestConfiguration.Builder()
+//                .setTestDeviceIds(
+//                    Arrays.asList(
+//                        "13CA781B0CB755D6A2D0AFEAD81ABB89",
+//                        "843065C72AD2F89D76EEB1B67506650A"
+//                    )
+//                ).build()
+//        )
 
-       // ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-
-        appOpenAdManager = AppOpenAdManager.Base()
+        appOpenAdManager.init()
     }
 
     override fun onTrimMemory(level: Int) {
-        //Glide.with(applicationContext).onTrimMemory(TRIM_MEMORY_MODERATE)
-
+        Glide.with(applicationContext).onTrimMemory(TRIM_MEMORY_MODERATE)
         super.onTrimMemory(level)
     }
 
@@ -81,22 +70,6 @@ class App : Application(), ImageLoaderFactory {
         localizationDelegate.onConfigurationChanged(this)
     }
 
-//    override fun onStart(owner: LifecycleOwner) {
-//        //currentActivity?.let { appOpenAdManager.showAdIfAvailable(it) }
-//    }
-
-//    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
-//
-//    override fun onActivityStarted(activity: Activity) {
-////        if (appOpenAdManager.isShowingAd())
-////            currentActivity = activity
-//    }
-
-//    override fun onActivityResumed(activity: Activity) = Unit
-//    override fun onActivityPaused(activity: Activity) = Unit
-//    override fun onActivityStopped(activity: Activity) = Unit
-//    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
-//    override fun onActivityDestroyed(activity: Activity) = Unit
 
     override fun getResources() = localizationDelegate.getResources(this, super.getResources())
 
@@ -105,37 +78,6 @@ class App : Application(), ImageLoaderFactory {
         lateinit var modo: Modo
             private set
 
-    }
-
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this)
-            .memoryCache {
-                MemoryCache.Builder(this)
-                    .maxSizePercent(0.25)
-                    .build()
-            }
-            .diskCache {
-                DiskCache.Builder()
-                    .directory(cacheDir.resolve("image_cache"))
-                    .maxSizeBytes(512L * 1024 * 1024) // 512MB
-                    .build()
-            }
-            .okHttpClient {
-                // Don't limit concurrent network requests by host.
-                val dispatcher = Dispatcher().apply { maxRequestsPerHost = maxRequests }
-
-                // Lazily create the OkHttpClient that is used for network operations.
-                OkHttpClient.Builder()
-                    .dispatcher(dispatcher)
-                    .build()
-            }
-            // Show a short crossfade when loading images asynchronously.
-            .crossfade(true)
-            // Ignore the network cache headers and always read from/write to the disk cache.
-            .respectCacheHeaders(false)
-            // Enable logging to the standard Android log if this is a debug build.
-            .apply { if (BuildConfig.DEBUG) logger(DebugLogger()) }
-            .build()
     }
 
 }

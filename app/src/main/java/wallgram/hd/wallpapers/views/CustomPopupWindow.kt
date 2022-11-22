@@ -9,13 +9,13 @@ import wallgram.hd.wallpapers.util.modo.Pop
 import java.time.Duration
 
 
-class CustomPopupWindow(view: View): PopupWindow(view), PopupWindow.OnDismissListener {
+class CustomPopupWindow(view: View) : PopupWindow(view), PopupWindow.OnDismissListener {
 
     private var closeDelayTime = 3000L
     private var handler: Handler? = null
-   // private var onDismissListener: OnDismissListener
+    // private var onDismissListener: OnDismissListener
 
-    fun setDuration(duration: Long){
+    fun setDuration(duration: Long) {
         closeDelayTime = duration
         onShow()
     }
@@ -25,13 +25,13 @@ class CustomPopupWindow(view: View): PopupWindow(view), PopupWindow.OnDismissLis
         super.showAtLocation(parent, gravity, x, y)
     }
 
-    private fun onShow(){
+    private fun onShow() {
         schedule()
     }
 
-    private fun schedule(){
-        if(closeDelayTime > 0){
-            if(handler == null)
+    private fun schedule() {
+        if (closeDelayTime > 0) {
+            if (handler == null)
                 handler = Handler(Looper.getMainLooper())
             handler!!.removeCallbacks(closeRunnable)
             handler!!.postDelayed(closeRunnable, closeDelayTime)

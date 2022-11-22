@@ -26,7 +26,7 @@ interface ColorUi {
             show(title)
             setGradientDrawable(startColor, endColor)
             textColor(textColor)
-            handleClick{
+            handleClick {
                 navigateColor.navigate(Pair(value, title))
             }
         }
@@ -34,7 +34,8 @@ interface ColorUi {
         override fun id() = id.toString()
 
         override fun content() = title.toString()
-        override fun <T> map(mapper: Mapper<T>) = mapper.map(id, title, color, textColor, startColor, endColor)
+        override fun <T> map(mapper: Mapper<T>) =
+            mapper.map(id, title, color, textColor, startColor, endColor)
 
     }
 

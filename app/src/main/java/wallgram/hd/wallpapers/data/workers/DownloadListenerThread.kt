@@ -32,7 +32,7 @@ class DownloadListenerThread(
         while (running) {
 
 //
-          //  val query = DownloadManager.Query().setFilterById(downloadId)
+            //  val query = DownloadManager.Query().setFilterById(downloadId)
 
 //            downloadManager.query(query)?.let { cursor ->
 //                cursor.moveToFirst()

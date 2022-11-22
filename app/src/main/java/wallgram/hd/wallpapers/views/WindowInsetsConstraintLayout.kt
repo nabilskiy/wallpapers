@@ -7,9 +7,9 @@ import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 
 class WindowInsetsConstraintLayout @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyle: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
 ) : ConstraintLayout(context, attrs, defStyle) {
 
     override fun onApplyWindowInsets(windowInsets: WindowInsets): WindowInsets {

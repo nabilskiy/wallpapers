@@ -11,7 +11,7 @@ import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 class GalleryFullViewHolder(
     private val binding: ItemFullPhotoBinding
 ) : GenericViewHolder<ItemUi>(binding.root) {
-    override fun bind(item: ItemUi) = with(binding){
+    override fun bind(item: ItemUi) = with(binding) {
         item.show(ivPhoto)
     }
 }

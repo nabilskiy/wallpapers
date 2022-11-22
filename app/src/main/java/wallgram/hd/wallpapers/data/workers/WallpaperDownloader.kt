@@ -23,7 +23,7 @@ import java.io.File
 class WallpaperDownloader(private val context: Context) :
     DownloadListenerThread.DownloadListener {
 
-    fun cancel(id: Long){
+    fun cancel(id: Long) {
         val downloadManager: DownloadManager? =
             context.getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
         downloadManager?.remove(id)

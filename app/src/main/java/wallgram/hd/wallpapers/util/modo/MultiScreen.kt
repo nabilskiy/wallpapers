@@ -1,16 +1,18 @@
 package wallgram.hd.wallpapers.util.modo
 
 data class MultiScreen(
-        override val id: String,
-        val stacks: List<NavigationState>,
-        val selectedStack: Int
+    override val id: String,
+    val stacks: List<NavigationState>,
+    val selectedStack: Int
 ) : Screen
 
 class ExternalForward(val screen: Screen, vararg val screens: Screen) : NavigationAction
 object BackToLocalRoot : NavigationAction
 class SelectStack(val stackIndex: Int) : NavigationAction
 
-fun Modo.externalForward(screen: Screen, vararg screens: Screen) = dispatch(ExternalForward(screen, *screens))
+fun Modo.externalForward(screen: Screen, vararg screens: Screen) =
+    dispatch(ExternalForward(screen, *screens))
+
 fun Modo.selectStack(stackIndex: Int) = dispatch(SelectStack(stackIndex))
 fun Modo.backToLocalRoot() = dispatch(BackToLocalRoot)
 
@@ -27,7 +29,10 @@ class MultiReducer(
         else -> state
     }
 
-    private fun applyLocalAction(action: NavigationAction, state: NavigationState): NavigationState {
+    private fun applyLocalAction(
+        action: NavigationAction,
+        state: NavigationState
+    ): NavigationState {
         val localNavigationState = getLocalNavigationState(state)
         val newLocalNavigationState = origin(action, localNavigationState)
         return applyNewLocalNavigationState(state, newLocalNavigationState)
@@ -42,7 +47,10 @@ class MultiReducer(
         }
     }
 
-    private fun applyNewLocalNavigationState(state: NavigationState, local: NavigationState): NavigationState {
+    private fun applyNewLocalNavigationState(
+        state: NavigationState,
+        local: NavigationState
+    ): NavigationState {
         val screen = state.chain.lastOrNull()
         if (screen is MultiScreen) {
             val selectedStack = screen.stacks[screen.selectedStack]
@@ -85,7 +93,10 @@ class MultiReducer(
         }
     }
 
-    private fun applySelectStackAction(action: SelectStack, state: NavigationState): NavigationState {
+    private fun applySelectStackAction(
+        action: SelectStack,
+        state: NavigationState
+    ): NavigationState {
         val screen = state.chain.lastOrNull()
         if (screen is MultiScreen) {
             val selectedStack = screen.stacks[screen.selectedStack]

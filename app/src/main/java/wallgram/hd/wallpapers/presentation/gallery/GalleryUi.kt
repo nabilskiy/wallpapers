@@ -1,6 +1,5 @@
 package wallgram.hd.wallpapers.presentation.gallery
 
-import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.data.gallery.GalleryCache
 import wallgram.hd.wallpapers.model.Links
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi

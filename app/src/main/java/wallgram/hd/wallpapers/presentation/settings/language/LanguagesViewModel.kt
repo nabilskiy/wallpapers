@@ -8,5 +8,5 @@ import javax.inject.Inject
 @HiltViewModel
 class LanguagesViewModel @Inject constructor(
     dispatchers: Dispatchers
-): BaseViewModel(dispatchers) {
+) : BaseViewModel(dispatchers) {
 }

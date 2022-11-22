@@ -12,21 +12,28 @@ fun <T : Fragment> T.withArgs(vararg params: Pair<String, Any?>): T {
     return this
 }
 
-inline fun <reified T> Activity.args(key: String? = null, defaultValue: T? = null): ReadWriteProperty<Activity, T> {
+inline fun <reified T> Activity.args(
+    key: String? = null,
+    defaultValue: T? = null
+): ReadWriteProperty<Activity, T> {
     return BundleExtractorDelegate { thisRef, property ->
         val bundleKey = key ?: property.name
         extractFromBundle(thisRef.intent.extras, bundleKey, defaultValue)
     }
 }
 
-inline fun <reified T> Fragment.args(key: String? = null, defaultValue: T? = null): ReadWriteProperty<Fragment, T> {
+inline fun <reified T> Fragment.args(
+    key: String? = null,
+    defaultValue: T? = null
+): ReadWriteProperty<Fragment, T> {
     return BundleExtractorDelegate { thisRef, property ->
         val bundleKey = key ?: property.name
         extractFromBundle(thisRef.arguments, bundleKey, defaultValue)
     }
 }
 
-class BundleExtractorDelegate<in R, T>(private val initializer: (R, KProperty<*>) -> T) : ReadWriteProperty<R, T> {
+class BundleExtractorDelegate<in R, T>(private val initializer: (R, KProperty<*>) -> T) :
+    ReadWriteProperty<R, T> {
 
     private object EMPTY
 
@@ -45,7 +52,11 @@ class BundleExtractorDelegate<in R, T>(private val initializer: (R, KProperty<*>
     }
 }
 
-inline fun <reified T> extractFromBundle(bundle: Bundle?, key: String? = null, defaultValue: T? = null): T {
+inline fun <reified T> extractFromBundle(
+    bundle: Bundle?,
+    key: String? = null,
+    defaultValue: T? = null
+): T {
     val result = bundle?.get(key) ?: defaultValue
 
     if (result != null && result !is T) {
@@ -55,4 +66,4 @@ inline fun <reified T> extractFromBundle(bundle: Bundle?, key: String? = null, d
 }
 
 inline fun <reified T> Fragment.getArg(key: String, defaultValue: T? = null) =
-        extractFromBundle(arguments, key, defaultValue)
+    extractFromBundle(arguments, key, defaultValue)

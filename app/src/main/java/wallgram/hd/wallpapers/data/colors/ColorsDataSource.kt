@@ -4,7 +4,7 @@ interface ColorsDataSource {
 
     fun colors(): List<Color>
 
-    class Base: ColorsDataSource {
+    class Base : ColorsDataSource {
         override fun colors(): List<Color> {
             return listOf(
                 Color.Silver(),

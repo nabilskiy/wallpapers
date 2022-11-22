@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-        dispatchers: Dispatchers
-): BaseViewModel(dispatchers){
+    dispatchers: Dispatchers
+) : BaseViewModel(dispatchers) {
 
 
 }

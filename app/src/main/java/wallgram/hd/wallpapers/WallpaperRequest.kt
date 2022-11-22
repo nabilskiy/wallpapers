@@ -14,10 +14,13 @@ sealed class WallpaperRequest {
     abstract class Abstract(private val itemId: String) : WallpaperRequest() {
 
         private var page = 1
+        private var amount = 27
         private var data: MutableList<GalleryData> = ArrayList()
 
         override fun itemId() = itemId
         override fun page() = page
+        override fun amount() = amount
+
         override fun nextPage() {
             page += 1
         }
@@ -27,8 +30,12 @@ sealed class WallpaperRequest {
             clear()
         }
 
-        private fun clear(){
+        private fun clear() {
             data.clear()
+        }
+
+        override fun amount(count: Int) {
+            amount = count
         }
 
         override fun data() = data
@@ -50,7 +57,8 @@ sealed class WallpaperRequest {
     // open fun getSort(): String = ""
     open fun tabIndex(): Int = 0
 
-
+    abstract fun amount(count: Int)
+    abstract fun amount(): Int
     abstract fun page(): Int
     abstract fun nextPage()
     abstract fun initialPage()
@@ -121,7 +129,7 @@ sealed class WallpaperRequest {
         override suspend fun getRequest(
             service: GalleryService
         ): ServerResponse<GalleryCloud.Base> {
-            return service.getWallpapersItemsFromColor(sort, page(), r(), g(), b())
+            return service.getWallpapersItemsFromColor(sort, page(), amount(), r(), g(), b())
         }
 
         private fun r() = id shr 16 and 0xFF
@@ -136,7 +144,7 @@ sealed class WallpaperRequest {
         override suspend fun getRequest(
             service: GalleryService
         ): ServerResponse<GalleryCloud.Base> {
-            return service.getWallpapersItems("date", page())
+            return service.getWallpapersItems("date", page(), amount = amount())
         }
 
         override fun copy(sort: String) = this
@@ -149,7 +157,7 @@ sealed class WallpaperRequest {
         override suspend fun getRequest(
             service: GalleryService
         ): ServerResponse<GalleryCloud.Base> {
-            return service.getWallpapersItems("popular", page())
+            return service.getWallpapersItems("popular", page(), amount = amount())
         }
 
         override fun copy(sort: String) = this
@@ -161,7 +169,7 @@ sealed class WallpaperRequest {
         override suspend fun getRequest(
             service: GalleryService
         ): ServerResponse<GalleryCloud.Base> {
-            return service.getWallpapersItems("popular", page(), 26)
+            return service.getWallpapersItems("popular", page(), filter = 26, amount = amount())
         }
 
         override fun copy(sort: String) = this
@@ -173,7 +181,7 @@ sealed class WallpaperRequest {
         override suspend fun getRequest(
             service: GalleryService
         ): ServerResponse<GalleryCloud.Base> {
-            return service.getWallpapersItems("random", page())
+            return service.getWallpapersItems("random", page(), amount = amount())
         }
 
         override fun copy(sort: String) = this
@@ -185,7 +193,7 @@ sealed class WallpaperRequest {
         override suspend fun getRequest(
             service: GalleryService
         ): ServerResponse<GalleryCloud.Base> {
-            return service.getSimilarWallpapers(id, page())
+            return service.getSimilarWallpapers(id, page(), amount())
         }
 
         override fun copy(sort: String) = this
@@ -197,7 +205,7 @@ sealed class WallpaperRequest {
     class SEARCH(private var query: String) : Abstract("search"), Parcelable {
         override suspend fun getRequest(
             service: GalleryService
-        ): ServerResponse<GalleryCloud.Base> = service.search(query(), page())
+        ): ServerResponse<GalleryCloud.Base> = service.search(query(), page(), amount = amount())
 
         override fun copy(sort: String) = this.apply {
             query = sort

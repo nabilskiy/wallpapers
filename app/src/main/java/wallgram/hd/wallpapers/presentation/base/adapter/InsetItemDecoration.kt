@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 
 class InsetItemDecoration(
     @Dimension private val padding: Int,
-   private val headerViewType: Int
+    private val headerViewType: Int
 ) : ItemDecoration() {
 
     private fun isValid(child: View, parent: RecyclerView): Boolean {

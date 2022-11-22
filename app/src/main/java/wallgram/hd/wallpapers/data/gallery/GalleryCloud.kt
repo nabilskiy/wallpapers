@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.data.gallery
 
+import androidx.annotation.Keep
 import androidx.room.Embedded
 import com.google.gson.annotations.SerializedName
 import wallgram.hd.wallpapers.domain.gallery.GalleryDomain
@@ -13,7 +14,8 @@ interface GalleryCloud {
         override fun <T> map(mapper: Mapper<T>): T =
             mapper.map(-1, 1080, 1920, "", "", Links("", "", ""))
     }
-
+    
+    @Keep
     data class Base(
         @SerializedName("id")
         val id: Int,
@@ -49,7 +51,7 @@ interface GalleryCloud {
         ): T
 
 
-        class Base: Mapper<GalleryData>{
+        class Base : Mapper<GalleryData> {
             override fun map(
                 id: Int,
                 width: Int,
@@ -57,7 +59,8 @@ interface GalleryCloud {
                 preview: String,
                 original: String?,
                 links: Links
-            ): GalleryData.Base = GalleryData.Base(id, width, height, preview, original ?: "", links)
+            ): GalleryData.Base =
+                GalleryData.Base(id, width, height, preview, original ?: "", links)
         }
 
     }

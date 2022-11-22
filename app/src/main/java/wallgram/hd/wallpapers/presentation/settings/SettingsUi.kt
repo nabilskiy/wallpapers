@@ -1,14 +1,14 @@
 package wallgram.hd.wallpapers.presentation.settings
 
-import wallgram.hd.wallpapers.presentation.base.TextContainer
+import wallgram.hd.wallpapers.presentation.base.adapter.MyView
 
-interface SettingsUi{
+interface SettingsUi {
 
-    fun show(container: TextContainer)
+    fun show(view: MyView)
 
-    class Base(private val cacheSize: String): SettingsUi{
-        override fun show(container: TextContainer) =
-            container.show(cacheSize)
+    class Base(private val cacheSize: String) : SettingsUi {
+        override fun show(view: MyView) =
+            view.show(cacheSize)
     }
 
 }

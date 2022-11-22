@@ -23,7 +23,7 @@ class ResolutionInterceptor @Inject constructor(
         val newAuth = invocation?.method()?.getAnnotation(DisplayResolution::class.java)
         val url = originalRequest.url.newBuilder()
 
-        if(newAuth != null)
+        if (newAuth != null)
             url.addQueryParameter(PARAMETER_NAME, displayProvider.getScreenSizeRequest())
 
         val requestBuilder: Request.Builder = originalRequest.newBuilder()

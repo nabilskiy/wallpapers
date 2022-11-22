@@ -12,6 +12,7 @@
     <item
         android:icon="@drawable/ic_changer"
         android:orderInCategory="1"
+        android:visible="false"
         android:title="Описание"
         app:showAsAction="always" />
 

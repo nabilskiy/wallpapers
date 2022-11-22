@@ -50,7 +50,7 @@ class FeedsFragment : BaseFragment<FeedViewModel, FragmentFeedsBinding>(
                 viewModel.back()
             }
 
-            if(wallpaperRequest.getTitle().isBlank()){
+            if (wallpaperRequest.getTitle().isBlank()) {
                 header.isVisible = false
                 (header.layoutParams as AppBarLayout.LayoutParams)
                     .scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL

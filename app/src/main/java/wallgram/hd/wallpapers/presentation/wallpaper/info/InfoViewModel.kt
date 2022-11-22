@@ -16,7 +16,7 @@ import javax.inject.Inject
 class InfoViewModel @Inject constructor(
     private val interactor: PicInteractor,
     dispatchers: Dispatchers
-): BaseViewModel(dispatchers) {
+) : BaseViewModel(dispatchers) {
 
     private val _pic = MutableLiveData<InfoListUi>()
     val pic: LiveData<InfoListUi> get() = _pic

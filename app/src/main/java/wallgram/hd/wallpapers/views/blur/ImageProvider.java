@@ -7,6 +7,5 @@ import java.util.List;
 public interface ImageProvider {
 
     Bitmap onProvider(int position);
-    List<String> keys();
 
 }

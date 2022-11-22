@@ -38,7 +38,7 @@ class ChefSnackbarView @JvmOverloads constructor(
         findViewById<TextView>(R.id.text).setText(message)
     }
 
-    private fun setIconVisible(visible: Boolean){
+    private fun setIconVisible(visible: Boolean) {
         findViewById<ImageButton>(R.id.action_btn).isVisible = visible
     }
 

@@ -17,7 +17,7 @@ interface Resolution {
     interface Mapper<T> {
         fun map(resolutions: List<String>): T
 
-        class Base: Mapper<ResolutionsDomain>{
+        class Base : Mapper<ResolutionsDomain> {
             override fun map(resolutions: List<String>): ResolutionsDomain =
                 ResolutionsDomain.Base(resolutions)
 

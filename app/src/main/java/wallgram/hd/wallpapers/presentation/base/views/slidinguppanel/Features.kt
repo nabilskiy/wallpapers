@@ -10,22 +10,22 @@ import wallgram.hd.wallpapers.presentation.wallpapers.WallpapersFragment
 
 object Features {
 
-    class Similar(private val wallpaperRequest: WallpaperRequest): Feature{
-        override val fragment: BaseFragment<*,*> = SimilarFragment.newInstance(wallpaperRequest)
+    class Similar(private val wallpaperRequest: WallpaperRequest) : Feature {
+        override val fragment: BaseFragment<*, *> = SimilarFragment.newInstance(wallpaperRequest)
         override val anchorPoint: Float = 1f
     }
 
-    class Wallpaper(private val wallpaperRequest: WallpaperRequest): Feature{
+    class Wallpaper(private val wallpaperRequest: WallpaperRequest) : Feature {
         override val fragment: BaseFragment<*, *> = WallpapersFragment.newInstance(wallpaperRequest)
         override val anchorPoint: Float = 1f
     }
 
-    class Info(private val id: Int): Feature{
+    class Info(private val id: Int) : Feature {
         override val fragment: BaseFragment<*, *> = InfoDialogFragment.create(id)
         override val anchorPoint: Float = 1f
     }
 
-    class Download: Feature{
+    class Download : Feature {
         override val fragment: BaseFragment<*, *> = DownloadDialogFragment()
         override val anchorPoint: Float = 1f
     }

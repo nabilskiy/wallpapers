@@ -8,18 +8,20 @@ import wallgram.hd.wallpapers.model.ServerResponse
 interface GalleryService {
 
     @DisplayResolution
-    @GET("gallery?amount=27&safe=1")
+    @GET("gallery?safe=1")
     suspend fun getWallpapersItems(
         @Query("sort") sort: String,
         @Query("page") page: Int,
-        @Query("filter") filter: Int? = null
+        @Query("filter") filter: Int? = null,
+        @Query("amount") amount: Int = 27,
     ): ServerResponse<GalleryCloud.Base>
 
     @DisplayResolution
-    @GET("gallery?amount=27&safe=1")
+    @GET("gallery?safe=1")
     suspend fun getWallpapersItemsFromColor(
         @Query("sort") sort: String,
         @Query("page") page: Int,
+        @Query("amount") amount: Int = 27,
         @Query("primary_color[r]") r: Int,
         @Query("primary_color[g]") g: Int,
         @Query("primary_color[b]") b: Int,
@@ -27,33 +29,37 @@ interface GalleryService {
     ): ServerResponse<GalleryCloud.Base>
 
     @DisplayResolution
-    @GET("gallery?amount=27&safe=1")
+    @GET("gallery?safe=1")
     suspend fun getWallpapersFromCategory(
         @Query("filter") filter: Int,
         @Query("sort") sort: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("amount") amount: Int = 27
     ): ServerResponse<GalleryCloud.Base>
 
     @DisplayResolution
-    @GET("similar?amount=27&safe=1")
+    @GET("similar?safe=1")
     suspend fun getSimilarWallpapers(
         @Query("pic") pic: Int,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("amount") amount: Int = 27
     ): ServerResponse<GalleryCloud.Base>
 
     @DisplayResolution
-    @GET("gallery?amount=27&safe=1")
+    @GET("gallery?safe=1")
     suspend fun getWallpapersFromTag(
         @Query("tag") tag: Int,
         @Query("sort") sort: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("amount") amount: Int = 27
     ): ServerResponse<GalleryCloud.Base>
 
     @DisplayResolution
-    @GET("gallery?amount=27&safe=1")
+    @GET("gallery?safe=1")
     suspend fun search(
         @Query("search") query: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("amount") amount: Int = 27
     ): ServerResponse<GalleryCloud.Base>
 
 

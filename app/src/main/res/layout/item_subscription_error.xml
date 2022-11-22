@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="32dp"
+    android:background="@drawable/background_custom_radio_buttons_unselected_state"
+    android:paddingVertical="20dp">
+
+    <wallgram.hd.wallpapers.presentation.base.CustomTextView
+        android:id="@+id/error_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:drawablePadding="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/roboto_medium"
+        android:includeFontPadding="false"
+        android:letterSpacing="0.01"
+        android:lineSpacingExtra="10dp"
+        android:maxLines="2"
+        android:text="@string/error_get_prices"
+        android:textAlignment="center"
+        android:textColor="#E9E9EB"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:letterSpacing="0.01"
+        android:paddingHorizontal="36dp"
+        android:text="@string/reload"
+        android:textAllCaps="false"
+        app:backgroundTint="@color/colorYellow"
+        app:cornerRadius="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/error_text" />
+</androidx.constraintlayout.widget.ConstraintLayout>

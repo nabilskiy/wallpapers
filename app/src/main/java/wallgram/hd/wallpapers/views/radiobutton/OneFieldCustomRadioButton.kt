@@ -18,13 +18,13 @@ class OneFieldCustomRadioButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) : ConstraintLayout(context, attrs, defStyle), LifecycleOwner, SkuMapper {
-
-    protected val lifecycleRegistry = LifecycleRegistry(this)
+) : ConstraintLayout(context, attrs, defStyle), SkuMapper {
 
     private var radioButton: AppCompatRadioButton
     private var priceTextView: TextView
     private var periodTextView: TextView
+
+    private var sub: Subscription = Subscription.Empty()
 
     init {
         View.inflate(context, R.layout.custom_button_one_field, this)
@@ -62,25 +62,15 @@ class OneFieldCustomRadioButton @JvmOverloads constructor(
     }
 
     override fun map(data: Subscription) {
-        data.price().observe(this) {
-            setPrice(it)
+        sub = data
+        data.map(Subscription.Mapper.Ui()).apply {
+            setPrice(first)
+            setPurchased(second)
         }
-        data.isPurchased().observe(this) {
-            setPurchased(it)
-        }
     }
 
-    override fun getLifecycle() = lifecycleRegistry
+    fun subscription(): Subscription = sub
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
-    }
 
     private fun setPurchased(isPurchased: Boolean) {
         check(isPurchased)
@@ -90,21 +80,18 @@ class OneFieldCustomRadioButton @JvmOverloads constructor(
         radioButton.isChecked = isChecked
     }
 
+    fun isChecked() = radioButton.isChecked
+
     fun getPrice() = priceTextView.text.toString()
 
     fun getDuration(): String = when (id) {
         R.id.month_sub -> {
-            "1" + context.getString(R.string.month).replace("/", "")
+            context.getString(R.string.month)
         }
         R.id.year_sub -> {
-            "1" + context.getString(R.string.year).replace("/", "")
+            context.getString(R.string.year)
         }
         else -> "0"
     }
-//
-//    override fun populateViews() {
-//        priceTextView!!.text = price
-//        periodTextView!!.text = period
-//        discountTextView!!.text = discount
-//    }
+
 }

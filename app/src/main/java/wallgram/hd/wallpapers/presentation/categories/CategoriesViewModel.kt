@@ -28,10 +28,10 @@ class CategoriesViewModel @Inject constructor(
     val progressLiveData: LiveData<Refreshing> get() = progressLiveDataPrivate
 
     init {
-       loadData()
+        loadData()
     }
 
-    fun loadData(){
+    fun loadData() {
         categoriesLiveDataPrivate.value = FiltersUi.Base(listOf(ProgressUi()))
         handle {
             filtersInteractor.filters(atFinish) { categoriesLiveDataPrivate.value = it }

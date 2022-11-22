@@ -9,14 +9,14 @@
     <string name="menu_feedback">Leave a review</string>
     <string name="menu_site">Official site</string>
     <string name="search">Search</string>
-    <string name="category">Сategories</string>
+    <string name="category">Categories</string>
     <string name="news_title">New</string>
     <string name="popular_title">Popular</string>
     <string name="random_title">Random</string>
     <string name="image_logo">Image logo</string>
     <string name="wallpapers_adapted">All wallpapers are adapted to your screen</string>
     <string name="agreement_sub">the terms of the user agreement</string>
-    <string name="favorites_empty">Oh, still empty.\n\nWe have over 80,000 wallpapers. Have a look, you will surely like something.</string>
+    <string name="favorites_empty">You have not added anything yet</string>
     <string name="image">Image</string>
     <string name="retry_button">Retry</string>
     <string name="lang_title">Language</string>
@@ -31,9 +31,9 @@
     <string name="action_subscription">Subscription</string>
     <string name="save_50">Save 50%</string>
     <string name="continue_key">Сontinue</string>
-    <string name="sub_text">Subscription renews automatically. You can turn off automatic renewal at any time.\n\n %1$s for  %2$s. Provides access to all wallpapers without limitations and ads. User payments are charged from their Google Play account upon confirmation of payment. Subscriptions renew automatically unless the user cancels the subscription no later than 24 hours before the end date of the current subscription period. Subscription renewals will be charged within 24 hours prior to the end date of the current subscription period. Users can change and cancel subscriptions in their Google Play account settings.</string>
-    <string name="year">/ year</string>
-    <string name="month">/ month</string>
+    <string name="sub_text">Subscription renews automatically. You can turn off automatic renewal at any time.\n\n %1$s for %2$s. Provides access to all wallpapers without limitations and ads. User payments are charged from their Google Play account upon confirmation of payment. Subscriptions renew automatically unless the user cancels the subscription no later than 24 hours before the end date of the current subscription period. Subscription renewals will be charged within 24 hours prior to the end date of the current subscription period. Users can change and cancel subscriptions in their Google Play account settings.</string>
+    <string name="year">1 Year</string>
+    <string name="month">1 Month</string>
     <string name="error_msg">Failed to load wallpapers</string>
 
     <string name="privacy_policy">Privacy Policy</string>
@@ -47,5 +47,44 @@
     <string name="home">Home</string>
     <string name="connection_error">Connection error</string>
     <string name="wallpaper_resolution">Wallpaper resolution</string>
+    <string name="my_screen">My screen (%1$s)</string>
+    <string name="history_empty">History list is empty</string>
+    <string name="image_downloaded">Image downloaded</string>
+    <string name="wallpaper_applied">Wallpaper was set</string>
+    <string name="wallpaper_application">Setting the wallpaper</string>
+    <string name="discover">Discover</string>
+    <string name="author">Author</string>
+    <string name="source">Source</string>
+    <string name="license">License</string>
+    <string name="date">Date</string>
+    <string name="resolution">Resolution</string>
+    <string name="your_device">Your device</string>
+    <string name="no_ads_100">100% No Ads</string>
+    <string name="unlimited_wallpaper_downloads">Unlimited Wallpaper Downloads</string>
+    <string name="daily_wallpapers_update">Daily Wallpapers Update</string>
+    <string name="full_access_to_the_wallpaper_changer">Full access to the wallpaper changer</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="downloading">Downloading...</string>
+    <string name="red" translatable="false">Red</string>
+    <string name="gold" translatable="false">Gold</string>
+    <string name="green" translatable="false">Green</string>
+    <string name="blue" translatable="false">Blue</string>
+    <string name="pink" translatable="false">Pink</string>
+    <string name="black" translatable="false">Black</string>
+    <string name="white" translatable="false">White</string>
+    <string name="silver" translatable="false">Silver</string>
+    <string name="image_already_downloaded">Image already downloaded</string>
+    <string name="wallpaper_apply_error">Installation error</string>
+    <string name="download_waiting">Waiting for download...</string>
+    <string name="download_paused">Download paused...</string>
+    <string name="download_canceled">Download canceled</string>
+    <string name="download_error">Download error</string>
+    <string name="start_search">Start searching</string>
+
+    <string name="subscription_purchased" >You have full access to the Wallpaper Changer, no restrictions on downloads and no ads until %1$s.\nEnjoy!</string>
+    <string name="use_wallgram_pro">You are using\nWallgram Pro 😎</string>
+    <string name="error_get_prices" >Failed to get price information</string>
+    <string name="reload">Reload</string>
+
 
 </resources>

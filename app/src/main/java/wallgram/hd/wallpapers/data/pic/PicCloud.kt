@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.data.pic
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import wallgram.hd.wallpapers.data.filters.FiltersCloud
 import wallgram.hd.wallpapers.domain.pic.PicDomain
@@ -29,6 +30,7 @@ interface PicCloud {
             )
     }
 
+    @Keep
     data class Base(
         @SerializedName("id")
         val id: Int,

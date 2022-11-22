@@ -16,7 +16,8 @@ class ToolbarViewHolderChain(
     override fun viewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder<ItemUi> =
         if (viewType == ViewIds.TOOLBAR)
             ToolbarViewHolder(
-                ViewToolbarBinding.inflate(LayoutInflater.from(parent.context), parent, false), clickListener
+                ViewToolbarBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                clickListener
             )
         else viewHolderFactoryChain.viewHolder(parent, viewType)
 

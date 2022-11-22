@@ -44,7 +44,7 @@ abstract class BaseFragment<V : ViewModel, B : ViewBinding>(
 
     }
 
-    open fun back(){
+    open fun back() {
 
     }
 }

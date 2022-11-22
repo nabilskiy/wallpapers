@@ -18,10 +18,7 @@ import wallgram.hd.wallpapers.data.favorites.FavoritesDao
 import wallgram.hd.wallpapers.data.gallery.*
 import wallgram.hd.wallpapers.domain.favorites.FavoritesInteractor
 import wallgram.hd.wallpapers.domain.favorites.FavoritesRepository
-import wallgram.hd.wallpapers.domain.gallery.GalleriesDomain
-import wallgram.hd.wallpapers.domain.gallery.GalleryDomain
-import wallgram.hd.wallpapers.domain.gallery.GalleryInteractor
-import wallgram.hd.wallpapers.domain.gallery.GalleryRepository
+import wallgram.hd.wallpapers.domain.gallery.*
 import wallgram.hd.wallpapers.domain.history.HistoryInteractor
 import wallgram.hd.wallpapers.domain.history.HistoryRepository
 import wallgram.hd.wallpapers.presentation.favorite.ChangeFavorite
@@ -41,9 +38,9 @@ class HistoryModule {
         repository: GalleryRepository,
         dispatchers: Dispatchers,
         handleError: HandleDomainError,
-        mapper: GalleryDomain.Mapper<GalleryUi>
+        mapper: GalleryDomain.Mapper<GalleryUi>,
     ): HistoryInteractor = HistoryInteractor.Base(
-        GalleriesDomain.Mapper.History(mapper),
+        HistoryMapper(mapper),
         repository,
         dispatchers, handleError
     )

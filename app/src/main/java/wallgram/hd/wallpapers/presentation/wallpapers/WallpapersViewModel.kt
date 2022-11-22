@@ -26,7 +26,7 @@ class WallpapersViewModel @Inject constructor(
     dispatchers: Dispatchers
 ) : BaseViewModel(dispatchers) {
 
-    private var lastVisibleItemPos = -1
+    private var isLoading = false
 
     private val wallpapersLiveDataPrivate = MutableLiveData<GalleriesUi>()
     val wallpapersLiveData: MutableLiveData<GalleriesUi> get() = wallpapersLiveDataPrivate
@@ -39,7 +39,7 @@ class WallpapersViewModel @Inject constructor(
         loadData(wallpaperRequest)
     }
 
-    fun clear(request: WallpaperRequest){
+    fun clear(request: WallpaperRequest) {
         interactor.clear(request)
     }
 
@@ -47,19 +47,21 @@ class WallpapersViewModel @Inject constructor(
         progressLiveDataPrivate.value = Refreshing.Done()
     }
 
-    fun loadMoreData(wallpaperRequest: WallpaperRequest, lastVisibleItemPosition: Int) {
-        if (lastVisibleItemPosition != lastVisibleItemPos)
-            if (interactor.needToLoadMoreData(wallpaperRequest.itemId(), lastVisibleItemPosition)) {
-                lastVisibleItemPos = lastVisibleItemPosition
-                loadData(wallpaperRequest)
-            }
+    fun loadMoreData(wallpaperRequest: WallpaperRequest) {
+        if (!isLoading) {
+            loadData(wallpaperRequest)
+            isLoading = true
+        }
     }
 
 
-
     private fun loadData(wallpaperRequest: WallpaperRequest) {
+        isLoading = true
         handle {
-            interactor.gallery(wallpaperRequest, atFinish) { wallpapersLiveDataPrivate.value = it }
+            interactor.gallery(wallpaperRequest, atFinish) {
+                wallpapersLiveDataPrivate.value = it
+                isLoading = false
+            }
         }
     }
 

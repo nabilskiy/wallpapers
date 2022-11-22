@@ -35,9 +35,17 @@ class DownloadProgressLiveData(private val context: Context, private val request
                         DownloadManager.STATUS_FAILED,
                         DownloadManager.STATUS_PAUSED -> postValue(DownloadItem(status = status))
                         else -> {
-                            val bytesDownloadedSoFar = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-                            val totalSizeBytes = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                            postValue(DownloadItem(bytesDownloadedSoFar.toLong(), totalSizeBytes.toLong(), status))
+                            val bytesDownloadedSoFar =
+                                cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+                            val totalSizeBytes =
+                                cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+                            postValue(
+                                DownloadItem(
+                                    bytesDownloadedSoFar.toLong(),
+                                    totalSizeBytes.toLong(),
+                                    status
+                                )
+                            )
                         }
                     }
                     if (status == DownloadManager.STATUS_SUCCESSFUL || status == DownloadManager.STATUS_FAILED)

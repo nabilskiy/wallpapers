@@ -19,7 +19,7 @@ class SettingsViewModel @Inject constructor(
     private val cacheSource: FileCacheSource,
     private val communication: SettingsCommunication,
     dispatchers: wallgram.hd.wallpapers.core.Dispatchers
-    ) : BaseViewModel(dispatchers) {
+) : BaseViewModel(dispatchers) {
     fun init() {
         fetch()
     }

@@ -26,7 +26,7 @@ import java.net.MalformedURLException
 //    return "${outMetrics.widthPixels}x${outMetrics.heightPixels}"
 //}
 
-fun Activity.restart(){
+fun Activity.restart() {
     val KEY_ACTIVITY_LOCALE_CHANGED = "activity_locale_changed"
     val intent = Intent(this, MainActivity::class.java)
     intent.putExtra(KEY_ACTIVITY_LOCALE_CHANGED, true)
@@ -55,7 +55,7 @@ fun Context.getAppName(): String {
     return if (def.hasContent()) def else "Unknown"
 }
 
-fun Context.getResolution(): String{
+fun Context.getResolution(): String {
     val metrics = DisplayMetrics()
     val manager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
     manager.defaultDisplay?.getMetrics(metrics)

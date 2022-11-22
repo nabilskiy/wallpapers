@@ -59,7 +59,10 @@ class PicModule {
 
     @Provides
     @ViewModelScoped
-    fun provideInfoMapper(navigateTag: NavigateTag, resourceProvider: ResourceProvider): PicDomain.Mapper<InfoListUi> = PicDomain.Mapper.Info(navigateTag, resourceProvider)
+    fun provideInfoMapper(
+        navigateTag: NavigateTag,
+        resourceProvider: ResourceProvider
+    ): PicDomain.Mapper<InfoListUi> = PicDomain.Mapper.Info(navigateTag, resourceProvider)
 
     @Provides
     @ViewModelScoped
@@ -73,6 +76,7 @@ class PicModule {
         picRepository: PicRepository,
         dispatchers: Dispatchers,
         handleError: HandleDomainError
-    ): PicInteractor = PicInteractor.Base(mapper, infoMapper, picRepository, dispatchers, handleError)
+    ): PicInteractor =
+        PicInteractor.Base(mapper, infoMapper, picRepository, dispatchers, handleError)
 
 }

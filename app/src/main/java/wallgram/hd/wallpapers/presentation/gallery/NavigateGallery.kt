@@ -1,6 +1,5 @@
 package wallgram.hd.wallpapers.presentation.gallery
 
-import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.data.gallery.SaveSelect
@@ -25,7 +24,7 @@ interface NavigateGallery {
 
         override fun navigate(id: Int, requestId: String) {
             saveSelect.save(id, requestId)
-            modo.externalForward(Screens.Wallpaper())
+            modo.externalForward(Screens.Wallpaper(id))
         }
     }
 }

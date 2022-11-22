@@ -14,10 +14,10 @@ class CategoriesItemDecoration(
     RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
-            outRect: Rect, view: View, parent: RecyclerView,
-            state: RecyclerView.State
+        outRect: Rect, view: View, parent: RecyclerView,
+        state: RecyclerView.State
     ) {
-        if(!isValid(view, parent))
+        if (!isValid(view, parent))
             return
 
         val layoutParams: GridLayoutManager.LayoutParams =

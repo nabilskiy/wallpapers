@@ -2,7 +2,7 @@
 <resources>
     <string name="search">Знайти обої</string>
     <string name="category">Категорії</string>
-    <string name="wallpapers_adapted">Всі обої адаптовані під ваш телефон</string>
+    <string name="wallpapers_adapted">Всі шпалери адаптовані під ваш телефон</string>
     <string name="continue_key">Продовжити</string>
     <string name="user_agreement">"Запускаючи додаток, ви приймаєте "</string>
     <string name="agreement_sub">умови угоди користувача</string>
@@ -20,11 +20,11 @@
     <string name="integrated_ads">Є вбудована реклама</string>
     <string name="current">Обрано</string>
     <string name="save_50">Економія 50%</string>
-    <string name="year">/ рік</string>
-    <string name="month">/ місяць</string>
+    <string name="year">1 рік</string>
+    <string name="month">1 місяць</string>
     <string name="subscribe_now">Підпишіться прямо зараз</string>
-    <string name="sub_text">"Підписка продовжується автоматично. Ви зможете відключити автоподовження в будь-який час.\n\n %1$s за  %2$s. Надає доступ до всіх обоїв без обмежень і реклами. Платежі користувача списуються з облікового запису Google Play при підтвердженні оплати. Підписки оновлюються автоматично, якщо користувач не скасує підписку не пізніше 24 годин до дати закінчення діючого періоду підписки. За оновлення стягується плата протягом 24 годин до дати закінчення діючого періоду підписки. Користувачі можуть змінювати і скасовувати підписки в налаштуваннях облікового запису Google Play. "</string>
-    <string name="favorites_empty">Ой, тут поки що порожньо.\n\nУ нас є більше 80 000 обоїв - подивіться, вам напевно щось сподобається.</string>
+    <string name="sub_text">"Підписка продовжується автоматично. Ви зможете відключити автоподовження в будь-який час.\n\n %1$s за %2$s. Надає доступ до всіх зображень без обмежень і реклами. Платежі користувача списуються з облікового запису Google Play при підтвердженні оплати. Підписки оновлюються автоматично, якщо користувач не скасує підписку не пізніше 24 годин до дати закінчення діючого періоду підписки. За оновлення стягується плата протягом 24 годин до дати закінчення діючого періоду підписки. Користувачі можуть змінювати і скасовувати підписки в налаштуваннях облікового запису Google Play. "</string>
+    <string name="favorites_empty">Ой, тут поки що порожньо.  У нас є більше 80 000 зображень - подивіться, вам напевно щось сподобається.</string>
     <string name="popular_title">Популярнi</string>
     <string name="menu_favorites">Вибране</string>
     <string name="download">Завантажити</string>
@@ -36,10 +36,49 @@
     <string name="image_logo">Зображення логотипу</string>
     <string name="image">Зображення</string>
     <string name="retry_button">Повторити</string>
-    <string name="similar_wallpapers">Схожі обої</string>
+    <string name="similar_wallpapers">Схожі зображення</string>
     <string name="exit_toast">Натисніть ще раз для виходу</string>
     <string name="home">Головна</string>
-    <string name="error_msg">Не вдалося завантажити обої</string>
+    <string name="error_msg">Не вдалося завантажити зображення</string>
     <string name="privacy_policy">Політика конфіденційності</string>
     <string name="connection_error">Connection error</string>
+    <string name="history_empty">Список історії порожній</string>
+    <string name="source">Джерело</string>
+    <string name="date">Дата</string>
+    <string name="license">Ліцензія</string>
+    <string name="start_search">Почніть шукати</string>
+    <string name="nothing_found">Нічого не знайдено</string>
+    <string name="red" translatable="false">Red</string>
+    <string name="gold" translatable="false">Gold</string>
+    <string name="green" translatable="false">Green</string>
+    <string name="blue" translatable="false">Blue</string>
+    <string name="pink" translatable="false">Pink</string>
+    <string name="black" translatable="false">Black</string>
+    <string name="white" translatable="false">White</string>
+    <string name="silver" translatable="false">Silver</string>
+    <string name="discover">Знайти шпалери</string>
+    <string name="image_downloaded">Зображення завантажено</string>
+    <string name="image_already_downloaded">Зображення вже завантажено</string>
+    <string name="wallpaper_application">Установка шпалер</string>
+    <string name="wallpaper_apply_error">Помилка установки</string>
+    <string name="wallpaper_applied">Шпалери встановлені</string>
+    <string name="author">Автор</string>
+    <string name="my_screen">Мій екран (%1$s)</string>
+    <string name="wallpaper_resolution">Розширення шпалер</string>
+    <string name="resolution">Розширення</string>
+    <string name="downloading">Завантаження...</string>
+    <string name="download_waiting">Очікування заантаження...</string>
+    <string name="download_paused">Завантаження призупинене...</string>
+    <string name="download_canceled">Завантаження скасовано</string>
+    <string name="download_error">Помилка завантаження</string>
+    <string name="your_device">Ваш пристрій</string>
+    <string name="no_ads_100">100% Без реклами</string>
+    <string name="unlimited_wallpaper_downloads">Безлімітне скачування шпалер</string>
+    <string name="daily_wallpapers_update">Щоденне оновлення шпалер</string>
+    <string name="full_access_to_the_wallpaper_changer">Повний доступ до замінника шпалер</string>
+
+    <string name="subscription_purchased" >До %1$s для Вас вимкнена реклама, розблоковано повний доступ до автозмінника шпалер, та зняті всі обмеження на завантаження.\nНасолоджуйтесь!</string>
+    <string name="use_wallgram_pro">Ви використовуєте\nWallgram Pro\n😎</string>
+    <string name="error_get_prices" >Не вдалося отримати інформацію про ціни</string>
+    <string name="reload">Оновити</string>
 </resources>

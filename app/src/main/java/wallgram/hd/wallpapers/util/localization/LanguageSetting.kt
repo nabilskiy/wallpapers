@@ -59,8 +59,8 @@ object LanguageSetting {
         }
 
     fun getLanguageWithDefault(context: Context, default: Locale) = getLanguage(context) ?: run {
-            setLanguage(context, default)
-            default
+        setLanguage(context, default)
+        default
     }
 
 

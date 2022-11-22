@@ -59,7 +59,7 @@ interface GalleryData {
 
         }
 
-        class Id(private val data: Int): Mapper<Boolean>{
+        class Id(private val data: Int) : Mapper<Boolean> {
             override fun map(
                 id: Int,
                 width: Int,

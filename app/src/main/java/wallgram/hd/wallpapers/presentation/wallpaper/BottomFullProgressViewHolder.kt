@@ -8,7 +8,8 @@ import wallgram.hd.wallpapers.databinding.LoadStateFooterViewItemBinding
 import wallgram.hd.wallpapers.presentation.base.adapter.GenericViewHolder
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 
-class BottomFullProgressViewHolder(private val binding: LoadStateFooterViewItemBinding) : GenericViewHolder<ItemUi>(binding.root) {
+class BottomFullProgressViewHolder(private val binding: LoadStateFooterViewItemBinding) :
+    GenericViewHolder<ItemUi>(binding.root) {
 
     init {
         itemView.layoutParams.apply {
@@ -17,7 +18,7 @@ class BottomFullProgressViewHolder(private val binding: LoadStateFooterViewItemB
         }
     }
 
-    override fun bind(item: ItemUi) = with(binding){
+    override fun bind(item: ItemUi) = with(binding) {
         errorMsg.isVisible = false
         retryButton.isVisible = false
     }

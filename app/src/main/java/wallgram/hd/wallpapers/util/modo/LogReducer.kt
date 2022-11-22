@@ -9,7 +9,8 @@ class LogReducer(private val origin: NavigationReducer) : NavigationReducer {
     override fun invoke(action: NavigationAction, state: NavigationState): NavigationState {
         Log.d("Modo", "New action=$action")
         val newState = origin.invoke(action, state)
-        val stateStr = "‣root\n${getNavigationStateString("⦙  ", newState).trimEnd()}  ᐊ current screen"
+        val stateStr =
+            "‣root\n${getNavigationStateString("⦙  ", newState).trimEnd()}  ᐊ current screen"
         Log.d("Modo", "New state=${newState.hashCode()}\n$stateStr")
         return newState
     }
@@ -25,7 +26,12 @@ class LogReducer(private val origin: NavigationReducer) : NavigationReducer {
                         append(" [${screen.selectedStack + 1}/${screen.stacks.size}]")
                     }
                     append('\n')
-                    append(getNavigationStateString("$prefix⦙  ", screen.stacks[screen.selectedStack]))
+                    append(
+                        getNavigationStateString(
+                            "$prefix⦙  ",
+                            screen.stacks[screen.selectedStack]
+                        )
+                    )
                 }
                 else -> {
                     "$prefix${screen.id}\n"

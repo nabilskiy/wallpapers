@@ -47,7 +47,7 @@ class StartFragment :
 
         setUserAgreement()
 
-        viewModel.observe(viewLifecycleOwner){
+        viewModel.observe(viewLifecycleOwner) {
             it.show(binding.deviceName, binding.resolutionText)
         }
     }

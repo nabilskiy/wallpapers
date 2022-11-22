@@ -49,7 +49,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
                 it.map(galleryAdapter)
             }
 
-            viewModel.progressLiveData.observe(viewLifecycleOwner){ refreshing ->
+            viewModel.progressLiveData.observe(viewLifecycleOwner) { refreshing ->
                 refreshing.apply(binding.swipeRefreshLayout)
             }
 

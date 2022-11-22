@@ -10,10 +10,10 @@ interface ColorsRepository {
     class Base @Inject constructor(
         private val colorsDataSource: ColorsDataSource,
         private val mapper: ColorMapper
-    ): ColorsRepository {
-        override fun colors(): ColorsUi{
+    ) : ColorsRepository {
+        override fun colors(): ColorsUi {
             val list = colorsDataSource.colors().map {
-               it.map(mapper)
+                it.map(mapper)
             }
             return ColorsUi.Base(list)
         }

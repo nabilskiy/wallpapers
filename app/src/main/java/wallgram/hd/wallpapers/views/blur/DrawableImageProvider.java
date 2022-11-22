@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class DrawableImageProvider implements ImageProvider{
+public class DrawableImageProvider implements ImageProvider {
 
     private int[] mRes;
     private int width, height;
@@ -41,10 +41,5 @@ public class DrawableImageProvider implements ImageProvider{
         } else {
             return null;
         }
-    }
-
-    @Override
-    public List<String> keys() {
-        return new ArrayList<>();
     }
 }

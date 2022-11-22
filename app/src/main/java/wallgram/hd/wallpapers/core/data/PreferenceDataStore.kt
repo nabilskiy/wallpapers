@@ -31,7 +31,8 @@ interface PreferenceDataStore {
         override fun read(key: String): Set<String> =
             sharedPreferences.getStringSet(key, emptySet()) ?: emptySet()
 
-        override fun readBoolean(key: String, default: Boolean): Boolean = sharedPreferences.getBoolean(key, default)
+        override fun readBoolean(key: String, default: Boolean): Boolean =
+            sharedPreferences.getBoolean(key, default)
 
         override fun readInt(key: String): Int = sharedPreferences.getInt(key, 0)
 

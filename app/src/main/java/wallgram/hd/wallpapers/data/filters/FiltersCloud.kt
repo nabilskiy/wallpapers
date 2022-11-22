@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.data.filters
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.data.gallery.GalleryCloud
@@ -17,6 +18,7 @@ interface FiltersCloud {
             mapper.map(-1, "", "", listOf())
     }
 
+    @Keep
     data class Base(
         @SerializedName("id")
         private val id: Int,

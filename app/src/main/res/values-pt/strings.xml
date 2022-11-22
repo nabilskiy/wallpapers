@@ -20,10 +20,10 @@
     <string name="integrated_ads">Com anúncios integrados</string>
     <string name="current">Atual</string>
     <string name="save_50">Economize 50%</string>
-    <string name="year">/ ano</string>
-    <string name="month">/ mês</string>
+    <string name="year">1 ano</string>
+    <string name="month">1 mês</string>
     <string name="subscribe_now">Assine agora</string>
-    <string name="sub_text">A assinatura é renovada automaticamente. Você pode desativar a renovação automática a qualquer momento.\n\n %1$s for  %2$s. Fornece acesso a todos os papéis de parede sem limites e anúncios. Os pagamentos do usuário são cobrados de sua conta do Google Play após a confirmação do pagamento. As assinaturas são renovadas automaticamente, a menos que o usuário cancele a assinatura o mais tardar 24 horas antes da data de término do período de assinatura atual. As renovações de assinatura serão cobradas 24 horas antes da data de término do período de assinatura atual. Os usuários podem alterar e cancelar assinaturas em suas configurações de conta do Google Play.</string>
+    <string name="sub_text">A assinatura é renovada automaticamente. Você pode desativar a renovação automática a qualquer momento.\n\n %1$s for %2$s. Fornece acesso a todos os papéis de parede sem limites e anúncios. Os pagamentos do usuário são cobrados de sua conta do Google Play após a confirmação do pagamento. As assinaturas são renovadas automaticamente, a menos que o usuário cancele a assinatura o mais tardar 24 horas antes da data de término do período de assinatura atual. As renovações de assinatura serão cobradas 24 horas antes da data de término do período de assinatura atual. Os usuários podem alterar e cancelar assinaturas em suas configurações de conta do Google Play.</string>
     <string name="favorites_empty">Opa, a lista ainda está vazia.\n\nTemos mais de 80.000 papéis de parede. Dê uma olhada: com certeza você vai gostar de algo.</string>
     <string name="popular_title">Populares</string>
     <string name="menu_favorites">Favoritos</string>
@@ -42,4 +42,43 @@
     <string name="error_msg">Falha ao carregar papel de parede</string>
     <string name="privacy_policy">Política de Privacidade</string>
     <string name="connection_error">Connection error</string>
+    <string name="history_empty">A lista de histórico está vazia</string>
+    <string name="source">Fonte</string>
+    <string name="license">Licença</string>
+    <string name="red" translatable="false">Vermelho</string>
+    <string name="author">Autor</string>
+    <string name="discover">Procurar</string>
+    <string name="your_device">Seu dispositivo</string>
+    <string name="nothing_found">Nada encontrado</string>
+    <string name="image_already_downloaded">Imagem já carregada</string>
+    <string name="wallpaper_apply_error">Erro de instalação</string>
+    <string name="download_waiting">Aguardando download...</string>
+    <string name="download_paused">Download pausado...</string>
+    <string name="download_canceled">Download cancelado</string>
+    <string name="download_error">Erro de carregamento</string>
+    <string name="start_search">Comece a procurar</string>
+    <string name="wallpaper_resolution">Resolução do plano de fundo</string>
+    <string name="my_screen">Minha tela (%1$s)</string>
+    <string name="image_downloaded">Imagem baixada</string>
+    <string name="wallpaper_applied">O plano de fundo foi definido</string>
+    <string name="wallpaper_application">Configurando o plano de fundo</string>
+    <string name="date">Data</string>
+    <string name="resolution">Resolução</string>
+    <string name="downloading">Baixando...</string>
+    <string name="no_ads_100">100% sem anúncios</string>
+    <string name="unlimited_wallpaper_downloads">Downloads ilimitados de planos de fundo</string>
+    <string name="daily_wallpapers_update">Atualização diária do plano de fundo</string>
+    <string name="full_access_to_the_wallpaper_changer">Acesso total ao trocador de plano de fundo</string>
+    <string name="silver">Prata</string>
+    <string name="blue">Azul</string>
+    <string name="pink">Rosa</string>
+    <string name="gold">Ouro</string>
+    <string name="white">Branco</string>
+    <string name="black">Preto</string>
+    <string name="green">Verde</string>
+    <string name="reload">Recarregar</string>
+    <string name="error_get_prices">Falha ao obter informações sobre preços</string>
+    <string name="subscription_purchased">Você tem acesso total ao trocador de papel de parede, sem restrições de downloads e sem anúncios até %1$s.\nAproveite!</string>
+    <string name="use_wallgram_pro">Está a utilizar o \nWallgram Pro\n😎</string>
+
 </resources>

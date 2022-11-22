@@ -17,7 +17,7 @@ class ResolutionViewModel @Inject constructor(
     private val communication: ResolutionsCommunication,
     private val update: UpdateResolutions.Observe,
     dispatchers: Dispatchers
-): BaseViewModel(dispatchers) {
+) : BaseViewModel(dispatchers) {
 
     init {
         update()
@@ -31,7 +31,7 @@ class ResolutionViewModel @Inject constructor(
     fun observeUpdate(owner: LifecycleOwner, observer: Observer<Boolean>) =
         update.observe(owner, observer)
 
-    fun clearAll(){
+    fun clearAll() {
         repository.clearAll()
     }
 

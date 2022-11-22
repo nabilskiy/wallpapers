@@ -20,12 +20,15 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
 import dagger.hilt.android.AndroidEntryPoint
+import wallgram.hd.wallpapers.App.Companion.modo
 import wallgram.hd.wallpapers.DEFAULT_SKU
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.Mapper
 import wallgram.hd.wallpapers.core.data.permissions.Permission
 import wallgram.hd.wallpapers.core.data.permissions.PermissionProvider
+import wallgram.hd.wallpapers.data.ads.banner.BannerAd
+import wallgram.hd.wallpapers.data.ads.interstitial.InterstitialAd
 import wallgram.hd.wallpapers.data.workers.DownloadProgressLiveData
 import wallgram.hd.wallpapers.data.workers.WallpaperApplier.Companion.APPLY_EXTERNAL_KEY
 import wallgram.hd.wallpapers.data.workers.WallpaperApplier.Companion.APPLY_OPTION_KEY
@@ -33,14 +36,16 @@ import wallgram.hd.wallpapers.data.workers.WallpaperDownloader
 import wallgram.hd.wallpapers.data.workers.WallpaperDownloader.Companion.DOWNLOAD_PATH_KEY
 import wallgram.hd.wallpapers.databinding.FragmentWallpaperBinding
 import wallgram.hd.wallpapers.presentation.base.BaseSlidingUpFragment
+import wallgram.hd.wallpapers.presentation.base.Screens
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.base.views.slidinguppanel.Features
 import wallgram.hd.wallpapers.presentation.dialogs.DownloadAction
 import wallgram.hd.wallpapers.util.*
 import wallgram.hd.wallpapers.views.ChefSnackbar
-import wallgram.hd.wallpapers.views.blur.CoilProvider
+import wallgram.hd.wallpapers.views.blur.GlideProvider
 import wallgram.hd.wallpapers.views.blur.mode.BlurAnimMode
 import java.io.File
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -50,34 +55,31 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     override val viewModel: WallpaperViewModel by viewModels()
 
-    private var isLoadingAds = false
-    private var rewardedInterstitialAd: RewardedInterstitialAd? = null
-
     private lateinit var snackbar: ChefSnackbar
     private lateinit var permissionProvider: PermissionProvider
 
-    //private val adInterstitial = AdInterstitial.Base()
+    @Inject
+    lateinit var adInterstitial: InterstitialAd
 
-    private val adInterstitial by lazy {
-        wallgram.hd.wallpapers.data.ads.interstitial.InterstitialAd.Base(requireActivity())
-    }
-
-
-    //private val itemId: Int by args(ITEM_ID, 0)
+    @Inject
+    lateinit var adBanner: BannerAd
 
     companion object {
-        private const val ITEM_ID = "id"
-
-        fun newInstance(id: Int) = WallpaperFragment().withArgs(ITEM_ID to id)
+        fun newInstance() = WallpaperFragment()
     }
+
+    private fun showInterstitialAd() {
+        if (needShowInterstitialAd()) adInterstitial.show()
+    }
+
+    private fun needShowInterstitialAd() = !modo.state.chain.any { it.id.contains("Wallpaper") }
 
     override fun onDestroyView() {
         snackbar.dismiss()
-        adInterstitial.show()
-        //  adInterstitial.show(requireActivity())
-        // binding.ecardflowLayout.onDestroy()
-        super.onDestroyView()
 
+        showInterstitialAd()
+
+        super.onDestroyView()
     }
 
     override fun onDestroy() {
@@ -85,105 +87,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
         viewModel.cancelWorkManagerTasks()
     }
-
-    private fun checkSubscriptionAndLoadAds() {
-        viewModel.getCurrentSub().observe(viewLifecycleOwner, {
-            if (it == DEFAULT_SKU)
-                loadAds()
-        })
-    }
-
-    private fun loadAds() {
-
-//        if (!cacheManager.isRewardedAdShowed)
-//            if (rewardedInterstitialAd == null && !isLoadingAds) {
-//                loadRewardedInterstitialAd()
-//            }
-//
-//        if (!cacheManager.isInterstitialAdShowed) {
-//            if (!mAdIsLoading && mInterstitialAd == null) {
-//                mAdIsLoading = true
-//                loadAd()
-//            }
-//        }
-
-    }
-
-    private fun loadRewardedInterstitialAd() {
-        if (rewardedInterstitialAd == null) {
-            isLoadingAds = true
-            val adRequest = AdRequest.Builder().build()
-
-            // Load an ad.
-//            RewardedInterstitialAd.load(
-//                    requireContext(),
-//                    "ca-app-pub-3722478150829941/2334662603",
-//                    adRequest,
-//                    object : RewardedInterstitialAdLoadCallback() {
-//                        override fun onAdFailedToLoad(adError: LoadAdError) {
-//                            super.onAdFailedToLoad(adError)
-//                            Log.d(
-//                                    WallpaperFragment::class.java.name,
-//                                    "onAdFailedToLoad: ${adError.message}"
-//                            )
-//                            isLoadingAds = false
-//                            rewardedInterstitialAd = null
-//                        }
-//
-//                        override fun onAdLoaded(rewardedAd: RewardedInterstitialAd) {
-//                            super.onAdLoaded(rewardedAd)
-//                            Log.d(WallpaperFragment::class.java.name, "Ad was loaded.")
-//
-//                            rewardedInterstitialAd = rewardedAd
-//                            isLoadingAds = false
-//                        }
-//                    })
-        }
-    }
-
-    private fun showRewardedVideo(url: String) {
-        if (rewardedInterstitialAd == null) {
-            //download(url)
-            return
-        }
-
-        rewardedInterstitialAd!!.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-                Log.d(WallpaperFragment::class.java.name, "Ad was dismissed.")
-
-                // Don't forget to set the ad reference to null so you
-                // don't show the ad a second time.
-                rewardedInterstitialAd = null
-
-                // if (rewardItem != null)
-                // download(url)
-
-                // Preload the next rewarded interstitial ad.
-                loadRewardedInterstitialAd()
-            }
-
-            override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                Log.d(WallpaperFragment::class.java.name, "Ad failed to show.")
-
-                // Don't forget to set the ad reference to null so you
-                // don't show the ad a second time.
-                rewardedInterstitialAd = null
-            }
-
-            override fun onAdShowedFullScreenContent() {
-                Log.d(WallpaperFragment::class.java.name, "Ad showed fullscreen content.")
-            }
-        }
-
-        rewardedInterstitialAd?.show(
-            requireActivity()
-        ) { rewardItem ->
-            //  cacheManager.isRewardedAdShowed = true
-            this@WallpaperFragment.rewardItem = rewardItem
-        }
-    }
-
-    private var rewardItem: RewardItem? = null
 
     override fun onStart() {
         super.onStart()
@@ -205,19 +108,18 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        permissionProvider =
-            PermissionProvider.Base(this)
+        permissionProvider = PermissionProvider.Base(this)
+
+        lifecycle.addObserver(adBanner)
 
         adInterstitial.load()
-        //  adInterstitial.load(requireActivity(), null)
     }
 
     private fun currentItem(): ItemUi {
         return galleryAdapter.getItems()[binding.list.currentItem]
     }
 
-    private val galleryAdapter =
-        GalleryFullAdapter()
+    private val galleryAdapter = GalleryFullAdapter()
 
     override fun back() {
         if (panelShowed()) {
@@ -229,15 +131,18 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkSubscriptionAndLoadAds()
-
-
-
         with(binding) {
             snackbar = ChefSnackbar.make(root)
 
-            // intArrayOf(R.drawable.background_subscription, R.drawable.category_frame, R.drawable.subscribe_bg)
+            val banner = adBanner.adSize()
+            adViewContainer.layoutParams.apply {
+                width = banner.getWidthInPixels(requireContext())
+                height = banner.getHeightInPixels(requireContext()) + 52.dp
+            }
+            adBanner.show(adViewContainer)
 
+            val glideProvider = GlideProvider(context, arrayOf(), 1080, 1920)
+            ecardflowLayout.setViewPager(list)
             ecardflowLayout.setAnimMode(BlurAnimMode())
 
             viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
@@ -246,25 +151,26 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 it.map(object : Mapper.Unit<List<ItemUi>> {
                     override fun map(data: List<ItemUi>) {
                         val list = data.map { item -> item.uri().first }
-                        ecardflowLayout.setImages(list, binding.list.currentItem)
+                        ecardflowLayout.setImages(list.toTypedArray())
+                        ecardflowLayout.setImageProvider(glideProvider, binding.list.currentItem)
+
                     }
                 })
             }
 
             viewModel.downloadLiveData.observe(viewLifecycleOwner) {
-                Log.d("RESULT", it.toString())
                 onDownloadResult(it)
             }
 
 
             viewModel.observeUpdate(viewLifecycleOwner) { isFavorite ->
                 favoriteBtn.check(isFavorite)
-                viewModel.update()
+                viewModel.fetchWallpapers()
             }
 
             viewModel.positionLiveData.observe(viewLifecycleOwner) {
                 binding.list.setCurrentItem(it, false)
-                // binding.ecardflowLayout.switchBgToNext(it - 1)
+                binding.ecardflowLayout.switchBgToNext(it - 1)
             }
 
             toolbar.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
@@ -285,7 +191,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 windowInsetsCompat
             }
 
-            buttonsContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
+            adViewContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
                 view.updatePadding(bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
                 windowInsetsCompat
             }
@@ -317,11 +223,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
             list.setPageTransformer(compositePageTransformer)
 
-//            background.apply {
-//                offscreenPageLimit = 1
-//                // layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
-//                adapter = backgroundAdapter
-//            }
 
             list.apply {
                 adapter = galleryAdapter
@@ -330,6 +231,8 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
                     override fun onPageSelected(position: Int) {
                         val item = currentItem()
+
+                        updateView(item.id())
 
                         favoriteBtn.check(item.isFavorite())
                         viewModel.loadMoreData(
@@ -359,6 +262,16 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         }
     }
 
+    private fun currentViewIsAd(id: String) = id == "-1"
+
+    private fun updateView(id: String) = with(binding) {
+        val showed = currentViewIsAd(id)
+
+        adViewContainer.isInvisible = showed
+        buttonsContainer.isInvisible = showed
+        toolbar[1].isInvisible = showed
+    }
+
     private fun getNavigationBarHeight(): Int {
         val resources: Resources = resources
         val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
@@ -381,20 +294,16 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         val window = requireActivity().window
         WindowCompat.setDecorFitsSystemWindows(window, true)
         WindowInsetsControllerCompat(
-            window,
-            binding.root
+            window, binding.root
         ).show(WindowInsetsCompat.Type.systemBars())
     }
 
     fun handle(t: DownloadAction) {
         hideIfOpenedFeature()
 
-        permissionProvider
-            .request(Permission.Storage)
-            .rationale("Необходим доступ к хранилищу")
+        permissionProvider.request(Permission.Storage).rationale("Необходим доступ к хранилищу")
             .checkPermission { granted ->
-                if (granted)
-                    downloadOrApply(t)
+                if (granted) downloadOrApply(t)
             }
     }
 
@@ -442,8 +351,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 val live = DownloadProgressLiveData(requireContext(), id)
                 live.observe(viewLifecycleOwner) {
                     when (it.status) {
-                        DownloadManager.STATUS_SUCCESSFUL ->
-                            onDownloadSuccess(info, path)
+                        DownloadManager.STATUS_SUCCESSFUL -> onDownloadSuccess(info, path)
                         DownloadManager.STATUS_FAILED -> onDownloadError(id)
                         DownloadManager.STATUS_PAUSED -> onDownloadPaused()
                         DownloadManager.STATUS_PENDING -> onDownloadPending(id)
@@ -462,8 +370,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     }
 
     private fun onDownloadSuccess(
-        info: WallpaperDownloader.Result,
-        path: String
+        info: WallpaperDownloader.Result, path: String
     ) {
         val id = info.id()
         val existed = info.existed()

@@ -20,7 +20,8 @@ class BaseFavoritesRepository @Inject constructor(
     override suspend fun favorites(): GalleriesDomain {
         val favorites = cacheDataSource.favorites().map { it.map(mapper) }
         if (favorites.isNotEmpty()) {
-            dataList.addAll(favorites)}
+            dataList.addAll(favorites)
+        }
 
         val isEmpty = favorites.isEmpty() || favorites.size < 27
 
@@ -30,7 +31,8 @@ class BaseFavoritesRepository @Inject constructor(
     override suspend fun history(): GalleriesDomain {
         val favorites = cacheDataSource.history().map { it.map(mapper) }
         if (favorites.isNotEmpty()) {
-            dataList.addAll(favorites)}
+            dataList.addAll(favorites)
+        }
 
         val isEmpty = favorites.isEmpty() || favorites.size < 27
 

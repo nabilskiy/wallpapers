@@ -25,7 +25,7 @@ interface FavoritesDao {
     }
 
     @Transaction
-     fun addToFavorites(item: GalleryCache.Base): Boolean {
+    fun addToFavorites(item: GalleryCache.Base): Boolean {
         if (insertIgnore(item) == -1L) {
             delete(item)
             return false

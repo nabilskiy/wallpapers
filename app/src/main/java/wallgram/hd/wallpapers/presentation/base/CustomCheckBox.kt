@@ -7,16 +7,12 @@ import java.util.*
 
 class CustomCheckBox @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : androidx.appcompat.widget.AppCompatCheckBox(context, attrs), TextContainer, MyView {
-
-    override fun show(data: String) {
-        text = data.replaceFirstChar {
-            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-        }
-    }
+) : androidx.appcompat.widget.AppCompatCheckBox(context, attrs), MyView {
 
     override fun show(text: CharSequence) {
-        setText(text)
+        setText(text.toString().replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        })
     }
 
     override fun textSize(size: Float) {

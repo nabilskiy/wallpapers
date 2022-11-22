@@ -7,15 +7,15 @@ import androidx.annotation.RequiresApi
 interface Permission {
     fun permissions(): Array<out String>
 
-    abstract class Abstract(private vararg val permissions: String): Permission {
+    abstract class Abstract(private vararg val permissions: String) : Permission {
         override fun permissions() = permissions
     }
 
     object Camera : Abstract(CAMERA)
     object Location : Abstract(ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION)
-    object Test: Abstract(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
+    object Test : Abstract(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE)
     object Storage : Permission {
-        override fun permissions() = if(isNewApi()) tiramisuPermissions() else basePermission()
+        override fun permissions() = if (isNewApi()) tiramisuPermissions() else basePermission()
 
         @RequiresApi(33)
         private fun tiramisuPermissions() = arrayOf(READ_MEDIA_IMAGES)

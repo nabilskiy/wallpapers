@@ -17,6 +17,8 @@ import wallgram.hd.wallpapers.core.domain.HandleDomainError
 import wallgram.hd.wallpapers.core.HandleError
 import wallgram.hd.wallpapers.core.data.PreferenceDataStore
 import wallgram.hd.wallpapers.core.data.ProvideRetrofitBuilder
+import wallgram.hd.wallpapers.data.SubscriptionsDataSource
+import wallgram.hd.wallpapers.data.ads.appopen.AppOpenAdManager
 import wallgram.hd.wallpapers.data.billing.BillingDataSource
 import wallgram.hd.wallpapers.data.remote.LanguageInterceptor
 
@@ -60,6 +62,7 @@ import wallgram.hd.wallpapers.presentation.main.FirstLaunch
 import wallgram.hd.wallpapers.presentation.main.LaunchCacheDataSource
 import wallgram.hd.wallpapers.presentation.main.MainCommunication
 import wallgram.hd.wallpapers.presentation.start.StartCommunication
+import wallgram.hd.wallpapers.presentation.subscribe.ChangeSubscription
 
 import wallgram.hd.wallpapers.util.localization.LocalizationApplicationDelegate
 
@@ -130,14 +133,13 @@ class ApplicationModule {
             application,
             GlobalScope,
             knownSubscriptionSKUs = BillingRepository.SUBSCRIPTION_SKUS,
-            knownInappSKUs = null,
             autoConsumeSKUs = null
         )
 
     @Provides
     @Singleton
-    fun provideBillingRepository(billingDataSource: BillingDataSource): BillingRepository =
-        BillingRepository(billingDataSource, GlobalScope)
+    fun provideBillingRepository(billingDataSource: BillingDataSource, changeSubscription: ChangeSubscription): BillingRepository =
+        BillingRepository(billingDataSource, GlobalScope, changeSubscription)
 
     @Provides
     @Singleton
@@ -262,5 +264,12 @@ class ApplicationModule {
     @Singleton
     fun provideResourceProvider(context: Application): ResourceProvider =
         ResourceProvider.Base(context)
+
+    @Provides
+    @Singleton
+    fun provideAppOpenAdManager(
+        context: Application,
+        subscriptionsDataSource: SubscriptionsDataSource
+    ): AppOpenAdManager = AppOpenAdManager.Base(context, subscriptionsDataSource)
 
 }

@@ -5,7 +5,6 @@ import wallgram.hd.wallpapers.R
 sealed class DownloadAction {
 
 
-
     class Home() : DownloadAction() {
     }
 

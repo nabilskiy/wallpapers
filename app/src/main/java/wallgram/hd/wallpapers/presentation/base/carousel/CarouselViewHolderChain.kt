@@ -17,14 +17,13 @@ class CarouselViewHolderChain(
 ) : ViewHolderFactoryChain<ItemUi> {
 
     override fun viewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder<ItemUi> =
-        if (viewType == 4){
-            val binding = ItemCarouselBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        if (viewType == 4) {
+            val binding =
+                ItemCarouselBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             binding.recyclerView.setRecycledViewPool(viewPool)
             CarouselViewHolder(
                 binding,
                 adapter
             )
-        }
-
-        else viewHolderFactoryChain.viewHolder(parent, viewType)
+        } else viewHolderFactoryChain.viewHolder(parent, viewType)
 }

@@ -6,7 +6,7 @@ import wallgram.hd.wallpapers.core.data.PreferenceDataStore
 
 interface FirstLaunch {
 
-    interface Save :wallgram.hd.wallpapers.core.Save<Boolean>
+    interface Save : wallgram.hd.wallpapers.core.Save<Boolean>
     interface Read : wallgram.hd.wallpapers.core.Read<Boolean>
 
     interface Mutable : Save, Read

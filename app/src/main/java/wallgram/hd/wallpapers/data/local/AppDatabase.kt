@@ -8,11 +8,11 @@ import wallgram.hd.wallpapers.data.gallery.GalleryCache
 import wallgram.hd.wallpapers.data.local.AppDatabase.Companion.DATABASE_VERSION
 
 @Database(
-        entities = [
-            GalleryCache.Base::class
-        ],
-        version = DATABASE_VERSION,
-        exportSchema = false
+    entities = [
+        GalleryCache.Base::class
+    ],
+    version = DATABASE_VERSION,
+    exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 

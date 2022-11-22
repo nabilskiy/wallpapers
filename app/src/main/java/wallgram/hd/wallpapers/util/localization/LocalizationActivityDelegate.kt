@@ -48,7 +48,10 @@ open class LocalizationActivityDelegate(val activity: Activity) {
     }
 
     fun updateConfigurationLocale(context: Context): Configuration {
-        return LocalizationUtility.getLocalizedConfiguration(context, context.resources.configuration).first
+        return LocalizationUtility.getLocalizedConfiguration(
+            context,
+            context.resources.configuration
+        ).first
     }
 
     fun getApplicationContext(applicationContext: Context): Context {
@@ -111,7 +114,8 @@ open class LocalizationActivityDelegate(val activity: Activity) {
     // If yes, bundle will be remove and set boolean flag to "true".
     private fun checkBeforeLocaleChanging() {
         try {
-            val isLocalizationChanged = activity.intent?.getBooleanExtra(KEY_ACTIVITY_LOCALE_CHANGED, false) ?: false
+            val isLocalizationChanged =
+                activity.intent?.getBooleanExtra(KEY_ACTIVITY_LOCALE_CHANGED, false) ?: false
             if (isLocalizationChanged) {
                 this.isLocalizationChanged = true
                 activity.intent?.removeExtra(KEY_ACTIVITY_LOCALE_CHANGED)

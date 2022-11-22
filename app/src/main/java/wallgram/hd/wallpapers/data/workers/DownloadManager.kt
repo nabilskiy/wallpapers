@@ -26,7 +26,6 @@ interface DownloadManager {
                 downloader.download(url)
 
 
-
 //            newDownloadTask?.let { task ->
 //                workManager.enqueue(task)
 //                return workManager.getWorkInfoByIdLiveData(task.id)
@@ -53,7 +52,7 @@ interface DownloadManager {
 
         override fun cancel(id: Long) {
             try {
-               downloader.cancel(id)
+                downloader.cancel(id)
             } catch (e: Exception) {
             }
         }

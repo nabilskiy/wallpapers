@@ -18,7 +18,7 @@ class CarouselViewHolder(
 
     private val carouselDecoration = CarouselItemDecoration(8.dp)
 
-    override fun bind(item: ItemUi) = with(binding){
+    override fun bind(item: ItemUi) = with(binding) {
 
         item.showCarousel(carouselAdapter, recyclerView)
 

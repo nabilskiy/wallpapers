@@ -53,7 +53,8 @@ interface GalleryCache {
                 preview: String,
                 original: String?,
                 links: Links
-            ): GalleryData.Base = GalleryData.Base(id, width, height, preview, original ?: "", links)
+            ): GalleryData.Base =
+                GalleryData.Base(id, width, height, preview, original ?: "", links)
         }
     }
 }

@@ -10,7 +10,7 @@ import wallgram.hd.wallpapers.presentation.home.scroll.HomeCarouselViewHolderCha
 
 class HomeAdapter(
     viewPool: RecyclerView.RecycledViewPool,
-): GenericAdapter.Base(
+) : GenericAdapter.Base(
     ProgressViewHolderChain(
         HomeCarouselViewHolderChain(
             viewPool,

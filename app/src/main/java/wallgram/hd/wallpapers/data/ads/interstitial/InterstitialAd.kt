@@ -1,27 +1,33 @@
 package wallgram.hd.wallpapers.data.ads.interstitial
 
 import android.app.Activity
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import dagger.hilt.android.qualifiers.ActivityContext
 import wallgram.hd.wallpapers.BuildConfig
+import wallgram.hd.wallpapers.data.IsSubscribed
+import wallgram.hd.wallpapers.data.ads.BaseAd
+import wallgram.hd.wallpapers.presentation.main.MainActivity
+import wallgram.hd.wallpapers.util.modo.Modo
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
 interface InterstitialAd {
 
     fun load()
     fun show()
 
-    abstract class Abstract(activity: Activity) : InterstitialAd {
-        protected val activityWeakReference = WeakReference(activity)
-
-        protected val TAG = "InterstitialAd"
-    }
-
-    class Base(activity: Activity) : Abstract(activity) {
+    class Base @Inject constructor(
+        @ActivityContext private val context: Context,
+        subscription: IsSubscribed
+    ) : BaseAd(subscription), InterstitialAd {
 
         private var isShowed = false
 
@@ -29,12 +35,13 @@ interface InterstitialAd {
         private var mAdIsLoading: Boolean = false
 
         override fun load() {
-            if(isShowed)
+            if(!needToLoading())
+                return
+
+            if (isShowed)
                 return
 
             val adRequest = AdRequest.Builder().build()
-
-            val context = activityWeakReference.get() ?: return
 
             com.google.android.gms.ads.interstitial.InterstitialAd.load(
                 context,
@@ -42,13 +49,13 @@ interface InterstitialAd {
                 adRequest,
                 object : InterstitialAdLoadCallback() {
                     override fun onAdFailedToLoad(error: LoadAdError) {
-                        Log.d(TAG, error.message)
+                        Log.d("InterstitialAd", error.message)
                         mInterstitialAd = null
                         mAdIsLoading = false
                     }
 
                     override fun onAdLoaded(interstitialAd: com.google.android.gms.ads.interstitial.InterstitialAd) {
-                        Log.d(TAG, "Ad was loaded.")
+                        Log.d("InterstitialAd", "Ad was loaded.")
                         mInterstitialAd = interstitialAd
                         mAdIsLoading = false
                     }
@@ -57,29 +64,29 @@ interface InterstitialAd {
         }
 
         override fun show() {
-            if(isShowed)
+
+            if (isShowed)
                 return
 
             mInterstitialAd?.let { interstitialAd ->
                 interstitialAd.fullScreenContentCallback =
-                    object: FullScreenContentCallback(){
+                    object : FullScreenContentCallback() {
                         override fun onAdDismissedFullScreenContent() {
                             mInterstitialAd = null
-                            load()
+                            isShowed = true
                         }
 
                         override fun onAdFailedToShowFullScreenContent(error: AdError) {
-                            Log.d(TAG, "Ad failed to show.")
+                            Log.d("InterstitialAd", "Ad failed to show.")
                             mInterstitialAd = null
                         }
 
                         override fun onAdShowedFullScreenContent() {
                             isShowed = true
-                            Log.d(TAG, "Ad showed fullscreen content.")
+                            Log.d("InterstitialAd", "Ad showed fullscreen content.")
                         }
                     }
-                val context = activityWeakReference.get() ?: return
-                interstitialAd.show(context)
+                interstitialAd.show(context as FragmentActivity)
             }
         }
     }

@@ -15,7 +15,7 @@ class ToolbarViewHolder(
     GenericViewHolder<ItemUi>(binding.root) {
     override fun bind(item: ItemUi) {
         item.show(binding.root)
-        binding.root.handleClick{
+        binding.root.handleClick {
             clickListener.click(Unit)
         }
     }

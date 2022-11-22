@@ -7,4 +7,4 @@
     android:gravity="center"
     android:includeFontPadding="false"
     android:textSize="12sp"
-    tools:text="Blue" />
+    tools:text="@string/red" />

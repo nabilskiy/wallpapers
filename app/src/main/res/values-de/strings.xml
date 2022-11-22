@@ -30,9 +30,9 @@
     <string name="action_subscription">Abonnement</string>
     <string name="save_50">Sparen Sie 50%</string>
     <string name="continue_key">Weiter</string>
-    <string name="sub_text">"Das Abo wird automatisch verlängert. Sie können die automatische Verlängerung jederzeit deaktivieren.\n\n %1$s für  %2$s. Bietet Zugriff auf alle Hintergrundbilder ohne Einschränkungen und Anzeigen. Vom Benutzer getätigte Zahlungen werden nach Bestätigung der Zahlung von seinem Google Play Konto ausgebucht. Abos werden automatisch verlängert, es sei denn, der Benutzer kündigt das Abo spätestens 24 Stunden vor dem Enddatum des aktuellen Abozeitraums. Aboverlängerungen werden innerhalb von 24 Stunden vor dem Enddatum des aktuellen Abozeitraums verrechnet. Benutzer haben die Möglichkeit, Abos in ihren Google Play Kontoeinstellungen zu ändern und zu kündigen. "</string>
-    <string name="year">/ Jahr</string>
-    <string name="month">/ Monat</string>
+    <string name="sub_text">"Das Abo wird automatisch verlängert. Sie können die automatische Verlängerung jederzeit deaktivieren.\n\n %1$s für %2$s. Bietet Zugriff auf alle Hintergrundbilder ohne Einschränkungen und Anzeigen. Vom Benutzer getätigte Zahlungen werden nach Bestätigung der Zahlung von seinem Google Play Konto ausgebucht. Abos werden automatisch verlängert, es sei denn, der Benutzer kündigt das Abo spätestens 24 Stunden vor dem Enddatum des aktuellen Abozeitraums. Aboverlängerungen werden innerhalb von 24 Stunden vor dem Enddatum des aktuellen Abozeitraums verrechnet. Benutzer haben die Möglichkeit, Abos in ihren Google Play Kontoeinstellungen zu ändern und zu kündigen. "</string>
+    <string name="year">1 Jahr</string>
+    <string name="month">1 Monat</string>
     <string name="error_msg">Hintergrundbild konnte nicht geladen werden</string>
 
     <string name="privacy_policy">Datenschutzerklärung</string>
@@ -45,4 +45,43 @@
     <string name="subscribe_now">Abonnieren Sie jetzt</string>
     <string name="home">Startseite</string>
     <string name="connection_error">Connection error</string>
+    <string name="history_empty">Verlaufsliste ist leer</string>
+    <string name="source">Quellenangabe</string>
+    <string name="license">Lizenz</string>
+    <string name="wallpaper_resolution">Auflösung der Hintergrundbilder</string>
+    <string name="my_screen">Mein Bildschirm (%1$s)</string>
+    <string name="silver" translatable="false">Silber</string>
+    <string name="blue" translatable="false">Blau</string>
+    <string name="pink" translatable="false">Rosa</string>
+    <string name="red" translatable="false">Rot</string>
+    <string name="gold" translatable="false">Gold</string>
+    <string name="green" translatable="false">Grün</string>
+    <string name="white" translatable="false">Weiß</string>
+    <string name="black" translatable="false">Schwarz</string>
+    <string name="discover">Entdecken</string>
+    <string name="image_downloaded">Bild hochgeladen</string>
+    <string name="wallpaper_applied">Hintergrundbild installiert</string>
+    <string name="wallpaper_application">Installation von Hintergrundbildern</string>
+    <string name="author">Autor</string>
+    <string name="date">Datum</string>
+    <string name="resolution">Auflösung</string>
+    <string name="downloading">Wird hochgeladen...</string>
+    <string name="your_device">Ihr Gerät</string>
+    <string name="no_ads_100">100% werbefrei</string>
+    <string name="unlimited_wallpaper_downloads">Unbegrenzte Hintergrundbilder-Downloads</string>
+    <string name="daily_wallpapers_update">Tägliches Update der Hintergrundbilder</string>
+    <string name="full_access_to_the_wallpaper_changer">Voller Zugriff auf den Hintergrundbild-Wechsler</string>
+    <string name="nothing_found">Nichts gefunden</string>
+    <string name="image_already_downloaded">Bild bereits hochgeladen</string>
+    <string name="wallpaper_apply_error">"Fehler bei der Installation "</string>
+    <string name="download_waiting">Herunterladen ausstehend...</string>
+    <string name="download_paused">Herunterladen pausiert...</string>
+    <string name="download_canceled">Herunterladen abgebrochen</string>
+    <string name="download_error">Fehler beim Herunterladen</string>
+    <string name="start_search">Suche starten</string>
+
+    <string name="subscription_purchased" >Sie haben vollen Zugriff auf den Hintergrundbild-Wechsler, keine Einschränkungen für Downloads und keine Werbung bis zum %1$s.\nViel Spaß!</string>
+    <string name="use_wallgram_pro">Sie verwenden\nWallgram Pro\n😎</string>
+    <string name="error_get_prices" >Preisinformationen konnten nicht abgerufen werden</string>
+    <string name="reload">Aktualisieren</string>
 </resources>

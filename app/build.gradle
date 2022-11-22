@@ -20,8 +20,8 @@ android {
         applicationId "wallgram.hd.wallpapers"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 23
-        versionName "23"
+        versionCode 28
+        versionName "1.2.1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -36,11 +36,14 @@ android {
         debug {
             debuggable true
 
-            buildConfigField("String", "ADMOB_APP_ID", ADMOB_APP_ID)
+            resValue "string", "admob_app_id", "ca-app-pub-3940256099942544~3347511713"
 
-            buildConfigField("String", "REWARDED_INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/5354046379\"")
+            buildConfigField("String", "BANNER_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
             buildConfigField("String", "INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
             buildConfigField("String", "APP_OPEN_ID", "\"ca-app-pub-3940256099942544/3419835294\"")
+            buildConfigField("String", "NATIVE_BANNER", "\"ca-app-pub-3940256099942544/2247696110\"")
+            buildConfigField("String", "NATIVE_CAROUSEL_BANNER", "\"ca-app-pub-3940256099942544/2247696110\"")
+
         }
 
         release {
@@ -49,11 +52,13 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            buildConfigField("String", "ADMOB_APP_ID", ADMOB_APP_ID)
+            resValue "string", "admob_app_id", "ca-app-pub-3722478150829941~4527202368"
 
-            buildConfigField("String", "REWARDED_INTERSTITIAL_ID", "\"ca-app-pub-3722478150829941/2334662603\"")
+            buildConfigField("String", "BANNER_ID", "\"ca-app-pub-3722478150829941/4358190713\"")
             buildConfigField("String", "INTERSTITIAL_ID", "\"ca-app-pub-3722478150829941/1622208553\"")
-            buildConfigField("String", "APP_OPEN_ID", "\"ca-app-pub-3940256099942544/3419835294\"")
+            buildConfigField("String", "APP_OPEN_ID", "\"ca-app-pub-3722478150829941/8708499260\"")
+            buildConfigField("String", "NATIVE_BANNER", "\"ca-app-pub-3722478150829941/4439943581\"")
+            buildConfigField("String", "NATIVE_CAROUSEL_BANNER", "\"ca-app-pub-3722478150829941/9830009245\"")
 
         }
     }
@@ -91,7 +96,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.android.billingclient:billing-ktx:5.0.0'
+    implementation 'com.android.billingclient:billing-ktx:5.1.0'
 
     implementation 'com.google.firebase:firebase-appindexing:20.0.0'
     implementation 'com.google.firebase:firebase-dynamic-links:21.1.0'
@@ -147,14 +152,15 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7'
-    implementation 'androidx.fragment:fragment-ktx:1.5.3'
+    implementation 'androidx.fragment:fragment-ktx:1.5.4'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation "androidx.preference:preference-ktx:1.2.0"
 
     implementation 'com.google.dagger:hilt-android:2.44'
     kapt 'com.google.dagger:hilt-compiler:2.44'
 
-    implementation("io.coil-kt:coil:2.2.2")
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     testImplementation 'junit:junit:4.13.2'

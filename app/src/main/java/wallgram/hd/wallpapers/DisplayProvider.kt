@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import com.google.android.gms.ads.AdSize
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.data.resolution.ResolutionCacheDataSource
 import wallgram.hd.wallpapers.domain.resolution.ResolutionsInteractor
@@ -15,6 +16,9 @@ interface DisplayProvider {
     fun getScreenSizeUi(): String
     fun getScreenSizeRequest(): String
     fun getWallpaperHeight(): Point
+
+    fun adSize(): AdSize
+    fun adSizeInline(): AdSize
 
 
     class Base(
@@ -53,6 +57,30 @@ interface DisplayProvider {
             return localPoint
         }
 
+        override fun adSize(): AdSize {
+            val outMetrics = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
+                .run { DisplayMetrics().also { defaultDisplay.getRealMetrics(it) } }
+
+            val density = outMetrics.density
+
+            val adWidthPixels = outMetrics.widthPixels.toFloat()
+
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getPortraitAnchoredAdaptiveBannerAdSize(context, adWidth)
+        }
+
+        override fun adSizeInline(): AdSize {
+            val outMetrics = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
+                .run { DisplayMetrics().also { defaultDisplay.getRealMetrics(it) } }
+
+            val density = outMetrics.density
+
+            val adWidthPixels = outMetrics.widthPixels.toFloat()
+
+            val adWidth = (adWidthPixels / density).toInt()
+            val size = AdSize.getPortraitInlineAdaptiveBannerAdSize(context, 320)
+            return AdSize.getPortraitInlineAdaptiveBannerAdSize(context, 320)
+        }
 
     }
 

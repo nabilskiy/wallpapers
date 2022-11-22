@@ -2,7 +2,7 @@ package wallgram.hd.wallpapers.core
 
 import android.util.Log
 
-class LoggingHashMap<K, V>: LinkedHashMap<K, V>() {
+class LoggingHashMap<K, V> : LinkedHashMap<K, V>() {
 
     override fun put(key: K, value: V): V? {
         Log.i("LoggingHashMap", "put:$key")

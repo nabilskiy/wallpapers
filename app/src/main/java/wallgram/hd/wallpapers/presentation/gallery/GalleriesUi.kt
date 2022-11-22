@@ -36,15 +36,6 @@ interface GalleriesUi {
                 }
         }
 
-        class Link(private val id: Int) : Mapper<String> {
-            override fun map(data: List<ItemUi>): String =
-                try {
-                    data.first { id == it.id().toInt() }.uri().second
-                } catch (e: NumberFormatException) {
-                    ""
-                }
-        }
-
     }
 
 }

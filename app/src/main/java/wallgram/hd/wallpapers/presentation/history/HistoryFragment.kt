@@ -14,6 +14,7 @@ import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
 import wallgram.hd.wallpapers.presentation.base.adapter.HeaderItemDecoration
 import wallgram.hd.wallpapers.presentation.favorite.FavoriteAdapter
 import wallgram.hd.wallpapers.presentation.favorite.FavoriteViewModel
+import wallgram.hd.wallpapers.presentation.favorite.HistoryAdapter
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.presentation.gallery.GalleryViewType
 import wallgram.hd.wallpapers.presentation.wallpaper.WallpaperItemDecoration
@@ -32,13 +33,13 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val galleryAdapter = FavoriteAdapter()
+        val galleryAdapter = HistoryAdapter()
 
         viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
             it.map(galleryAdapter)
         }
 
-        viewModel.observeUpdate(viewLifecycleOwner){
+        viewModel.observeUpdate(viewLifecycleOwner) {
             viewModel.fetch()
         }
 

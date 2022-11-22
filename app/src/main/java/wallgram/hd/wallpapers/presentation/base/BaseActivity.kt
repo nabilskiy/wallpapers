@@ -20,14 +20,14 @@ private typealias ActivityViewBindingInflater<B> = (
     inflater: LayoutInflater
 ) -> B
 
-abstract class BaseActivity<B : ViewBinding>(private val bindingInflater: ActivityViewBindingInflater<B>)
-    :AppCompatActivity(), OnLocaleChangedListener{
+abstract class BaseActivity<B : ViewBinding>(private val bindingInflater: ActivityViewBindingInflater<B>) :
+    AppCompatActivity(), OnLocaleChangedListener {
 
     lateinit var binding: B
 
-    private lateinit var updateManager : UpdateManager
+    private lateinit var updateManager: UpdateManager
 
-    private val localizationDelegate: LocalizationActivityDelegate by lazy{
+    private val localizationDelegate: LocalizationActivityDelegate by lazy {
         LocalizationActivityDelegate(this)
     }
 
@@ -50,9 +50,11 @@ abstract class BaseActivity<B : ViewBinding>(private val bindingInflater: Activi
         super.attachBaseContext(newBase)
     }
 
-    override fun getBaseContext() = localizationDelegate.getApplicationContext(super.getBaseContext())
+    override fun getBaseContext() =
+        localizationDelegate.getApplicationContext(super.getBaseContext())
 
-    override fun getApplicationContext() = localizationDelegate.getApplicationContext(super.getApplicationContext())
+    override fun getApplicationContext() =
+        localizationDelegate.getApplicationContext(super.getApplicationContext())
 
     override fun getResources() = localizationDelegate.getResources(super.getResources())
 
@@ -62,11 +64,11 @@ abstract class BaseActivity<B : ViewBinding>(private val bindingInflater: Activi
     override fun onAfterLocaleChanged() {
     }
 
-    fun setLanguage(language: String){
+    fun setLanguage(language: String) {
         localizationDelegate.setLanguage(this, language)
     }
 
-    fun setLanguage(language: String, country: String){
+    fun setLanguage(language: String, country: String) {
         localizationDelegate.setLanguage(this, language, country)
     }
 
@@ -76,7 +78,7 @@ abstract class BaseActivity<B : ViewBinding>(private val bindingInflater: Activi
 
     fun getCurrentLanguage() = localizationDelegate.getLanguage(this)
 
-    private fun initializeUpdateManager(){
+    private fun initializeUpdateManager() {
         val builder =
             UpdateManager.Builder()
                 .setActivity(this)
@@ -84,39 +86,49 @@ abstract class BaseActivity<B : ViewBinding>(private val bindingInflater: Activi
         updateManager = builder.create()
         updateManager.updateListener = object : UpdateListener {
             override fun onUpdateChecked(appUpdateInfo: AppUpdateInfo, updateAvailable: Boolean) {
-                onUpdateAvailable(appUpdateInfo,updateAvailable)
+                onUpdateAvailable(appUpdateInfo, updateAvailable)
             }
 
             override fun onUpdateCheckFailure(exception: Exception) {
                 onUpdateFailure(exception)
             }
 
-            override fun onUpdateState(installState: InstallState, bytesDownLoaded: Long, totalBytesToDownLoaded: Long) {
+            override fun onUpdateState(
+                installState: InstallState,
+                bytesDownLoaded: Long,
+                totalBytesToDownLoaded: Long
+            ) {
                 onInstallState(installState, bytesDownLoaded, totalBytesToDownLoaded)
             }
         }
     }
 
-    fun checkUpdate(){
+    fun checkUpdate() {
         updateManager.checkUpdate()
     }
 
-    protected fun startUpdate(appUpdateInfo: AppUpdateInfo){
+    protected fun startUpdate(appUpdateInfo: AppUpdateInfo) {
         updateManager.update(appUpdateInfo)
     }
 
-    protected fun restart(){
+    protected fun restart() {
         updateManager.completeUpdate()
     }
 
-    protected fun showRestartSnackBar(@ColorRes colorRes : Int, updateMessage : String){
-        updateManager.showSnackBarForCompleteUpdate(updateMessage,
-            ContextCompat.getColor(this, colorRes))
+    protected fun showRestartSnackBar(@ColorRes colorRes: Int, updateMessage: String) {
+        updateManager.showSnackBarForCompleteUpdate(
+            updateMessage,
+            ContextCompat.getColor(this, colorRes)
+        )
     }
 
-    abstract fun onInstallState(installState: InstallState, bytesDownLoaded: Long, totalBytesToDownLoaded: Long)
+    abstract fun onInstallState(
+        installState: InstallState,
+        bytesDownLoaded: Long,
+        totalBytesToDownLoaded: Long
+    )
 
-    abstract fun onUpdateAvailable(appUpdateInfo: AppUpdateInfo,updateAvailable: Boolean)
+    abstract fun onUpdateAvailable(appUpdateInfo: AppUpdateInfo, updateAvailable: Boolean)
 
     abstract fun onUpdateFailure(exception: Exception?)
 }

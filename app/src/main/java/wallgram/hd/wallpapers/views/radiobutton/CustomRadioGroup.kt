@@ -14,6 +14,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import wallgram.hd.wallpapers.views.radiobutton.BaseCustomRadioButton
 import wallgram.hd.wallpapers.R
+import wallgram.hd.wallpapers.presentation.subscribe.Subscription
+import wallgram.hd.wallpapers.presentation.subscribe.SubscriptionUi
 
 
 class CustomRadioGroup @JvmOverloads constructor(
@@ -74,6 +76,22 @@ class CustomRadioGroup @JvmOverloads constructor(
             return id
         }
 
+    fun subscription(): Subscription {
+        var subscription: Subscription = Subscription.Empty()
+
+        for (i in 0 until this.childCount) {
+            val child = getChildAt(i)
+            if (child is OneFieldCustomRadioButton) {
+                if (child.isSelected()) {
+                    subscription = child.subscription()
+                    return subscription
+                }
+            }
+        }
+
+        return subscription
+    }
+
     private fun setButtonToUnselectedState(button: OneFieldCustomRadioButton) {
         button.isSelected = false
         button.check(false)
@@ -84,10 +102,8 @@ class CustomRadioGroup @JvmOverloads constructor(
         button.check(true)
     }
 
-    private fun initOnClickListener(selectedButton: View) {
-        if (onClickListener != null) {
-            onClickListener!!.onClick(selectedButton)
-        }
+    private fun initOnClickListener(selectedButton: OneFieldCustomRadioButton) {
+        onClickListener?.onClick(selectedButton.subscription())
     }
 
     companion object {

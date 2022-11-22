@@ -62,44 +62,45 @@ object Screens {
     }
 
     @Parcelize
-    class Favorites: AppScreen("Favorites"){
+    class Favorites : AppScreen("Favorites") {
         override fun create() = FavoriteFragment()
     }
 
     @Parcelize
-    class History: AppScreen("History"){
+    class History : AppScreen("History") {
         override fun create() = HistoryFragment()
     }
 
     @Parcelize
-    class Wallpaper : AppScreen(Random.nextInt().toString()) {
-        override fun create(): Fragment = WallpaperFragment()
+    class Wallpaper(private val screenId: Int) : AppScreen("Wallpaper_$screenId") {
+        override fun create(): Fragment = WallpaperFragment.newInstance()
     }
 
     @Parcelize
-    class CategoriesList(private val wallpaperRequest: @RawValue wallgram.hd.wallpapers.WallpaperRequest): AppScreen("CategoriesList"){
+    class CategoriesList(private val wallpaperRequest: @RawValue wallgram.hd.wallpapers.WallpaperRequest) :
+        AppScreen("CategoriesList") {
         override fun create() = FeedsFragment.create(wallpaperRequest)
     }
 
     @Parcelize
-    class Language: AppScreen("Language"){
+    class Language : AppScreen("Language") {
         override fun create() = LanguageFragment()
     }
 
     @Parcelize
-    class Resolution: AppScreen("Resolution"){
+    class Resolution : AppScreen("Resolution") {
         override fun create() = ResolutionFragment()
     }
 
     @Parcelize
-    class Wallpapers: AppScreen("Wallpapers"){
+    class Wallpapers : AppScreen("Wallpapers") {
         override fun create() = WallpapersFragment()
     }
 
     fun MultiStack() = MultiAppScreen(
-            "MultiStack",
-            listOf(Home(), Categories(), Favorites(), Settings()),
-            0
+        "MultiStack",
+        listOf(Home(), Categories(), Favorites(), Settings()),
+        0
     )
 
     fun Browser(url: String) = ExternalScreen {

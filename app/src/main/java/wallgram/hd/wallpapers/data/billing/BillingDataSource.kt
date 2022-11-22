@@ -7,14 +7,13 @@ import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import com.android.billingclient.api.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import wallgram.hd.wallpapers.YEAR_SKU
+import wallgram.hd.wallpapers.presentation.subscribe.Subscription
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -30,16 +29,13 @@ private const val SKU_DETAILS_REQUERY_TIME = 1000L * 60L * 60L * 4L // 4 hours
 class BillingDataSource constructor(
     application: Context,
     private val defaultScope: CoroutineScope,
-    knownInappSKUs: Array<String>?,
     knownSubscriptionSKUs: Array<String>?,
     autoConsumeSKUs: Array<String>?
 ) :
-    LifecycleObserver, PurchasesUpdatedListener, BillingClientStateListener {
-    // Billing client, connection, cached data
+    DefaultLifecycleObserver, PurchasesUpdatedListener, BillingClientStateListener {
+
     private val billingClient: BillingClient
 
-    // known SKUs (used to query sku data and validate responses)
-    private val knownInappSKUs: List<String>?
     private val knownSubscriptionSKUs: List<String>?
 
     // SKUs to auto-consume
@@ -47,13 +43,7 @@ class BillingDataSource constructor(
 
     // how long before the data source tries to reconnect to Google play
     private var reconnectMilliseconds = RECONNECT_TIMER_START_MILLISECONDS
-
-    // when was the last successful SkuDetailsResponse?
     private var skuDetailsResponseTime = -SKU_DETAILS_REQUERY_TIME
-
-    private enum class SkuState {
-        SKU_STATE_UNPURCHASED, SKU_STATE_PENDING, SKU_STATE_PURCHASED, SKU_STATE_PURCHASED_AND_ACKNOWLEDGED
-    }
 
     // Flows that are mostly maintained so they can be transformed into observables.
     private val skuStateMap: MutableMap<String, MutableStateFlow<SkuState>> = HashMap()
@@ -84,18 +74,10 @@ class BillingDataSource constructor(
         }
     }
 
-    /**
-     * This is a pretty unusual occurrence. It happens primarily if the Google Play Store
-     * self-upgrades or is force closed.
-     */
     override fun onBillingServiceDisconnected() {
         retryBillingServiceConnectionWithExponentialBackoff()
     }
 
-    /**
-     * Retries the billing service connection with exponential backoff, maxing out at the time
-     * specified by RECONNECT_TIMER_MAX_TIME_MILLISECONDS.
-     */
     private fun retryBillingServiceConnectionWithExponentialBackoff() {
         handler.postDelayed(
             { billingClient.startConnection(this@BillingDataSource) },
@@ -113,7 +95,7 @@ class BillingDataSource constructor(
     </String> */
     private fun addSkuFlows(skuList: List<String>?) {
         for (sku in skuList!!) {
-            val skuState = MutableStateFlow(SkuState.SKU_STATE_UNPURCHASED)
+            val skuState = MutableStateFlow(SkuState(State.SKU_STATE_UNPURCHASED))
             val details = MutableStateFlow<SkuDetails?>(null)
             details.subscriptionCount.map { count -> count > 0 } // map count into active/inactive flag
                 .distinctUntilChanged() // only react to true<->false changes
@@ -136,7 +118,6 @@ class BillingDataSource constructor(
      * useful for the application.
      */
     private fun initializeFlows() {
-        addSkuFlows(knownInappSKUs)
         addSkuFlows(knownSubscriptionSKUs)
     }
 
@@ -148,6 +129,7 @@ class BillingDataSource constructor(
      */
     fun getConsumedPurchases() = purchaseConsumedFlow.asSharedFlow()
 
+
     /**
      * Returns whether or not the user has purchased a SKU. It does this by returning
      * a Flow that returns true if the SKU is in the PURCHASED state and
@@ -156,7 +138,7 @@ class BillingDataSource constructor(
      */
     fun isPurchased(sku: String): Flow<Boolean> {
         val skuStateFLow = skuStateMap[sku]!!
-        return skuStateFLow.map { skuState -> skuState == SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED }
+        return skuStateFLow.map { skuState -> skuState.state == State.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED }
     }
 
     /**
@@ -171,7 +153,7 @@ class BillingDataSource constructor(
         val skuStateFlow = skuStateMap[sku]!!
 
         return skuStateFlow.combine(skuDetailsFlow) { skuState, skuDetails ->
-            skuState == SkuState.SKU_STATE_UNPURCHASED && skuDetails != null
+            skuState.state == State.SKU_STATE_UNPURCHASED && skuDetails != null
         }
     }
 
@@ -187,6 +169,33 @@ class BillingDataSource constructor(
         val skuDetailsFlow = skuDetailsMap[sku]!!
         return skuDetailsFlow.mapNotNull { skuDetails ->
             skuDetails?.title
+        }
+    }
+
+    fun purchase(sku: String): Flow<Long> {
+        val skuStateFlow = skuStateMap[sku]!!
+
+        return skuStateFlow.map { skuState ->
+            skuState.date
+        }
+    }
+
+    fun getSubscription(sku: String): Flow<Subscription> {
+        val skuDetailsFlow = skuDetailsMap[sku]!!
+        return skuDetailsFlow.mapNotNull { skuDetails ->
+            if (skuDetails == null)
+                Subscription.Empty()
+            else {
+                Subscription.Base(
+                    skuDetails.sku,
+                    skuDetails.price,
+                    canPurchase(sku).first(),
+                    isPurchased(sku).first(),
+                    purchase(sku).first(),
+                    skuDetails.subscriptionPeriod
+                )
+            }
+
         }
     }
 
@@ -220,7 +229,10 @@ class BillingDataSource constructor(
      * Store the SkuDetails and post them in the [.skuDetailsMap]. This allows other
      * parts of the app to use the [SkuDetails] to show SKU information and make purchases.
      */
-    private fun onSkuDetailsResponse(billingResult: BillingResult, skuDetailsList: List<SkuDetails>?) {
+    private fun onSkuDetailsResponse(
+        billingResult: BillingResult,
+        skuDetailsList: List<SkuDetails>?
+    ) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
         when (responseCode) {
@@ -271,24 +283,17 @@ class BillingDataSource constructor(
      * required to make a purchase.
      */
     private suspend fun querySkuDetailsAsync() {
-        if (!knownInappSKUs.isNullOrEmpty()) {
-            val skuDetailsResult = billingClient.querySkuDetails(
-                SkuDetailsParams.newBuilder()
-                    .setType(BillingClient.SkuType.INAPP)
-                    .setSkusList(knownInappSKUs)
-                    .build()
-            )
-            onSkuDetailsResponse(skuDetailsResult.billingResult, skuDetailsResult.skuDetailsList)
-        }
-        if (!knownSubscriptionSKUs.isNullOrEmpty()) {
-            val skuDetailsResult = billingClient.querySkuDetails(
-                SkuDetailsParams.newBuilder()
-                    .setType(BillingClient.SkuType.SUBS)
-                    .setSkusList(knownSubscriptionSKUs)
-                    .build()
-            )
-            onSkuDetailsResponse(skuDetailsResult.billingResult, skuDetailsResult.skuDetailsList)
-        }
+        if (knownSubscriptionSKUs.isNullOrEmpty())
+            return
+
+        val skuDetailsResult = billingClient.querySkuDetails(
+            SkuDetailsParams.newBuilder()
+                .setType(BillingClient.SkuType.SUBS)
+                .setSkusList(knownSubscriptionSKUs)
+                .build()
+        )
+        onSkuDetailsResponse(skuDetailsResult.billingResult, skuDetailsResult.skuDetailsList)
+
     }
 
     /*
@@ -297,15 +302,9 @@ class BillingDataSource constructor(
      */
     suspend fun refreshPurchases() {
         Log.d(TAG, "Refreshing purchases.")
-        var purchasesResult = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
-        var billingResult = purchasesResult.billingResult
-        if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
-            Log.e(TAG, "Problem getting purchases: " + billingResult.debugMessage)
-        } else {
-            processPurchaseList(purchasesResult.purchasesList, knownInappSKUs)
-        }
-        purchasesResult = billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS)
-        billingResult = purchasesResult.billingResult
+
+        val purchasesResult = billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS)
+        val billingResult = purchasesResult.billingResult
         if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
             Log.e(TAG, "Problem getting subscriptions: " + billingResult.debugMessage)
         } else {
@@ -314,15 +313,6 @@ class BillingDataSource constructor(
         Log.d(TAG, "Refreshing purchases finished.")
     }
 
-    /**
-     * Used internally to get purchases from a requested set of SKUs. This is particularly
-     * important when changing subscriptions, as onPurchasesUpdated won't update the purchase state
-     * of a subscription that has been upgraded from.
-     *
-     * @param skus skus to get purchase information for
-     * @param skuType sku type, inapp or subscription, to get purchase information for.
-     * @return purchases
-     */
     private suspend fun getPurchases(skus: Array<String>, skuType: String): List<Purchase> {
         val purchasesResult = billingClient.queryPurchasesAsync(skuType)
         val br = purchasesResult.billingResult
@@ -345,31 +335,6 @@ class BillingDataSource constructor(
     }
 
     /**
-     * Consumes an in-app purchase. Interested listeners can watch the purchaseConsumed LiveEvent.
-     * To make things easy, you can send in a list of SKUs that are auto-consumed by the
-     * BillingDataSource.
-     */
-    suspend fun consumeInappPurchase(sku: String) {
-        val pr = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
-        val br = pr.billingResult
-        val purchasesList = pr.purchasesList
-        if (br.responseCode != BillingClient.BillingResponseCode.OK) {
-            Log.e(TAG, "Problem getting purchases: " + br.debugMessage)
-        } else {
-            for (purchase in purchasesList) {
-                // for right now any bundle of SKUs must all be consumable
-                for (purchaseSku in purchase.skus) {
-                    if (purchaseSku == sku) {
-                        consumePurchase(purchase)
-                        return
-                    }
-                }
-            }
-        }
-        Log.e(TAG, "Unable to consume SKU: $sku Sku not found.")
-    }
-
-    /**
      * Calling this means that we have the most up-to-date information for a Sku in a purchase
      * object. This uses the purchase state (Pending, Unspecified, Purchased) along with the
      * acknowledged state.
@@ -386,12 +351,22 @@ class BillingDataSource constructor(
                 )
             } else {
                 when (purchase.purchaseState) {
-                    Purchase.PurchaseState.PENDING -> skuStateFlow.tryEmit(SkuState.SKU_STATE_PENDING)
-                    Purchase.PurchaseState.UNSPECIFIED_STATE -> skuStateFlow.tryEmit(SkuState.SKU_STATE_UNPURCHASED)
+                    Purchase.PurchaseState.PENDING -> skuStateFlow.tryEmit(SkuState(State.SKU_STATE_PENDING))
+                    Purchase.PurchaseState.UNSPECIFIED_STATE -> skuStateFlow.tryEmit(SkuState(State.SKU_STATE_UNPURCHASED))
                     Purchase.PurchaseState.PURCHASED -> if (purchase.isAcknowledged) {
-                        skuStateFlow.tryEmit(SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED)
+                        skuStateFlow.tryEmit(
+                            SkuState(
+                                State.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED,
+                                purchase.purchaseTime
+                            )
+                        )
                     } else {
-                        skuStateFlow.tryEmit(SkuState.SKU_STATE_PURCHASED)
+                        skuStateFlow.tryEmit(
+                            SkuState(
+                                State.SKU_STATE_PURCHASED,
+                                purchase.purchaseTime
+                            )
+                        )
                     }
                     else -> Log.e(TAG, "Purchase in unknown state: " + purchase.purchaseState)
                 }
@@ -444,7 +419,7 @@ class BillingDataSource constructor(
         val updatedSkus = HashSet<String>()
         if (null != purchases) {
             for (purchase in purchases) {
-                for (sku  in purchase.skus) {
+                for (sku in purchase.skus) {
                     val skuStateFlow = skuStateMap[sku]
                     if (null == skuStateFlow) {
                         Log.e(
@@ -454,6 +429,7 @@ class BillingDataSource constructor(
                         )
                         continue
                     }
+
                     updatedSkus.add(sku)
                 }
                 // Global check to make sure all purchases are signed correctly.
@@ -477,8 +453,10 @@ class BillingDataSource constructor(
                                 isConsumable = true
                             } else {
                                 if (isConsumable) {
-                                    Log.e(TAG, "Purchase cannot contain a mixture of consumable" +
-                                            "and non-consumable items: " + purchase.skus.toString())
+                                    Log.e(
+                                        TAG, "Purchase cannot contain a mixture of consumable" +
+                                                "and non-consumable items: " + purchase.skus.toString()
+                                    )
                                     isConsumable = false
                                     break
                                 }
@@ -495,11 +473,20 @@ class BillingDataSource constructor(
                                     .build()
                             )
                             if (billingResult.responseCode != BillingClient.BillingResponseCode.OK) {
-                                Log.e(TAG, "Error acknowledging purchase: ${purchase.skus.toString()}")
+                                Log.e(
+                                    TAG,
+                                    "Error acknowledging purchase: ${purchase.skus.toString()}"
+                                )
                             } else {
                                 // purchase acknowledged
                                 for (sku in purchase.skus) {
-                                    setSkuState(sku, SkuState.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED)
+                                    setSkuState(
+                                        sku,
+                                        SkuState(
+                                            State.SKU_STATE_PURCHASED_AND_ACKNOWLEDGED,
+                                            purchase.purchaseTime
+                                        )
+                                    )
                                 }
                             }
                             newPurchaseFlow.tryEmit(purchase.skus)
@@ -518,7 +505,7 @@ class BillingDataSource constructor(
         if (null != skusToUpdate) {
             for (sku in skusToUpdate) {
                 if (!updatedSkus.contains(sku)) {
-                    setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)
+                    setSkuState(sku, SkuState(State.SKU_STATE_UNPURCHASED))
                 }
             }
         }
@@ -550,7 +537,7 @@ class BillingDataSource constructor(
             }
             // Since we've consumed the purchase
             for (sku in purchase.skus) {
-                setSkuState(sku, SkuState.SKU_STATE_UNPURCHASED)
+                setSkuState(sku, SkuState(State.SKU_STATE_UNPURCHASED))
             }
         } else {
             Log.e(TAG, "Error while consuming: ${consumePurchaseResult.billingResult.debugMessage}")
@@ -629,8 +616,14 @@ class BillingDataSource constructor(
                 processPurchaseList(list, null)
                 return
             } else Log.d(TAG, "Null Purchase List Returned from OK response!")
-            BillingClient.BillingResponseCode.USER_CANCELED -> Log.i(TAG, "onPurchasesUpdated: User canceled the purchase")
-            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> Log.i(TAG, "onPurchasesUpdated: The user already owns this item")
+            BillingClient.BillingResponseCode.USER_CANCELED -> Log.i(
+                TAG,
+                "onPurchasesUpdated: User canceled the purchase"
+            )
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> Log.i(
+                TAG,
+                "onPurchasesUpdated: The user already owns this item"
+            )
             BillingClient.BillingResponseCode.DEVELOPER_ERROR -> Log.e(
                 TAG,
                 "onPurchasesUpdated: Developer error means that Google Play " +
@@ -639,7 +632,10 @@ class BillingDataSource constructor(
                         "Google Play Console. The SKU product ID must match and the APK you " +
                         "are using must be signed with release keys."
             )
-            else -> Log.d(TAG, "BillingResult [" + billingResult.responseCode + "]: " + billingResult.debugMessage)
+            else -> Log.d(
+                TAG,
+                "BillingResult [" + billingResult.responseCode + "]: " + billingResult.debugMessage
+            )
         }
         defaultScope.launch {
             billingFlowInProcess.emit(false)
@@ -654,13 +650,7 @@ class BillingDataSource constructor(
         return Security.verifyPurchase(purchase.originalJson, purchase.signature)
     }
 
-    /**
-     * It's recommended to requery purchases during onResume.
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun resume() {
-        Log.d(TAG, "ON_RESUME")
-        // this just avoids an extra purchase refresh after we finish a billing flow
+    override fun onResume(owner: LifecycleOwner) {
         if (!billingFlowInProcess.value) {
             if (billingClient.isReady) {
                 defaultScope.launch {
@@ -682,14 +672,12 @@ class BillingDataSource constructor(
         fun getInstance(
             application: Context,
             defaultScope: CoroutineScope,
-            knownInappSKUs: Array<String>?,
             knownSubscriptionSKUs: Array<String>?,
             autoConsumeSKUs: Array<String>?
         ) = sInstance ?: synchronized(this) {
             sInstance ?: BillingDataSource(
                 application,
                 defaultScope,
-                knownInappSKUs,
                 knownSubscriptionSKUs,
                 autoConsumeSKUs
             )
@@ -704,11 +692,6 @@ class BillingDataSource constructor(
      * @param knownSubscriptionSKUs SKUs of subscriptions the source should know about
      */
     init {
-        this.knownInappSKUs = if (knownInappSKUs == null) {
-            ArrayList()
-        } else {
-            listOf(*knownInappSKUs)
-        }
         this.knownSubscriptionSKUs = if (knownSubscriptionSKUs == null) {
             ArrayList()
         } else {

@@ -1,124 +1,159 @@
 package wallgram.hd.wallpapers.data.ads.appopen
 
 import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import wallgram.hd.wallpapers.BuildConfig
+import wallgram.hd.wallpapers.data.IsSubscribed
+import wallgram.hd.wallpapers.data.ads.BaseAd
 import java.util.*
 
-interface AppOpenAdManager {
+private const val LOG_TAG = "MyApplication"
 
-    fun load(activity: Activity)
-    fun wasLoadTimeLessThanNHoursAgo(numHours: Long): Boolean
-    fun isAdAvailable(): Boolean
-    fun showAdIfAvailable(activity: Activity)
-    fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener)
-    fun isShowingAd(): Boolean
+interface AppOpenAdManager : DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
 
-    class Base(): AppOpenAdManager{
+    fun init()
 
-        private val LOG = "AppOpenAd"
+    class Base(private val context: Application,
+    subscription: IsSubscribed) : BaseAd(subscription), AppOpenAdManager {
+
+        override fun init(){
+            context.registerActivityLifecycleCallbacks(this)
+            ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        }
 
         private var appOpenAd: AppOpenAd? = null
         private var isLoadingAd = false
-        private var isShowingAd = false
+        var isShowingAd = false
+
+        private var currentActivity: Activity? = null
 
         private var loadTime: Long = 0
 
-        override fun isShowingAd() = isShowingAd
+        fun loadAd() {
 
-        override fun load(activity: Activity) {
-            if(isLoadingAd || isAdAvailable())
+
+            if (isLoadingAd || isAdAvailable()) {
                 return
+            }
 
             isLoadingAd = true
             val request = AdRequest.Builder().build()
             AppOpenAd.load(
-                activity,
+                context,
                 BuildConfig.APP_OPEN_ID,
                 request,
                 AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
-                object : AppOpenAd.AppOpenAdLoadCallback(){
+                object : AppOpenAd.AppOpenAdLoadCallback() {
+
                     override fun onAdLoaded(ad: AppOpenAd) {
                         appOpenAd = ad
                         isLoadingAd = false
                         loadTime = Date().time
-                        Log.d(LOG, "onAdLoaded.")
+                        Log.d(LOG_TAG, "onAdLoaded.")
                     }
 
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         isLoadingAd = false
-                        Log.d(LOG, "onAdFailedToLoad: " + loadAdError.message)
+                        Log.d(LOG_TAG, "onAdFailedToLoad: " + loadAdError.message)
                     }
                 }
             )
         }
 
-        override fun wasLoadTimeLessThanNHoursAgo(numHours: Long): Boolean {
+        private fun wasLoadTimeLessThanNHoursAgo(numHours: Long): Boolean {
             val dateDifference: Long = Date().time - loadTime
             val numMilliSecondsPerHour: Long = 3600000
             return dateDifference < numMilliSecondsPerHour * numHours
         }
 
-        override fun isAdAvailable() = appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4)
-
-        override fun showAdIfAvailable(activity: Activity) {
-            showAdIfAvailable(
-                activity,
-                object : OnShowAdCompleteListener {
-                    override fun onShowAdComplete() {
-                    }
-                }
-            )
+        private fun isAdAvailable(): Boolean {
+            return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4)
         }
 
-        override fun showAdIfAvailable(activity: Activity, onShowAdCompleteListener: OnShowAdCompleteListener) {
+        fun showAdIfAvailable(
+            activity: Activity
+        ) {
+            if(!needToLoading())
+                return
+
+            // If the app open ad is already showing, do not show the ad again.
             if (isShowingAd) {
-                Log.d(LOG, "The app open ad is already showing.")
+                Log.d(LOG_TAG, "The app open ad is already showing.")
                 return
             }
 
+            // If the app open ad is not available yet, invoke the callback then load the ad.
             if (!isAdAvailable()) {
-                Log.d(LOG, "The app open ad is not ready yet.")
-                onShowAdCompleteListener.onShowAdComplete()
-                load(activity)
+                Log.d(LOG_TAG, "The app open ad is not ready yet.")
+                loadAd()
                 return
             }
 
-            Log.d(LOG, "Will show ad.")
+            Log.d(LOG_TAG, "Will show ad.")
 
             appOpenAd!!.fullScreenContentCallback = object : FullScreenContentCallback() {
-
                 override fun onAdDismissedFullScreenContent() {
                     appOpenAd = null
-                    isShowingAd = false
-                    Log.d(LOG, "onAdDismissedFullScreenContent.")
+                    isShowingAd = true
+                    Log.d(LOG_TAG, "onAdDismissedFullScreenContent.")
 
-                    onShowAdCompleteListener.onShowAdComplete()
-                    load(activity)
                 }
 
+                /** Called when fullscreen content failed to show. */
                 override fun onAdFailedToShowFullScreenContent(adError: AdError) {
                     appOpenAd = null
                     isShowingAd = false
-                    Log.d(LOG, "onAdFailedToShowFullScreenContent: " + adError.message)
+                    Log.d(LOG_TAG, "onAdFailedToShowFullScreenContent: " + adError.message)
 
-                    onShowAdCompleteListener.onShowAdComplete()
-                    load(activity)
+                    loadAd()
                 }
 
+                /** Called when fullscreen content is shown. */
                 override fun onAdShowedFullScreenContent() {
-                    Log.d(LOG, "onAdShowedFullScreenContent.")
+                    Log.d(LOG_TAG, "onAdShowedFullScreenContent.")
                 }
             }
-            isShowingAd = true
-            appOpenAd!!.show(activity!!)
+            appOpenAd!!.show(activity)
         }
 
+        override fun onStart(owner: LifecycleOwner) {
+            super.onStart(owner)
+            currentActivity?.let { showAdIfAvailable(it) }
+        }
+
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
+
+        override fun onActivityStarted(activity: Activity) {
+            if (!isShowingAd) {
+                currentActivity = activity
+            }
+        }
+
+        override fun onActivityResumed(activity: Activity) = Unit
+
+        override fun onActivityPaused(activity: Activity) = Unit
+
+        override fun onActivityStopped(activity: Activity) = Unit
+
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
+
+        override fun onActivityDestroyed(activity: Activity) {
+            currentActivity = null
+        }
     }
+
 
 }

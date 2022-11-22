@@ -3,14 +3,14 @@
     <string name="action_settings">设置</string>
 
     <string name="user_agreement">通过启动应用程序，您接受用户协议的条款</string>
-    <string name="menu_favorites">最喜欢的</string>
+    <string name="menu_favorites">收藏夹</string>
     <string name="menu_history">历史记录</string>
     <string name="menu_feedback">留评论</string>
     <string name="menu_site">官网</string>
-    <string name="search">搜寻</string>
-    <string name="category">类型</string>
+    <string name="search">搜索</string>
+    <string name="category">分类</string>
     <string name="news_title">新的</string>
-    <string name="popular_title">流行的</string>
+    <string name="popular_title">流行</string>
     <string name="random_title">随机</string>
     <string name="agreement_sub">用户协议</string>
     <string name="retry_button">重覆</string>
@@ -26,23 +26,63 @@
     <string name="clear_cache_title">清除缓存</string>
     <string name="cache_size">缓存大小: %1$s</string>
     <string name="continue_key">继续</string>
-    <string name="year">/ 年</string>
-    <string name="month">/ 个月</string>
+    <string name="year">1年</string>
+    <string name="month">1个月</string>
     <string name="error_msg">无法加载壁纸</string>
 
     <string name="privacy_policy">隐私政策</string>
     <string name="download">下载</string>
     <string name="integrated_ads">有内置广告</string>
     <string name="downloads_limit_10">每天最多下载10次</string>
-    <string name="sub_text">"\"自动续订。您可以随时关闭自动续订。   %1$s年%2$s。无广告无限次下载所有壁纸。确认付款后，将从用户的Google Play帐户中扣除服务费。如果用户没有在当前订阅有效期结束前的24小时内取消订阅，则将自动续订。将在当前订阅有效期结束之前的24小时内收取续订费用。用户可以在其Google Play帐户设置中更改和取消订阅。\" "</string>
+    <string name="sub_text">订阅将自动续订。您可以随时取消续订。\n\n %1$s为%2$s。无限制无广告访问所有壁纸。
+确认购买后，将从你的Google Play帐户中扣除相应费用。除非您取消订阅在试用期结束前至少24 小时，否则订阅将自动续订。续订更新，要在试用期结束前的24小内再付费。用户可以在其 Google Play 帐户设置中更改和取消订阅。\n</string>
     <string name="subscribe_now">立即订阅</string>
     <string name="action_subscription">订阅</string>
     <string name="save_50">节省50%</string>
-    <string name="favorites_empty">哦，暂时没有收藏。\n\n我们提供80,000多张壁纸-一定有您喜欢的一款。\n</string>
-    <string name="home">家</string>
+    <string name="favorites_empty">哦，还没添加什么壁纸。\n\n我们有超过 80,000 张壁纸 - 瞧瞧，您一定会找到喜欢的。\n</string>
+    <string name="home">首页</string>
     <string name="free">"免费 "</string>
     <string name="current">已选择</string>
-    <string name="cache">应用程序缓存</string>
+    <string name="cache">应用缓存</string>
     <string name="wallpapers_adapted">所有壁纸都可以与您的手机相匹配</string>
     <string name="connection_error">Connection error</string>
+    <string name="history_empty">历史记录为空</string>
+    <string name="wallpaper_resolution">壁纸尺寸</string>
+    <string name="my_screen">我的屏幕 (%1$s)</string>
+    <string name="red" translatable="false">红色</string>
+    <string name="gold" translatable="false">黄色</string>
+    <string name="green" translatable="false">绿色</string>
+    <string name="blue" translatable="false">蓝色</string>
+    <string name="pink" translatable="false">粉色</string>
+    <string name="black" translatable="false">黑色</string>
+    <string name="white" translatable="false">白色</string>
+    <string name="silver" translatable="false">灰色</string>
+    <string name="discover">探索壁纸</string>
+    <string name="source">链接到源</string>
+    <string name="license">执照</string>
+    <string name="date">日期</string>
+    <string name="resolution">尺寸</string>
+    <string name="downloading">正在加载...</string>
+    <string name="your_device">您的装置</string>
+    <string name="no_ads_100">100% 无广告</string>
+    <string name="unlimited_wallpaper_downloads">无限壁纸下载</string>
+    <string name="daily_wallpapers_update">每日壁纸更新</string>
+    <string name="full_access_to_the_wallpaper_changer">完全访问壁纸更换器</string>
+    <string name="nothing_found">没找到</string>
+    <string name="author">作者</string>
+    <string name="wallpaper_application">壁纸设置</string>
+    <string name="wallpaper_applied">壁纸设置了</string>
+    <string name="image_downloaded">图片被下载了</string>
+    <string name="image_already_downloaded">图片已成功下载了</string>
+    <string name="wallpaper_apply_error">安装错误</string>
+    <string name="download_waiting">正在等待下载...</string>
+    <string name="download_paused">已暂停下载...</string>
+    <string name="download_canceled">下载已取消</string>
+    <string name="download_error">加载错误</string>
+    <string name="start_search">开始探索</string>
+
+    <string name="reload">重新装填</string>
+    <string name="error_get_prices">未能获取价格信息</string>
+    <string name="subscription_purchased">您可以完全访问壁纸更换器，下载没有限制，直到%1$s没有广告。\n享受吧！</string>
+    <string name="use_wallgram_pro">您正在使用\nWallgram Pro！\n😎</string>
 </resources>

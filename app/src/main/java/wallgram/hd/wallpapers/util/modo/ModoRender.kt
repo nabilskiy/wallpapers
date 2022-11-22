@@ -53,7 +53,9 @@ open class ModoRender(
         val currentScreen = currentState.chain.lastOrNull()
         if (currentScreen is MultiScreen) {
             fragmentManager.executePendingTransactions()
-            (fragmentManager.findFragmentById(containerId) as MultiStackFragment?)?.applyMultiState(currentScreen)
+            (fragmentManager.findFragmentById(containerId) as MultiStackFragment?)?.applyMultiState(
+                currentScreen
+            )
         }
     }
 
@@ -91,10 +93,10 @@ open class ModoRender(
     }
 
     protected open fun setupTransaction(
-            fragmentManager: FragmentManager,
-            transaction: FragmentTransaction,
-            screen: AppScreen,
-            newFragment: Fragment
+        fragmentManager: FragmentManager,
+        transaction: FragmentTransaction,
+        screen: AppScreen,
+        newFragment: Fragment
     ) {
     }
 
@@ -108,7 +110,8 @@ open class ModoRender(
         fragmentManager.executePendingTransactions()
     }
 
-    protected open fun createMultiStackFragment(multiScreen: MultiScreen): MultiStackFragment = MainFragment()
+    protected open fun createMultiStackFragment(multiScreen: MultiScreen): MultiStackFragment =
+        MainFragment()
 
     private class RestoredScreen(override val id: String) : Screen {
         override fun toString() = "[$id]"

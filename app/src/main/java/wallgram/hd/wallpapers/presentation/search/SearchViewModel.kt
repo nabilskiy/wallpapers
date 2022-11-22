@@ -71,7 +71,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun reset(){
+    fun reset() {
         request.initialPage()
     }
 
@@ -81,7 +81,7 @@ class SearchViewModel @Inject constructor(
             delay.clear()
             wallpapersLiveDataPrivate.value = initial
         } else {
-            if(request.query() != query){
+            if (request.query() != query) {
                 wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(ProgressUi()))
 
             }

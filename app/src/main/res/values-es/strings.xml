@@ -30,9 +30,9 @@
     <string name="action_subscription">Subscripción</string>
     <string name="save_50">Ahorra 50%</string>
     <string name="continue_key">Continuar</string>
-    <string name="sub_text">La suscripción se renueva automáticamente. Puedes desactivar la renovación automática en cualquier momento.\n\n %1$s por  %2$s. Te da acceso a todos los fondos de pantalla sin restricciones ni anuncios. Los pagos de los usuarios se cargan desde su cuenta de Google Play tras la confirmación del pago. Las suscripciones se renuevan automáticamente a menos que el usuario cancele la suscripción a más tardar 24 horas antes de la fecha de finalización del período de suscripción actual. Las renovaciones de suscripción se cobrarán dentro de las 24 horas anteriores a la fecha de finalización del período de suscripción actual. Los usuarios pueden cambiar y cancelar suscripciones en la configuración de su cuenta de Google Play .</string>
-    <string name="year">/ año</string>
-    <string name="month">/ mes</string>
+    <string name="sub_text">La suscripción se renueva automáticamente. Puedes desactivar la renovación automática en cualquier momento.\n\n %1$s por %2$s. Te da acceso a todos los fondos de pantalla sin restricciones ni anuncios. Los pagos de los usuarios se cargan desde su cuenta de Google Play tras la confirmación del pago. Las suscripciones se renuevan automáticamente a menos que el usuario cancele la suscripción a más tardar 24 horas antes de la fecha de finalización del período de suscripción actual. Las renovaciones de suscripción se cobrarán dentro de las 24 horas anteriores a la fecha de finalización del período de suscripción actual. Los usuarios pueden cambiar y cancelar suscripciones en la configuración de su cuenta de Google Play.\n</string>
+    <string name="year">1 año</string>
+    <string name="month">1 mes</string>
     <string name="error_msg">Error al cargar el fondo de pantalla</string>
 
     <string name="privacy_policy">Política de Privacidad</string>
@@ -45,4 +45,43 @@
     <string name="subscribe_now">Suscríbete ahora</string>
     <string name="home">Inicio</string>
     <string name="connection_error">Connection error</string>
+    <string name="history_empty">El historial está vacío</string>
+    <string name="source">Enlace a la fuente</string>
+    <string name="license">Licencia</string>
+    <string name="wallpaper_resolution">Resolución de fondo de pantalla</string>
+    <string name="my_screen">Mi pantalla (%1$s)</string>
+    <string name="silver" translatable="false">Plata</string>
+    <string name="blue" translatable="false">Azul</string>
+    <string name="pink" translatable="false">Rosado</string>
+    <string name="white" translatable="false">Blanco</string>
+    <string name="black" translatable="false">Negro</string>
+    <string name="gold" translatable="false">Oro</string>
+    <string name="green" translatable="false">Verde</string>
+    <string name="red" translatable="false">Rojo</string>
+    <string name="image_downloaded">Imagen descargada</string>
+    <string name="wallpaper_applied">El fondo de pantalla fue establecido</string>
+    <string name="wallpaper_application">Estableciendo el fondo de pantalla</string>
+    <string name="downloading">Descargando...</string>
+    <string name="resolution">Resolución</string>
+    <string name="date">Fecha</string>
+    <string name="author">Autor</string>
+    <string name="discover">Descubrir</string>
+    <string name="your_device">Tu dispositivo</string>
+    <string name="no_ads_100">100% sin anuncios</string>
+    <string name="unlimited_wallpaper_downloads">Descargas ilimitadas de fondos de pantalla</string>
+    <string name="daily_wallpapers_update">Actualización diaria de fondos de pantalla</string>
+    <string name="full_access_to_the_wallpaper_changer">Acceso completo al cambiador de fondos de pantalla</string>
+    <string name="nothing_found">No encontrado nada</string>
+    <string name="image_already_downloaded">Imagen ya descargada</string>
+    <string name="wallpaper_apply_error">Error de instalación</string>
+    <string name="download_waiting">Esperando descarga...</string>
+    <string name="download_paused">Descarga pausada...</string>
+    <string name="download_canceled">Descarga cancelada</string>
+    <string name="download_error">Error de descarga</string>
+    <string name="start_search">Empezar a buscar</string>
+    <string name="reload">Cargar</string>
+    <string name="error_get_prices">No se pudo obtener la información de precios</string>
+    <string name="subscription_purchased">Tiene acceso completo al cambiador de fondo de pantalla, sin restricciones en las descargas y sin anuncios hasta el %1$s.\n¡Que lo disfrutes!</string>
+    <string name="use_wallgram_pro">Está utilizando\nWallgram Pro 😎</string>
+
 </resources>

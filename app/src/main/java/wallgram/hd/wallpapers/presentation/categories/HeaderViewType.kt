@@ -4,11 +4,11 @@ interface HeaderViewType {
 
     fun textSize(): Float
 
-    class Default: HeaderViewType{
+    class Default : HeaderViewType {
         override fun textSize() = 28f
     }
 
-    class Small: HeaderViewType{
+    class Small : HeaderViewType {
         override fun textSize() = 22f
     }
 

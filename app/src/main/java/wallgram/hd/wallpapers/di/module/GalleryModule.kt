@@ -1,19 +1,26 @@
 package wallgram.hd.wallpapers.di.module
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.scopes.FragmentScoped
 import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
+import wallgram.hd.wallpapers.DisplayProvider
 import wallgram.hd.wallpapers.ResourceProvider
 import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.core.domain.HandleDomainError
 import wallgram.hd.wallpapers.core.HandleError
 import wallgram.hd.wallpapers.core.data.ProvideRetrofitBuilder
+import wallgram.hd.wallpapers.data.SubscriptionsDataSource
+import wallgram.hd.wallpapers.data.ads.recyclerbanner.RecyclerBannerAd
 import wallgram.hd.wallpapers.data.favorites.FavoritesCacheDataSource
 import wallgram.hd.wallpapers.data.filters.FiltersCloud
 import wallgram.hd.wallpapers.data.filters.FiltersCloudDataSource
 import wallgram.hd.wallpapers.data.gallery.*
+import wallgram.hd.wallpapers.di.qualifiers.CarouselAdBanner
+import wallgram.hd.wallpapers.di.qualifiers.CarouselMapper
 import wallgram.hd.wallpapers.domain.gallery.*
 import wallgram.hd.wallpapers.domain.home.HomeRepository
 import wallgram.hd.wallpapers.presentation.dialogs.UpdateDownload
@@ -86,8 +93,36 @@ class GalleryModule {
     }
 
     @Provides
-    fun provideGalleriesMapper(mapper: GalleryDomain.Mapper<GalleryUi>): GalleriesDomain.Mapper<GalleriesUi> =
-        GalleriesDomain.Mapper.Base(mapper)
+    fun provideGalleriesMapper(
+        mapper: GalleryDomain.Mapper<GalleryUi>,
+        bannerAd: RecyclerBannerAd,
+        subscriptionsDataSource: SubscriptionsDataSource
+    ): GalleriesDomain.Mapper<GalleriesUi> =
+        GalleriesDomain.Mapper.Base(mapper, bannerAd, subscriptionsDataSource)
+
+    @Provides
+    @CarouselMapper
+    fun provideGalleriesCarouselMapper(
+        mapper: GalleryDomain.Mapper<GalleryUi>,
+        @CarouselAdBanner bannerAd: RecyclerBannerAd,
+        subscriptionsDataSource: SubscriptionsDataSource
+    ): GalleriesDomain.Mapper<GalleriesUi> =
+        GalleriesDomain.Mapper.Carousel(mapper, bannerAd, subscriptionsDataSource)
+
+    @Provides
+    fun provideRecyclerAdBanner(
+        context: Context,
+        displayProvider: DisplayProvider,
+        subscriptionsDataSource: SubscriptionsDataSource
+    ): RecyclerBannerAd = RecyclerBannerAd.Base(context, displayProvider, subscriptionsDataSource)
+
+    @Provides
+    @CarouselAdBanner
+    fun provideCarouselAdBanner(
+        context: Context,
+        displayProvider: DisplayProvider,
+        subscriptionsDataSource: SubscriptionsDataSource
+    ): RecyclerBannerAd = RecyclerBannerAd.Carousel(context, displayProvider, subscriptionsDataSource)
 
     @Provides
     @Singleton

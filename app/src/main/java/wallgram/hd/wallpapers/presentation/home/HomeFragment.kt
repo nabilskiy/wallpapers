@@ -64,9 +64,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
 
         val recycledViewPool: RecyclerView.RecycledViewPool = NoLimitRecycledViewPool()
 
-        //   val displaySize = displayProvider.getScreenSize()
-
-
         val homeAdapter = HomeAdapter(recycledViewPool)
 
         with(binding) {
@@ -92,6 +89,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
 
         viewModel.progressLiveData.observe(viewLifecycleOwner) { refreshing ->
             refreshing.apply(binding.swipeRefreshLayout)
+        }
+
+        viewModel.observeSubscriptions(viewLifecycleOwner) { subscribed ->
+            binding.toolbar.menu.findItem(R.id.action_premium)?.let {
+                it.isVisible = !subscribed
+            }
         }
     }
 

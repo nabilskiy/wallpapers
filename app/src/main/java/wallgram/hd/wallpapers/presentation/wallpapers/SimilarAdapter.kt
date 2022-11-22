@@ -6,7 +6,7 @@ import wallgram.hd.wallpapers.presentation.base.adapter.GenericAdapter
 import wallgram.hd.wallpapers.presentation.base.adapter.ViewHolderFactoryChain
 import wallgram.hd.wallpapers.presentation.gallery.*
 
-class SimilarAdapter: GenericAdapter.Base(
+class SimilarAdapter : GenericAdapter.Base(
     ProgressViewHolderChain(
         FullSizeErrorViewHolderChain(
             BottomErrorViewHolderChain(

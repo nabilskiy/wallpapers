@@ -27,7 +27,7 @@ interface HomeCarouselUi {
 
         override fun show(vararg views: MyView) {
             views[0].show(name)
-            views[0].handleClick{
+            views[0].handleClick {
                 navigateCarousel.navigate(Pair(id, name))
             }
         }

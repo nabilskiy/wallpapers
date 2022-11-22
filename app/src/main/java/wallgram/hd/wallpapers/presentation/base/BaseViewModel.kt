@@ -13,7 +13,7 @@ abstract class BaseViewModel(
 
     val modo = wallgram.hd.wallpapers.App.modo
 
-    open fun back(){
+    open fun back() {
         modo.back()
     }
 

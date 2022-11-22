@@ -7,5 +7,5 @@ import javax.inject.Inject
 
 class DownloadViewModel @Inject constructor(
     dispatchers: Dispatchers
-): BaseViewModel(dispatchers){
+) : BaseViewModel(dispatchers) {
 }

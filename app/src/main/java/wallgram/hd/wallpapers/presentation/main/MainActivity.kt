@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ActivityNotFoundException
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RatingBar
@@ -31,6 +32,7 @@ import wallgram.hd.wallpapers.util.modo.*
 import wallgram.hd.wallpapers.App
 import wallgram.hd.wallpapers.core.data.PreferenceDataStore
 import wallgram.hd.wallpapers.data.ads.appopen.OnShowAdCompleteListener
+import wallgram.hd.wallpapers.data.ads.banner.BannerAd
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
 import wallgram.hd.wallpapers.presentation.wallpaper.WallpaperFragment
 import wallgram.hd.wallpapers.util.modo.multi.StackContainerFragment
@@ -67,18 +69,10 @@ class MainActivity :
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
 
-//        (application as App).showAd(this, object : OnShowAdCompleteListener{
-//            override fun onShowAdComplete() {
-//                setTheme(R.style.AppTheme)
-//            }
-//
-//        })
-
         checkUpdate()
-
 
         firebaseAnalytics = Firebase.analytics
         FirebaseDynamicLinks.getInstance()
@@ -109,8 +103,12 @@ class MainActivity :
                 ).show()
             }
 
-        viewModel.observe(this){
+        viewModel.observe(this) {
             modo.init(savedInstanceState, it.screen())
+        }
+
+        viewModel.observeUpdate(this){
+            Log.d("MAIN_ACTIVITY", it.toString())
         }
 
     }
@@ -183,8 +181,7 @@ class MainActivity :
         val currentFragment = getCurrentFragment()
         if (currentFragment is WallpaperFragment) {
             currentFragment.back()
-        }
-        else viewModel.back()
+        } else viewModel.back()
     }
 
     companion object {

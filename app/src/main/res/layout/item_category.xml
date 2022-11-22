@@ -8,8 +8,7 @@
     <wallgram.hd.wallpapers.presentation.base.CustomShapeableImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:layout_height="match_parent" />
 
     <wallgram.hd.wallpapers.presentation.base.CustomTextView
         android:id="@+id/name"

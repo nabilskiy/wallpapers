@@ -16,7 +16,21 @@ class FavoriteAdapter : GenericAdapter.Base(
                     GalleryViewHolderChain(
                         ViewHolderFactoryChain.Exception()
                     )
-                 )
+                )
+            )
+        )
+    )
+)
+
+class HistoryAdapter : GenericAdapter.Base(
+    HeaderViewHolderChain(
+        FavoritesEmptyViewHolderChain(
+            ProgressViewHolderChain(
+                BottomProgressViewHolderChain(
+                    GalleryViewHolderChain(
+                        ViewHolderFactoryChain.Exception()
+                    )
+                )
             )
         )
     )

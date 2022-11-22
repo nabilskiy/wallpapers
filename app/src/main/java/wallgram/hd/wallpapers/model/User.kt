@@ -1,8 +1,16 @@
 package wallgram.hd.wallpapers.model
 
+import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
+
+@Keep
 data class User(
-        val id: Int,
-        val nick: String,
-        val name: String? = null,
-        val avatar: String? = null
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("nick")
+    val nick: String,
+    @SerializedName("name")
+    val name: String? = null,
+    @SerializedName("avatar")
+    val avatar: String? = null
 )

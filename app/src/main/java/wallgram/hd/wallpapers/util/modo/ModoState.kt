@@ -52,8 +52,8 @@ private fun Modo.restoreState(bundle: Bundle, firstScreen: Screen) {
 }
 
 private fun navStateToJson(
-        navigationState: NavigationState,
-        appScreenAccumulator: MutableMap<String, AppScreen>
+    navigationState: NavigationState,
+    appScreenAccumulator: MutableMap<String, AppScreen>
 ): JSONObject {
     val chain = navigationState.chain
     val ids = chain.map { it.id }

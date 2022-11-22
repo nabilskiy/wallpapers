@@ -9,7 +9,10 @@ import java.util.*
 
 object LocalizationUtility {
     fun getLocalizedContext(baseContext: Context): Context {
-        val (configuration, isChanged) = getLocalizedConfiguration(baseContext, baseContext.resources.configuration)
+        val (configuration, isChanged) = getLocalizedConfiguration(
+            baseContext,
+            baseContext.resources.configuration
+        )
         return when {
             isChanged ->
                 baseContext.createConfigurationContext(configuration)
@@ -18,7 +21,10 @@ object LocalizationUtility {
     }
 
     fun getLocalizedResources(baseContext: Context, baseResources: Resources): Resources {
-        val (configuration, isChanged) = getLocalizedConfiguration(baseContext, baseResources.configuration)
+        val (configuration, isChanged) = getLocalizedConfiguration(
+            baseContext,
+            baseResources.configuration
+        )
         return when {
             isChanged ->
                 baseContext.createConfigurationContext(configuration).resources
@@ -26,7 +32,10 @@ object LocalizationUtility {
         }
     }
 
-    fun getLocalizedConfiguration(baseContext: Context, baseConfiguration: Configuration): Pair<Configuration, Boolean> {
+    fun getLocalizedConfiguration(
+        baseContext: Context,
+        baseConfiguration: Configuration
+    ): Pair<Configuration, Boolean> {
         val defaultLocale = LanguageSetting.getDefaultLanguage(baseContext)
         val currentLocale = LanguageSetting.getLanguageWithDefault(baseContext, defaultLocale)
         val baseLocale = getLocaleFromConfiguration(baseConfiguration)

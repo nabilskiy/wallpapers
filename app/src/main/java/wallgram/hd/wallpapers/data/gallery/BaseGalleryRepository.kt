@@ -1,6 +1,5 @@
 package wallgram.hd.wallpapers.data.gallery
 
-import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.LoggingHashMap
 import wallgram.hd.wallpapers.data.favorites.FavoritesCacheDataSource
@@ -101,8 +100,7 @@ class BaseGalleryRepository @Inject constructor(
         }
     }
 
-    private fun position(id: Int, list: List<GalleryData>) =
-        list.indexOfFirst { it.map(GalleryData.Mapper.Id(id)) }
+
 
     override fun read(): Triple<GalleriesDomain, Int, WallpaperRequest> {
         val wallpaperCache = cache.read()
@@ -112,12 +110,12 @@ class BaseGalleryRepository @Inject constructor(
 
         val result = wallpapers.getOrElse(id) { WallpaperRequest.DATE() }.data()
 
-        val position = position(wallpaperCache.id(), result)
+       // val position = position(wallpaperCache.id(), result)
 
         val isEmpty = request.showProgress()
         return Triple(
             GalleriesDomain.Base(result.map { it.map(domainMapper) }, !isEmpty),
-            position,
+            wallpaperCache.id(),
             request
         )
     }

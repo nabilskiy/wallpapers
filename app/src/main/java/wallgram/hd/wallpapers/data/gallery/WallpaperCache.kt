@@ -1,6 +1,5 @@
 package wallgram.hd.wallpapers.data.gallery
 
-import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.WallpaperRequest
 
 interface WallpaperCache {

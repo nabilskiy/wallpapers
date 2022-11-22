@@ -33,7 +33,7 @@ class FavoriteFragment : BaseFragment<FavoriteViewModel, FragmentFavoriteBinding
             it.map(galleryAdapter)
         }
 
-        viewModel.observeUpdate(viewLifecycleOwner){
+        viewModel.observeUpdate(viewLifecycleOwner) {
             viewModel.fetch()
         }
 

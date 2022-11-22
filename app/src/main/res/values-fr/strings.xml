@@ -8,10 +8,10 @@
     <string name="menu_feedback">Laisser un commentaire</string>
     <string name="menu_site">Site web officiel</string>
     <string name="search">Recherche des fonds d\'écran</string>
-    <string name="category">Categories</string>
-    <string name="news_title">Nouveautes</string>
+    <string name="category">Catégories</string>
+    <string name="news_title">Nouveautés</string>
     <string name="popular_title">Populaires</string>
-    <string name="random_title">Aleatoires</string>
+    <string name="random_title">Aléatoires</string>
     <string name="wallpapers_adapted">Tous les fonds d\'écran sont adaptés à votre écran</string>
     <string name="agreement_sub">les conditions d’utilisation</string>
     <string name="favorites_empty">Oh, c\'est toujours vide.\n\nNous avons plus de 80 000 fonds d\'écran - jetez-y un coup d\'œil, c’est sûr que vous allez aimer quelque chose.\n</string>
@@ -30,9 +30,9 @@
     <string name="action_subscription">Abonnement</string>
     <string name="save_50">Economisez 50%</string>
     <string name="continue_key">Continuer</string>
-    <string name="sub_text">L\'abonnement est automatiquement renouvelé. Vous pouvez désactiver le renouvellement automatique à tout moment.\n\n %1$s pour  %2$s. Permet d\'accéder à tous les fonds d\'écran sans restriction, ni publicité. Les paiements sont déduits du compte Google Play de l\'utilisateur lorsque le paiement est confirmé. Les abonnements sont automatiquement renouvelés, sauf si l\'utilisateur annule son abonnement au moins 24 heures avant la date de fin de la période d\'abonnement en cours. Les renouvellements d\'abonnement sont facturés 24 heures avant la date de fin de la période d\'abonnement applicable. Les utilisateurs peuvent modifier et annuler les abonnements dans les paramètres de leur compte Google Play.</string>
-    <string name="year">/ an</string>
-    <string name="month">/ mois</string>
+    <string name="sub_text">L\'abonnement est automatiquement renouvelé. Vous pouvez désactiver le renouvellement automatique à tout moment.\n\n %1$s pour %2$s. Permet d\'accéder à tous les fonds d\'écran sans restriction, ni publicité. Les paiements sont déduits du compte Google Play de l\'utilisateur lorsque le paiement est confirmé. Les abonnements sont automatiquement renouvelés, sauf si l\'utilisateur annule son abonnement au moins 24 heures avant la date de fin de la période d\'abonnement en cours. Les renouvellements d\'abonnement sont facturés 24 heures avant la date de fin de la période d\'abonnement applicable. Les utilisateurs peuvent modifier et annuler les abonnements dans les paramètres de leur compte Google Play.\n</string>
+    <string name="year">1 an</string>
+    <string name="month">1 mois</string>
     <string name="error_msg">Impossible de charger les fonds d’écran</string>
 
     <string name="privacy_policy">Politique de confidentialité</string>
@@ -45,4 +45,43 @@
     <string name="subscribe_now">Abonnez-vous maintenant</string>
     <string name="home">Accueil</string>
     <string name="connection_error">Connection error</string>
+    <string name="history_empty">La liste de l\'historique est vide.</string>
+    <string name="source">Référence à la source</string>
+    <string name="wallpaper_resolution">Résolution du fond d’écran</string>
+    <string name="my_screen">Mon écran (%1$s)</string>
+    <string name="red" translatable="false">Rouge</string>
+    <string name="gold" translatable="false">Jaune</string>
+    <string name="green" translatable="false">Vert</string>
+    <string name="black" translatable="false">Noir</string>
+    <string name="white" translatable="false">Blanc</string>
+    <string name="silver" translatable="false">Gris</string>
+    <string name="blue" translatable="false">Bleu</string>
+    <string name="pink" translatable="false">Rose</string>
+    <string name="discover">Découvrir</string>
+    <string name="image_downloaded">L\'image est téléchargée</string>
+    <string name="wallpaper_applied">Le fond d\'écran est installé</string>
+    <string name="downloading">Téléchargement...</string>
+    <string name="wallpaper_application">Installation du fond d\'écran</string>
+    <string name="author">Auteur</string>
+    <string name="license">Licence</string>
+    <string name="date">Date</string>
+    <string name="resolution">Résolution</string>
+    <string name="your_device">Votre appareil</string>
+    <string name="no_ads_100">100% sans publicité</string>
+    <string name="unlimited_wallpaper_downloads">Téléchargement illimité de fonds d’écran</string>
+    <string name="daily_wallpapers_update">Mises à jour quotidiennes des fonds d’écran</string>
+    <string name="full_access_to_the_wallpaper_changer">Accès complet au changeur de fond d’écran</string>
+    <string name="nothing_found">Rien trouvé</string>
+    <string name="image_already_downloaded">Image est déjà téléchargée</string>
+    <string name="wallpaper_apply_error">Erreur d\'installation</string>
+    <string name="download_waiting">En attente de téléchargement...</string>
+    <string name="download_paused">Téléchargement en pause...</string>
+    <string name="download_canceled">Téléchargement est annulé</string>
+    <string name="download_error">Erreur de téléchargement</string>
+    <string name="start_search">Commencez la recherche</string>
+
+    <string name="subscription_purchased" >"La publicité est désactivée, l'accès complet au Changeur automatique de fonds d'écran est débloqué et toutes les restrictions de téléchargement sont levées pour vous jusqu'au %1$s.\nProfitez-en ! "</string>
+    <string name="use_wallgram_pro">Vous utilisez\nWallgram Pro\n😎</string>
+    <string name="error_get_prices" >Il n\'a pas été possible d\'obtenir des informations sur les prix</string>
+    <string name="reload">Actualiser</string>
 </resources>

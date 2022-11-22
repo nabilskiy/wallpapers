@@ -89,6 +89,8 @@ open class MainFragment : MultiStackFragment() {
             }
         }
 
+
+
     }
 
     private fun redirectToPlayStore() {
@@ -144,8 +146,8 @@ fun Fragment.withMainFragment(action: MainFragment.() -> Unit) {
         ?.also(action)
 }
 
-fun Fragment.withParentFragment(action: BaseFragment<*,*>.() -> Unit) {
+fun Fragment.withParentFragment(action: BaseFragment<*, *>.() -> Unit) {
     parentFragment
-        ?.let { it as? BaseFragment<*,*> }
+        ?.let { it as? BaseFragment<*, *> }
         ?.also(action)
 }

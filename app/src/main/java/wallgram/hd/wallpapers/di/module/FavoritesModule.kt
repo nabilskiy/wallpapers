@@ -33,7 +33,8 @@ class FavoritesModule {
 
     @Provides
     @Singleton
-    fun provideChangeFavorite(cacheDataSource: FavoritesCacheDataSource): ChangeFavorite = ChangeFavorite.Combo(cacheDataSource, UpdateFavorites.Base())
+    fun provideChangeFavorite(cacheDataSource: FavoritesCacheDataSource, update: UpdateFavorites.Update): ChangeFavorite =
+        ChangeFavorite.Combo(cacheDataSource, update)
 
     @Provides
     @Singleton
@@ -46,8 +47,16 @@ class FavoritesModule {
 
     @Provides
     @Singleton
-    fun provideFavoritesRepository(cacheDataSource: FavoritesCacheDataSource, wallpapersCache: WallpapersCache.Mutable): FavoritesRepository =
-        BaseFavoritesRepository(cacheDataSource, GalleryCache.Mapper.Base(), GalleryData.Mapper.Base(), wallpapersCache)
+    fun provideFavoritesRepository(
+        cacheDataSource: FavoritesCacheDataSource,
+        wallpapersCache: WallpapersCache.Mutable
+    ): FavoritesRepository =
+        BaseFavoritesRepository(
+            cacheDataSource,
+            GalleryCache.Mapper.Base(),
+            GalleryData.Mapper.Base(),
+            wallpapersCache
+        )
 
     @Provides
     fun provideFavoritesInteractor(
@@ -79,11 +88,13 @@ class FavoritesModule {
 
     @Provides
     @Singleton
-    fun provideUpdateFavoritesObserve(updateFavorites: UpdateFavorites.Base): UpdateFavorites.Observe = updateFavorites
+    fun provideUpdateFavoritesObserve(updateFavorites: UpdateFavorites.Base): UpdateFavorites.Observe =
+        updateFavorites
 
     @Provides
     @Singleton
-    fun provideUpdateFavoritesUpdate(updateFavorites: UpdateFavorites.Base): UpdateFavorites.Update = updateFavorites
+    fun provideUpdateFavoritesUpdate(updateFavorites: UpdateFavorites.Base): UpdateFavorites.Update =
+        updateFavorites
 
     @Provides
     @Singleton

@@ -13,5 +13,4 @@ interface PicService {
     ): PicCloud.Base
 
 
-
 }

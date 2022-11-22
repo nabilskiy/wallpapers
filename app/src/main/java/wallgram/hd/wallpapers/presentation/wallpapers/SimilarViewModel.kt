@@ -47,7 +47,7 @@ class SimilarViewModel @Inject constructor(
         progressLiveDataPrivate.value = Refreshing.Done()
     }
 
-    fun clear(request: WallpaperRequest){
+    fun clear(request: WallpaperRequest) {
         interactor.clear(request)
     }
 

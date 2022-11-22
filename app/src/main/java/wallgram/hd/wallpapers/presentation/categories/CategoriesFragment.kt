@@ -38,7 +38,7 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel, FragmentCategoriesB
                 spanSizeLookup = categoryAdapter.getSpanSizeLookup(2)
             }
 
-        with(binding){
+        with(binding) {
             swipeRefreshLayout.apply {
                 setColorSchemeResources(R.color.colorYellow)
                 setOnRefreshListener {
@@ -62,7 +62,7 @@ class CategoriesFragment : BaseFragment<CategoriesViewModel, FragmentCategoriesB
             filtersUi.map(categoryAdapter)
         }
 
-        viewModel.progressLiveData.observe(viewLifecycleOwner){ refreshing ->
+        viewModel.progressLiveData.observe(viewLifecycleOwner) { refreshing ->
             refreshing.apply(binding.swipeRefreshLayout)
         }
     }

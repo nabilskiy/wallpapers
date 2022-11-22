@@ -33,7 +33,7 @@ class HistoryViewModel @Inject constructor(
             interactor.history(atFinish) { wallpapersLiveDataPrivate.value = it }
         }
     }
-    
+
     fun observeUpdate(owner: LifecycleOwner, observer: Observer<Boolean>) =
         update.observe(owner, observer)
 

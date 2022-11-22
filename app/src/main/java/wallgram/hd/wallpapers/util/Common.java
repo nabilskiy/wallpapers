@@ -14,13 +14,13 @@ import wallgram.hd.wallpapers.BuildConfig;
 
 public class Common {
 
-    public static String getProjectName(){
+    public static String getProjectName() {
         return BuildConfig.APPLICATION_ID;
     }
 
-    public static String getSiteUrl(){
+    public static String getSiteUrl() {
         String locale = Locale.getDefault().getLanguage().toLowerCase();
-        switch (locale){
+        switch (locale) {
             case "ru":
                 return "https://akspic.ru/";
             case "es":
@@ -37,43 +37,43 @@ public class Common {
         }
     }
 
-    public static String getResolution(Context context){
+    public static String getResolution(Context context) {
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager manager = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
-        if(manager != null)
+        if (manager != null)
             manager.getDefaultDisplay().getMetrics(metrics);
         return metrics.widthPixels + "x" + metrics.heightPixels;
     }
 
-    public static String getLandscapeResolution(Context context){
+    public static String getLandscapeResolution(Context context) {
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager manager = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
-        if(manager != null)
+        if (manager != null)
             manager.getDefaultDisplay().getMetrics(metrics);
         return metrics.heightPixels + "x" + metrics.widthPixels;
     }
 
-    public static String getResolutionReverse(Context context){
+    public static String getResolutionReverse(Context context) {
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager manager = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
-        if(manager != null)
+        if (manager != null)
             manager.getDefaultDisplay().getMetrics(metrics);
         return metrics.heightPixels + "x" + metrics.heightPixels;
     }
 
-    public static int getWidth(Activity activity){
+    public static int getWidth(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics.widthPixels;
     }
 
-    public static int getHeight(Activity activity){
+    public static int getHeight(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics.heightPixels;
     }
 
-    public static String getInfo(@Nullable String message){
+    public static String getInfo(@Nullable String message) {
         return "Device_Model: " + Build.MODEL + "\nOS_Version: " + Build.VERSION.SDK_INT + "\nApp_Version: " + BuildConfig.VERSION_NAME + "\nMessage: " + (message != null ? message : "");
     }
 }

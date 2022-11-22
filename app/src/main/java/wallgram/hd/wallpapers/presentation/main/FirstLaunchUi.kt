@@ -7,8 +7,8 @@ interface FirstLaunchUi {
 
     fun screen(): Screen
 
-    class Base(private val firstLaunch: Boolean): FirstLaunchUi{
-        override fun screen() = if(firstLaunch) Screens.Start() else Screens.MultiStack()
+    class Base(private val firstLaunch: Boolean) : FirstLaunchUi {
+        override fun screen() = if (firstLaunch) Screens.Start() else Screens.MultiStack()
     }
 
 }

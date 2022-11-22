@@ -42,14 +42,6 @@ class SplashActivity : AppCompatActivity() {
             valueOfLaunchCountModified = true
         }
 
-        billingRepository.getCurrentSub().asLiveData().observe(this@SplashActivity) {
-            if (it == DEFAULT_SKU)
-                createTimer(COUNTER_TIME)
-            else {
-                startMainActivity()
-            }
-        }
-
     }
 
 

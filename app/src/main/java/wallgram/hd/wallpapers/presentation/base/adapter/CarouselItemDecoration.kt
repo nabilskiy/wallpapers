@@ -17,8 +17,8 @@ class CarouselItemDecoration(private val padding: Int) : ItemDecoration() {
             val childAdapterPosition = parent.getChildAdapterPosition(view)
                 .let { if (it == RecyclerView.NO_POSITION) return else it }
 
-            outRect.left = if(childAdapterPosition == 0) 16.dp else 0
-            outRect.right = if(childAdapterPosition == adapter.itemCount - 1) 16.dp else 8.dp
+            outRect.left = if (childAdapterPosition == 0) 16.dp else 0
+            outRect.right = if (childAdapterPosition == adapter.itemCount - 1) 16.dp else 8.dp
         }
 
 

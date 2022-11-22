@@ -3,7 +3,7 @@ package wallgram.hd.wallpapers.presentation.base
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.base.adapter.MyView
 
-class BottomProgressUi: ItemUi {
+class BottomProgressUi : ItemUi {
     override fun type() = 8
 
     override fun show(vararg views: MyView) = Unit

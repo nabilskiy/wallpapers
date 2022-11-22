@@ -31,8 +31,8 @@
     <string name="save_50">Экономия 50%</string>
     <string name="continue_key">Продолжить</string>
     <string name="sub_text">Подписка продлевается автоматически. Вы сможете отключить автопродление в любое время.\n\n %1$s за %2$s. Предоставляет доступ ко всем обоям без ограничений и рекламы. Платежи пользователя списываются с учетной записи Google Play при подтверждении оплаты. Подписки возобновляются автоматически, если пользователь не отменит подписку не позднее 24 часов до даты окончания действующего периода подписки. За обновление подписки взимается плата в течение 24 часов до даты окончания действующего периода подписки. Пользователи могут изменять и отменять подписки в настройках учетной записи Google Play.</string>
-    <string name="year">/ год</string>
-    <string name="month">/ месяц</string>
+    <string name="year">1 год</string>
+    <string name="month">1 месяц</string>
     <string name="error_msg">Не удалось загрузить обои</string>
 
     <string name="privacy_policy">Политика конфиденциальности</string>
@@ -45,7 +45,44 @@
     <string name="current">Выбран</string>
     <string name="subscribe_now">Подпишись прямо сейчас</string>
     <string name="home">Главная</string>
-    <string name="connection_error">Connection error</string>
+    <string name="connection_error">Ошибка соединения</string>
     <string name="wallpaper_resolution">Разрешение обоев</string>
     <string name="my_screen">Мой экран (%1$s)</string>
+    <string name="history_empty">Список истории пуст</string>
+    <string name="source">Источник</string>
+    <string name="date">Дата</string>
+    <string name="license">Лицензия</string>
+    <string name="image_downloaded">Изображение загружено</string>
+    <string name="wallpaper_applied">Обои установлены</string>
+    <string name="wallpaper_application">Установка обоев</string>
+    <string name="author">Автор</string>
+    <string name="resolution">Разрешение</string>
+    <string name="image_already_downloaded">Изображение уже загружено</string>
+    <string name="wallpaper_apply_error">Ошибка установки</string>
+    <string name="downloading">Загрузка...</string>
+    <string name="download_waiting">Ожидание загрузки…</string>
+    <string name="download_paused">Загрузка приостановлена…</string>
+    <string name="download_canceled">Загрузка отменена</string>
+    <string name="download_error">Ошибка загрузки</string>
+    <string name="your_device">Ваше устройство</string>
+    <string name="no_ads_100">100% Без рекламы</string>
+    <string name="unlimited_wallpaper_downloads">Безлимитное скачивание обоев</string>
+    <string name="daily_wallpapers_update">Ежедневное обновление обоев</string>
+    <string name="full_access_to_the_wallpaper_changer">Полный доступ к сменщику обоев</string>
+    <string name="nothing_found">Ничего не найдено</string>
+    <string name="start_search">Начните искать</string>
+    <string name="discover">Найти обои</string>
+    <string name="red" translatable="false">Red</string>
+    <string name="gold" translatable="false">Gold</string>
+    <string name="green" translatable="false">Green</string>
+    <string name="blue" translatable="false">Blue</string>
+    <string name="pink" translatable="false">Pink</string>
+    <string name="black" translatable="false">Black</string>
+    <string name="white" translatable="false">White</string>
+    <string name="silver" translatable="false">Silver</string>
+
+    <string name="subscription_purchased" >До %1$s для Вас отключена реклама, разблокирован полный доступ к автосменщику обоев и сняты все ограничения на скачивание.\nНаслаждайтесь!</string>
+    <string name="use_wallgram_pro">Вы используете\nWallgram Pro\n😎</string>
+    <string name="error_get_prices" >Не удалось получить информацию о ценах</string>
+    <string name="reload">Обновить</string>
 </resources>

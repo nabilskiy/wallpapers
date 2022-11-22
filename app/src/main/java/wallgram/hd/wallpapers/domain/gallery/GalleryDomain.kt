@@ -1,9 +1,6 @@
 package wallgram.hd.wallpapers.domain.gallery
 
-import coil.memory.MemoryCache
 import wallgram.hd.wallpapers.data.favorites.FavoritesCacheDataSource
-import wallgram.hd.wallpapers.data.favorites.IsFavorite
-import wallgram.hd.wallpapers.data.gallery.SaveSelect
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.model.Links
 import wallgram.hd.wallpapers.presentation.favorite.ChangeFavorite
@@ -91,6 +88,54 @@ interface GalleryDomain {
             )
 
             override fun map(e: Exception): GalleryUi = GalleryUi.Error(e)
+        }
+
+        class Id : Mapper<Int> {
+            override fun map(
+                id: Int,
+                width: Int,
+                height: Int,
+                preview: String,
+                original: String,
+                links: Links,
+                filter: Int,
+                requestId: String
+            ) = id
+
+            override fun map(e: Exception) = 0
+
+        }
+
+        class Link: Mapper<String>{
+            override fun map(
+                id: Int,
+                width: Int,
+                height: Int,
+                preview: String,
+                original: String,
+                links: Links,
+                filter: Int,
+                requestId: String
+            ) = original
+
+            override fun map(e: Exception) = ""
+
+        }
+
+        class CompareId(private val id: Int) : Mapper<Boolean> {
+            override fun map(
+                id: Int,
+                width: Int,
+                height: Int,
+                preview: String,
+                original: String,
+                links: Links,
+                filter: Int,
+                requestId: String
+            ) = id == this.id
+
+            override fun map(e: Exception) = false
+
         }
     }
 

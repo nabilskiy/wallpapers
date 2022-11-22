@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wallgram.hd.wallpapers.presentation.subscribe.GradientTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/title_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="160dp"
+    android:layout_marginBottom="40dp"
+    android:fontFamily="@font/roboto_bold"
+    android:lineSpacingExtra="4dp"
+    android:textAlignment="center"
+    android:textSize="30sp"
+    tools:text="@string/wallgram_pro" />

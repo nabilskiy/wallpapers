@@ -46,7 +46,7 @@ val Int.px: Int
 val Float.dp: Float
     get() = this * Resources.getSystem().displayMetrics.density
 
-fun RadioGroup.setCustomChecked(id: Int, listener: RadioGroup.OnCheckedChangeListener){
+fun RadioGroup.setCustomChecked(id: Int, listener: RadioGroup.OnCheckedChangeListener) {
     setOnCheckedChangeListener(null)
     check(id)
     setOnCheckedChangeListener(listener)
@@ -75,7 +75,7 @@ fun EditText.afterTextChangedFlow(): Flow<Editable?> = callbackFlow {
     awaitClose { removeTextChangedListener(watcher) }
 }
 
- fun ViewPager2.reduceDragSensitivity() {
+fun ViewPager2.reduceDragSensitivity() {
     val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
     recyclerViewField.isAccessible = true
     val recyclerView = recyclerViewField.get(this) as RecyclerView
@@ -83,7 +83,7 @@ fun EditText.afterTextChangedFlow(): Flow<Editable?> = callbackFlow {
     val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
     touchSlopField.isAccessible = true
     val touchSlop = touchSlopField.get(recyclerView) as Int
-    touchSlopField.set(recyclerView, touchSlop*3)
+    touchSlopField.set(recyclerView, touchSlop * 3)
 }
 
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
@@ -107,7 +107,7 @@ fun AppCompatTextView.setTextFutureExt(text: String) =
         )
     )
 
-fun TextView.maxLength(max: Int){
+fun TextView.maxLength(max: Int) {
     this.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(max))
 }
 

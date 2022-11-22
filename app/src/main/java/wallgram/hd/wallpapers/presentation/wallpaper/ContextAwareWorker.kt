@@ -8,6 +8,6 @@ import java.lang.ref.WeakReference
 abstract class ContextAwareWorker(context: Context, parameters: WorkerParameters) :
     CoroutineWorker(context, parameters) {
 
-     var weakContext: WeakReference<Context> = WeakReference(context)
+    var weakContext: WeakReference<Context> = WeakReference(context)
 
 }

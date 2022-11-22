@@ -16,9 +16,9 @@ abstract class AppScreen(
 }
 
 fun MultiAppScreen(
-        id: String,
-        roots: List<AppScreen>,
-        selected: Int
+    id: String,
+    roots: List<AppScreen>,
+    selected: Int
 ) = MultiScreen(
     id,
     List(roots.size) { i -> NavigationState(listOf(roots[i])) },

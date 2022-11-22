@@ -31,9 +31,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClientBuilder(interceptor: ProvideInterceptor,
-    languageInterceptor: ProvideLanguageInterceptor,
-    resolutionInterceptor: ProvideResolutionInterceptor): ProvideOkHttpClientBuilder =
+    fun provideOkHttpClientBuilder(
+        interceptor: ProvideInterceptor,
+        languageInterceptor: ProvideLanguageInterceptor,
+        resolutionInterceptor: ProvideResolutionInterceptor
+    ): ProvideOkHttpClientBuilder =
         ProvideOkHttpClientBuilder.Base(interceptor, languageInterceptor, resolutionInterceptor)
 
     @Provides
@@ -75,7 +77,8 @@ object NetworkModule {
     @Singleton
     fun provideWallpapersService(
         retrofitBuilder: ProvideRetrofitBuilder
-    ): GalleryService = retrofitBuilder.provideRetrofitBuilder().build().create(GalleryService::class.java)
+    ): GalleryService =
+        retrofitBuilder.provideRetrofitBuilder().build().create(GalleryService::class.java)
 
 
     @Provides

@@ -8,11 +8,14 @@ class LocalizationApplicationDelegate(private val context: Context) {
 
     fun onConfigurationChanged(context: Context) = LocalizationUtility.getLocalizedContext(context)
 
-    fun attachBaseContext(context: Context): Context = LocalizationUtility.getLocalizedContext(context)
+    fun attachBaseContext(context: Context): Context =
+        LocalizationUtility.getLocalizedContext(context)
 
-    fun getApplicationContext(applicationContext: Context): Context = LocalizationUtility.getLocalizedContext(applicationContext)
+    fun getApplicationContext(applicationContext: Context): Context =
+        LocalizationUtility.getLocalizedContext(applicationContext)
 
-    fun getResources(appContext: Context, resources: Resources): Resources = LocalizationUtility.getLocalizedResources(appContext, resources)
+    fun getResources(appContext: Context, resources: Resources): Resources =
+        LocalizationUtility.getLocalizedResources(appContext, resources)
 
     fun setDefaultLanguage(context: Context, language: String) {
         val locale = Locale(language)
@@ -29,15 +32,15 @@ class LocalizationApplicationDelegate(private val context: Context) {
     }
 
 
-    fun getSupportedLanguage(): String{
+    fun getSupportedLanguage(): String {
         val defaultLocale = LanguageSetting.getDefaultLanguage(context)
         val locale = LanguageSetting.getLanguageWithDefault(context, defaultLocale)
         return map(locale.language)
     }
 
-    private fun map(locale: String): String{
-        if(supportedLanguages.contains(locale)){
-            return when(locale){
+    private fun map(locale: String): String {
+        if (supportedLanguages.contains(locale)) {
+            return when (locale) {
                 "uk" -> "ua"
                 else -> locale
             }

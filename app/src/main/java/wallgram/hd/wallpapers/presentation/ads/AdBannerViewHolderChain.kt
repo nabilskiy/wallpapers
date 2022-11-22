@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.databinding.ItemAdBannerBinding
+import wallgram.hd.wallpapers.databinding.ItemAdBannerFullBinding
 import wallgram.hd.wallpapers.databinding.ItemListHeaderBinding
 import wallgram.hd.wallpapers.presentation.base.ViewIds
 import wallgram.hd.wallpapers.presentation.base.adapter.GenericViewHolder
@@ -20,6 +21,19 @@ class AdBannerViewHolderChain(
         if (viewType == ViewIds.AD_BANNER)
             AdBannerViewHolder(
                 ItemAdBannerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        else viewHolderFactoryChain.viewHolder(parent, viewType)
+
+}
+
+class AdBannerViewFullHolderChain(
+    private val viewHolderFactoryChain: ViewHolderFactoryChain<ItemUi>
+) : ViewHolderFactoryChain<ItemUi> {
+
+    override fun viewHolder(parent: ViewGroup, viewType: Int): GenericViewHolder<ItemUi> =
+        if (viewType == ViewIds.AD_BANNER)
+            AdBannerFullViewHolder(
+                ItemAdBannerFullBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         else viewHolderFactoryChain.viewHolder(parent, viewType)
 

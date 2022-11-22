@@ -13,13 +13,15 @@ class ExternalScreen(
 /**
  * Action for launching external activities.
  */
-class Launch(val screen: ExternalScreen): NavigationAction
+class Launch(val screen: ExternalScreen) : NavigationAction
+
 fun Modo.launch(screen: ExternalScreen) = dispatch(Launch(screen))
 
 /**
  * Action for restore after death.
  */
-internal data class Restore(val state: NavigationState): NavigationAction
+internal data class Restore(val state: NavigationState) : NavigationAction
+
 internal fun Modo.restore(state: NavigationState) = dispatch(Restore(state))
 
 /**

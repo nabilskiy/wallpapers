@@ -6,7 +6,7 @@ import wallgram.hd.wallpapers.core.data.PreferenceDataStore
 
 interface AppLaunchStore {
 
-    interface Save :wallgram.hd.wallpapers.core.Save<Int>
+    interface Save : wallgram.hd.wallpapers.core.Save<Int>
     interface Read : wallgram.hd.wallpapers.core.Read<Int>
 
     interface Mutable : Save, Read

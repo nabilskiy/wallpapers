@@ -10,7 +10,7 @@ interface WallpapersCache {
     interface Save : wallgram.hd.wallpapers.core.Save<WallpaperCache>
     interface Read : wallgram.hd.wallpapers.core.Read<WallpaperCache>
     interface Remove : wallgram.hd.wallpapers.core.Remove<WallpaperCache>
-  //  interface Update : wallgram.hd.wallpapers.core.Update<WallpaperCache>
+    //  interface Update : wallgram.hd.wallpapers.core.Update<WallpaperCache>
 
     interface Mutable : Save, Read, Remove
 
