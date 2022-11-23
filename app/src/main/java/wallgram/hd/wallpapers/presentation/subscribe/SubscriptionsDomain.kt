@@ -43,18 +43,18 @@ interface SubscriptionsDomain {
                 //result.add(ProgressUi())
 
                 when {
-                    source.isEmpty() -> {
-                        result.add(SubscriptionHeaderUi(resourceProvider.string(R.string.wallgram_pro)))
-                        result.addAll(
-                            listOf(
-                                SubscriptionFeatureUi(resourceProvider.string(R.string.no_ads_100)),
-                                SubscriptionFeatureUi(resourceProvider.string(R.string.unlimited_wallpaper_downloads)),
-                                SubscriptionFeatureUi(resourceProvider.string(R.string.daily_wallpapers_update)),
-                                SubscriptionFeatureUi(resourceProvider.string(R.string.full_access_to_the_wallpaper_changer))
-                            )
-                        )
-                        result.add(SubscriptionErrorUi(resourceProvider.string(R.string.error_get_prices)))
-                    }
+//                    source.isEmpty() -> {
+//                        result.add(SubscriptionHeaderUi(resourceProvider.string(R.string.wallgram_pro)))
+//                        result.addAll(
+//                            listOf(
+//                                SubscriptionFeatureUi(resourceProvider.string(R.string.no_ads_100)),
+//                                SubscriptionFeatureUi(resourceProvider.string(R.string.unlimited_wallpaper_downloads)),
+//                                SubscriptionFeatureUi(resourceProvider.string(R.string.daily_wallpapers_update)),
+//                                SubscriptionFeatureUi(resourceProvider.string(R.string.full_access_to_the_wallpaper_changer))
+//                            )
+//                        )
+//                        result.add(SubscriptionErrorUi(resourceProvider.string(R.string.error_get_prices)))
+//                    }
                     source.any { it.map(Subscription.Mapper.Purchased()) } -> {
                         result.add(SubscriptionHeaderUi(resourceProvider.string(R.string.use_wallgram_pro)))
 
