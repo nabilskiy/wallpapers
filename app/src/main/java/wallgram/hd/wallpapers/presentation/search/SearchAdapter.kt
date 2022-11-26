@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.presentation.search
 
+import wallgram.hd.wallpapers.presentation.ads.AdBannerViewHolderChain
 import wallgram.hd.wallpapers.presentation.base.BottomProgressViewHolderChain
 import wallgram.hd.wallpapers.presentation.gallery.GalleryViewHolderChain
 import wallgram.hd.wallpapers.presentation.base.ProgressViewHolderChain
@@ -14,8 +15,10 @@ class SearchAdapter : GenericAdapter.Base(
             SearchEmptyViewHolderChain(
                 BottomErrorViewHolderChain(
                     BottomProgressViewHolderChain(
-                        GalleryViewHolderChain(
-                            ViewHolderFactoryChain.Exception()
+                        AdBannerViewHolderChain(
+                            GalleryViewHolderChain(
+                                ViewHolderFactoryChain.Exception()
+                            )
                         )
                     )
                 )

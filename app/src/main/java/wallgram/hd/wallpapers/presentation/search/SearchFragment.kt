@@ -76,10 +76,14 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>(
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
-                        viewModel.loadMoreData(
-                            query(),
-                            gridLayoutManager.findLastVisibleItemPosition()
-                        )
+                        val visibleItemCount = gridLayoutManager.childCount / 4
+                        val totalItemCount = gridLayoutManager.itemCount
+                        val firstVisibleItem = gridLayoutManager.findLastVisibleItemPosition()
+
+                        if ((visibleItemCount + firstVisibleItem) >= totalItemCount)
+                            viewModel.loadMoreData(
+                                query()
+                            )
                     }
                 })
 

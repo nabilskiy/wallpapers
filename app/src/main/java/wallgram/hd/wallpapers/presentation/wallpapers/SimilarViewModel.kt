@@ -26,7 +26,7 @@ class SimilarViewModel @Inject constructor(
     dispatchers: Dispatchers
 ) : BaseViewModel(dispatchers) {
 
-    private var lastVisibleItemPos = -1
+    private var isLoading = false
 
     private val wallpapersLiveDataPrivate = MutableLiveData<GalleriesUi>()
     val wallpapersLiveData: MutableLiveData<GalleriesUi> get() = wallpapersLiveDataPrivate
@@ -40,7 +40,6 @@ class SimilarViewModel @Inject constructor(
 
     fun fetch(wallpaperRequest: WallpaperRequest) {
         loadData(wallpaperRequest)
-
     }
 
     private val atFinish = {
@@ -51,18 +50,21 @@ class SimilarViewModel @Inject constructor(
         interactor.clear(request)
     }
 
-    fun loadMoreData(wallpaperRequest: WallpaperRequest, lastVisibleItemPosition: Int) {
-        if (lastVisibleItemPosition != lastVisibleItemPos)
-            if (interactor.needToLoadMoreData(wallpaperRequest.itemId(), lastVisibleItemPosition)) {
-                lastVisibleItemPos = lastVisibleItemPosition
-                loadData(wallpaperRequest)
-            }
+    fun loadMoreData(wallpaperRequest: WallpaperRequest) {
+        if (!isLoading) {
+            loadData(wallpaperRequest)
+            isLoading = true
+        }
     }
 
     private fun loadData(wallpaperRequest: WallpaperRequest) {
+        isLoading = true
         handle {
             delay(500)
-            interactor.gallery(wallpaperRequest, atFinish) { wallpapersLiveDataPrivate.value = it }
+            interactor.gallery(wallpaperRequest, atFinish) {
+                wallpapersLiveDataPrivate.value = it
+                isLoading = false
+            }
         }
     }
 

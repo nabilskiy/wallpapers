@@ -34,7 +34,9 @@ class CategoriesViewModel @Inject constructor(
     fun loadData() {
         categoriesLiveDataPrivate.value = FiltersUi.Base(listOf(ProgressUi()))
         handle {
-            filtersInteractor.filters(atFinish) { categoriesLiveDataPrivate.value = it }
+            filtersInteractor.filters({
+                progressLiveDataPrivate.value = Refreshing.Done()
+            }) { categoriesLiveDataPrivate.value = it }
         }
     }
 

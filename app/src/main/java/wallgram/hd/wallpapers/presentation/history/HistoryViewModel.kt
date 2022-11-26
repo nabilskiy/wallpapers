@@ -30,7 +30,7 @@ class HistoryViewModel @Inject constructor(
     fun fetch() {
         wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(ProgressUi()))
         handle {
-            interactor.history(atFinish) { wallpapersLiveDataPrivate.value = it }
+            interactor.history({  }) { wallpapersLiveDataPrivate.value = it }
         }
     }
 

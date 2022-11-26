@@ -26,7 +26,8 @@ class SearchViewModel @Inject constructor(
     dispatchers: Dispatchers
 ) : BaseViewModel(dispatchers), Search {
 
-    private var lastVisibleItemPos = -1
+
+    private var isLoading = false
 
     private val wallpapersLiveDataPrivate = MutableLiveData<GalleriesUi>()
     val wallpapersLiveData: MutableLiveData<GalleriesUi> get() = wallpapersLiveDataPrivate
@@ -53,6 +54,7 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun find(query: String) {
 
+        isLoading = true
         request = request.copy(query)
 
         handle {
@@ -62,8 +64,11 @@ class SearchViewModel @Inject constructor(
                         val result = ArrayList<ItemUi>()
                         result.addAll(data)
 
-                        if (!cleared)
+                        if (!cleared) {
                             wallpapersLiveDataPrivate.value = GalleriesUi.Base(result)
+                            isLoading = false
+                        }
+
                     }
                 })
 
@@ -90,12 +95,11 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun loadMoreData(query: String, lastVisibleItemPosition: Int) {
-        if (lastVisibleItemPosition != lastVisibleItemPos)
-            if (interactor.needToLoadMoreData(request.itemId(), lastVisibleItemPosition)) {
-                lastVisibleItemPos = lastVisibleItemPosition
-                search(query)
-            }
+    fun loadMoreData(query: String) {
+        if (!isLoading) {
+            search(query)
+            isLoading = true
+        }
     }
 
 

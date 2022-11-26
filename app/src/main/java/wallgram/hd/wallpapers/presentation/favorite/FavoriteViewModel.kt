@@ -38,7 +38,9 @@ class FavoriteViewModel @Inject constructor(
 
     private fun loadData() {
         handle {
-            interactor.favorites(atFinish) { wallpapersLiveDataPrivate.value = it }
+            interactor.favorites({
+
+            }) { wallpapersLiveDataPrivate.value = it }
         }
     }
 
