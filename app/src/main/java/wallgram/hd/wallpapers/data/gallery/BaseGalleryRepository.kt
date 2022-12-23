@@ -60,7 +60,7 @@ class BaseGalleryRepository @Inject constructor(
 
             request.nextPage()
         }
-        val isEmpty = list.isEmpty()
+        val isEmpty = list.isEmpty() || list.size < 27
         val data = wallpapers.getOrElse(request.itemId()) { WallpaperRequest.DATE() }.data()
         return GalleriesDomain.Base(
             data.map { it.map(domainMapper, requestId = request.itemId()) },

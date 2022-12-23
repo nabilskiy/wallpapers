@@ -8,7 +8,7 @@ class BottomProgressUi : ItemUi {
 
     override fun show(vararg views: MyView) = Unit
 
-    override fun id() = "bottom_progress"
+    override fun id() = "-8"
 
     override fun content() = "bottom_progress"
 

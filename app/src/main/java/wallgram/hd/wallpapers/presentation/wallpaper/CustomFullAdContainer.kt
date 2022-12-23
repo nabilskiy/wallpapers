@@ -1,4 +1,6 @@
-package wallgram.hd.wallpapers.presentation.base
+package wallgram.hd.wallpapers.presentation.wallpaper
+
+import wallgram.hd.wallpapers.databinding.ViewAdNativeBannerFullBinding
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,18 +10,16 @@ import android.widget.FrameLayout
 import androidx.core.view.isNotEmpty
 import com.google.android.gms.ads.nativead.NativeAdView
 import wallgram.hd.wallpapers.data.ads.recyclerbanner.RecyclerBannerAd
-import wallgram.hd.wallpapers.databinding.ViewAdNativeBannerBinding
-import wallgram.hd.wallpapers.databinding.ViewAdNativeBannerFullBinding
 import wallgram.hd.wallpapers.presentation.base.adapter.MyView
 
-class CustomAdContainer @JvmOverloads constructor(
+class CustomFullAdContainer @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), MyView {
 
     override fun showAd(banner: RecyclerBannerAd) {
         val adview = banner.adView()
         val unifiedAdBinding =
-            adview.second as? ViewAdNativeBannerBinding ?: return
+            adview.second as? ViewAdNativeBannerFullBinding ?: return
 
         val nativeAdView = unifiedAdBinding.root
         val nativeAd = adview.first.forNativeAd { nativeAd ->
@@ -109,4 +109,3 @@ class CustomAdContainer @JvmOverloads constructor(
 
 
 }
-

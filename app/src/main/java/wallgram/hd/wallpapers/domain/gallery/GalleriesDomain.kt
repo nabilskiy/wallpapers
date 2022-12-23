@@ -10,6 +10,7 @@ import wallgram.hd.wallpapers.presentation.gallery.GalleriesUi
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.favorite.FavoritesEmptyUi
+import wallgram.hd.wallpapers.presentation.search.SearchEmptyUi
 import java.lang.NumberFormatException
 import javax.inject.Inject
 
@@ -47,6 +48,51 @@ interface GalleriesDomain {
 
                 when {
                     source.isEmpty() -> result.add(ProgressUi())
+                    source.size == 1 && source[0] is GalleryDomain.Error ->
+                        result.add(FullSizeErrorUi())
+
+                    source.last() is GalleryDomain.Base -> {
+                        result.addAll(source.map { it.map(galleryMapper) })
+
+                        if (!isEmpty)
+                            result.add(BottomProgressUi())
+                    }
+                    source.last() is GalleryDomain.Error -> {
+                        for (item in source)
+                            if (item is GalleryDomain.Base)
+                                result.add(item.map(galleryMapper))
+                        result.add(BottomErrorUi())
+                    }
+                }
+
+                if (!subscription.isSubscribed())
+                    for (i in result.indices) {
+                        if (i > 0 && (i - 21) % 22 == 0) {
+                            result.add(i, AdBannerUi(adBanner))
+                        }
+
+                    }
+
+                return GalleriesUi.Base(result)
+            }
+        }
+
+        class Search @Inject constructor(
+            private val galleryMapper: GalleryDomain.Mapper<GalleryUi>,
+            private val adBanner: RecyclerBannerAd,
+            private val subscription: IsSubscribed
+        ) :
+            Mapper<GalleriesUi> {
+
+            override fun map(
+                source: List<GalleryDomain>,
+                isEmpty: Boolean
+            ): GalleriesUi {
+                val result = mutableListOf<ItemUi>()
+
+
+                when {
+                    source.isEmpty() -> result.add(SearchEmptyUi())
                     source.size == 1 && source[0] is GalleryDomain.Error ->
                         result.add(FullSizeErrorUi())
 

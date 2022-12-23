@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wallgram.hd.wallpapers.presentation.base.CustomAdContainer xmlns:android="http://schemas.android.com/apk/res/android"
+<wallgram.hd.wallpapers.presentation.wallpaper.CustomFullAdContainer xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center">
@@ -11,4 +11,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</wallgram.hd.wallpapers.presentation.base.CustomAdContainer>
+</wallgram.hd.wallpapers.presentation.wallpaper.CustomFullAdContainer>

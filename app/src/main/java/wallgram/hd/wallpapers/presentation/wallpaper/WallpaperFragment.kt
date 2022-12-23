@@ -203,7 +203,11 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
             toolbar.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    R.id.action_info -> show(Features.Info(currentItem().id().toInt()))
+                    R.id.action_info -> {
+                        val id = currentItem().id().toIntOrNull()
+                        if (id != null)
+                            show(Features.Info(id))
+                    }
                 }
                 true
             }
@@ -245,7 +249,9 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
             }
 
             similarBtn.setOnClickListener {
-                show(Features.Similar(WallpaperRequest.SIMILAR(currentItem().id().toInt())))
+                val id = currentItem().id().toIntOrNull()
+                if (id != null)
+                    show(Features.Similar(WallpaperRequest.SIMILAR(id)))
             }
 
             favoriteBtn.setOnClickListener {
@@ -308,7 +314,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     }
 
     private fun downloadOrApply(t: DownloadAction) {
-        val id = currentItem().id().toInt()
+        val id = currentItem().id().toIntOrNull() ?: return
         viewModel.cancelWorkManagerTasks()
         currentItem().changeHistory()
 

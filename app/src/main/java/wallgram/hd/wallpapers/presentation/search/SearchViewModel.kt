@@ -10,6 +10,7 @@ import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.Delay
 import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.core.Mapper
+import wallgram.hd.wallpapers.di.qualifiers.SearchInteractor
 import wallgram.hd.wallpapers.domain.gallery.GalleryInteractor
 import wallgram.hd.wallpapers.presentation.base.ProgressUi
 import wallgram.hd.wallpapers.presentation.base.Refreshing
@@ -22,10 +23,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+    @SearchInteractor
     private val interactor: GalleryInteractor,
     dispatchers: Dispatchers
 ) : BaseViewModel(dispatchers), Search {
-
 
     private var isLoading = false
 
@@ -66,8 +67,11 @@ class SearchViewModel @Inject constructor(
 
                         if (!cleared) {
                             wallpapersLiveDataPrivate.value = GalleriesUi.Base(result)
-                            isLoading = false
                         }
+
+
+
+                        isLoading = false
 
                     }
                 })
@@ -88,7 +92,6 @@ class SearchViewModel @Inject constructor(
         } else {
             if (request.query() != query) {
                 wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(ProgressUi()))
-
             }
             //wallpapersLiveDataPrivate.value = GalleriesUi.Base(listOf(SearchEmptyUi()))
             delay.add(query.lowercase())

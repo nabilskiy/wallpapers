@@ -21,6 +21,8 @@ import wallgram.hd.wallpapers.data.filters.FiltersCloudDataSource
 import wallgram.hd.wallpapers.data.gallery.*
 import wallgram.hd.wallpapers.di.qualifiers.CarouselAdBanner
 import wallgram.hd.wallpapers.di.qualifiers.CarouselMapper
+import wallgram.hd.wallpapers.di.qualifiers.SearchInteractor
+import wallgram.hd.wallpapers.di.qualifiers.SearchMapper
 import wallgram.hd.wallpapers.domain.gallery.*
 import wallgram.hd.wallpapers.domain.home.HomeRepository
 import wallgram.hd.wallpapers.presentation.dialogs.UpdateDownload
@@ -110,6 +112,16 @@ class GalleryModule {
         GalleriesDomain.Mapper.Carousel(mapper, bannerAd, subscriptionsDataSource)
 
     @Provides
+    @SearchMapper
+    fun provideGalleriesSearchMapper(
+        mapper: GalleryDomain.Mapper<GalleryUi>,
+        bannerAd: RecyclerBannerAd,
+        subscriptionsDataSource: SubscriptionsDataSource
+    ): GalleriesDomain.Mapper<GalleriesUi> =
+        GalleriesDomain.Mapper.Search(mapper, bannerAd, subscriptionsDataSource)
+
+
+    @Provides
     fun provideRecyclerAdBanner(
         context: Context,
         displayProvider: DisplayProvider,
@@ -122,7 +134,8 @@ class GalleryModule {
         context: Context,
         displayProvider: DisplayProvider,
         subscriptionsDataSource: SubscriptionsDataSource
-    ): RecyclerBannerAd = RecyclerBannerAd.Carousel(context, displayProvider, subscriptionsDataSource)
+    ): RecyclerBannerAd =
+        RecyclerBannerAd.Carousel(context, displayProvider, subscriptionsDataSource)
 
     @Provides
     @Singleton
@@ -132,6 +145,21 @@ class GalleryModule {
         handleError: HandleDomainError,
         galleriesMapper: GalleriesDomain.Mapper<GalleriesUi>
     ): GalleryInteractor = GalleryInteractor.Base(
+        galleriesMapper,
+        galleryRepository,
+        dispatchers, handleError
+    )
+
+    @Provides
+    @Singleton
+    @SearchInteractor
+    fun provideGallerySearchInteractor(
+        galleryRepository: GalleryRepository,
+        dispatchers: Dispatchers,
+        handleError: HandleDomainError,
+        @SearchMapper
+        galleriesMapper: GalleriesDomain.Mapper<GalleriesUi>
+    ): GalleryInteractor = GalleryInteractor.Search(
         galleriesMapper,
         galleryRepository,
         dispatchers, handleError

@@ -3,6 +3,7 @@ package wallgram.hd.wallpapers
 import android.content.Context
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import javax.inject.Inject
 
 interface ResourceProvider {
@@ -19,7 +20,7 @@ interface ResourceProvider {
         override fun string(id: Int) = context.getString(id)
 
         override fun string(id: Int, vararg args: Any) = context.getString(id, *args)
-        override fun color(id: Int) = context.getColor(id)
+        override fun color(id: Int) = ContextCompat.getColor(context, id)
 
 
 //        override fun getErrorMessage(exceptionType: ExceptionType) = string(

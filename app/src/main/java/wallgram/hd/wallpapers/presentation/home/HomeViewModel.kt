@@ -52,6 +52,10 @@ class HomeViewModel @Inject constructor(
         showScreen(Screens.Search())
     }
 
+    fun changer(){
+        showScreen(Screens.Changer())
+    }
+
     fun navigateSubscriptions() {
         showScreen(Screens.Subscription())
     }

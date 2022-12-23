@@ -18,6 +18,8 @@ import wallgram.hd.wallpapers.util.modo.ExternalScreen
 import wallgram.hd.wallpapers.util.modo.MultiAppScreen
 import kotlinx.android.parcel.RawValue
 import kotlinx.parcelize.Parcelize
+import wallgram.hd.wallpapers.App
+import wallgram.hd.wallpapers.presentation.changer.ChangerFragment
 import wallgram.hd.wallpapers.presentation.history.HistoryFragment
 import wallgram.hd.wallpapers.presentation.settings.language.LanguageFragment
 import wallgram.hd.wallpapers.presentation.settings.resolution.ResolutionFragment
@@ -54,6 +56,11 @@ object Screens {
     @Parcelize
     class Subscription : AppScreen("Subs") {
         override fun create(): Fragment = SubscriptionFragment()
+    }
+
+    @Parcelize
+    class Changer : AppScreen("Changer") {
+        override fun create(): Fragment = ChangerFragment()
     }
 
     @Parcelize

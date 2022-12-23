@@ -51,7 +51,7 @@ class WallpaperViewModel @Inject constructor(
 
     private fun fetchPosition() {
         val cache = interactor.read()
-        val position = cache.first.map(mapper).map(GalleriesUi.Mapper.Id(cache.second))
+        val position = cache.first.map(mapper).map(GalleriesUi.Mapper.Position(cache.second))
         positionLiveDataPrivate.value = position
     }
 

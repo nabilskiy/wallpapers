@@ -18,7 +18,9 @@ class GalleryFullAdapter : GenericAdapter.Base(
         BottomFullProgressViewHolderChain(
             AdBannerViewFullHolderChain(
                 GalleryFullViewHolderChain(
-                    ViewHolderFactoryChain.Exception()
+                    BottomFullErrorViewHolderChain(
+                        ViewHolderFactoryChain.Exception()
+                    )
                 )
             )
         )

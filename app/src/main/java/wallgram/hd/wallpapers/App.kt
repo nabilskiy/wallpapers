@@ -46,8 +46,7 @@ class App : Application() {
 //            RequestConfiguration.Builder()
 //                .setTestDeviceIds(
 //                    Arrays.asList(
-//                        "13CA781B0CB755D6A2D0AFEAD81ABB89",
-//                        "843065C72AD2F89D76EEB1B67506650A"
+//                        "13CA781B0CB755D6A2D0AFEAD81ABB89"
 //                    )
 //                ).build()
 //        )

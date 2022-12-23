@@ -293,13 +293,26 @@ public class ECardFlowLayout extends FrameLayout {
             return;
         isSwitching = true;
         final RecyclingBitmapDrawable newBitmap = loadBitmap(targetPosition);
+
+        if(newBitmap == null)
+            return;
+
         TransitionDrawable td = new TransitionDrawable(new Drawable[]{curBp, newBitmap});
         mBgImage.setImageDrawable(td);
         td.setCrossFadeEnabled(true);
         td.startTransition(mSwitchAnimTime);
         if (mBlurImage != null) {
+
+            if(curBlurBp == null)
+                return;
+
+            Bitmap blurBitmap = blurBitmap(targetPosition);
+
+            if(blurBitmap == null)
+                return;
+
             TransitionDrawable tdb = new TransitionDrawable(new Drawable[]{new BitmapDrawable(mContext.getResources(), curBlurBp),
-                    new BitmapDrawable(mContext.getResources(), blurBitmap(targetPosition))});
+                    new BitmapDrawable(mContext.getResources(), blurBitmap)});
             mBlurImage.setImageDrawable(tdb);
             tdb.setCrossFadeEnabled(true);
             tdb.startTransition(mSwitchAnimTime);
@@ -366,10 +379,13 @@ public class ECardFlowLayout extends FrameLayout {
             } catch (Exception ignored) {
             }
         }
-        if (bitmapDrawable == null || bitmapDrawable.getBitmap() == null) {
+        if (bitmapDrawable == null || bitmapDrawable.getBitmap() == null || bitmapDrawable.getBitmap().isRecycled()) {
             return null;
         }
         Bitmap blurBitmap = bitmapDrawable.getBitmap().copy(Bitmap.Config.ARGB_8888, true);
+
+        if(blurBitmap == null || blurBitmap.isRecycled())
+            return null;
 
         blurBitmap = FastBlur.blur(blurBitmap, mRadius, true);
 

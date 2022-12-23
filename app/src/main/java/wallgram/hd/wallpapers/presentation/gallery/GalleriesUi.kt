@@ -1,8 +1,5 @@
 package wallgram.hd.wallpapers.presentation.gallery
 
-import wallgram.hd.wallpapers.core.Mapper
-import wallgram.hd.wallpapers.domain.gallery.GalleriesDomain
-import wallgram.hd.wallpapers.domain.gallery.GalleryDomain
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import java.lang.NumberFormatException
 
@@ -25,7 +22,7 @@ interface GalleriesUi {
             override fun map(data: List<ItemUi>) = Unit
         }
 
-        class Id(private val id: Int) : Mapper<Int> {
+        class Position(private val id: Int) : Mapper<Int> {
             override fun map(data: List<ItemUi>): Int =
                 try {
                     data.indexOfFirst {

@@ -5,6 +5,7 @@ import wallgram.hd.wallpapers.core.Dispatchers
 import wallgram.hd.wallpapers.core.domain.Interactor
 import wallgram.hd.wallpapers.core.HandleError
 import wallgram.hd.wallpapers.data.gallery.GalleryData
+import wallgram.hd.wallpapers.di.qualifiers.SearchMapper
 import wallgram.hd.wallpapers.presentation.gallery.GalleriesUi
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import javax.inject.Inject
@@ -12,20 +13,12 @@ import javax.inject.Inject
 interface GalleryInteractor {
 
     suspend fun gallery(
-        wallpaperRequest: WallpaperRequest,
-        atFinish: () -> Unit,
-        successful: (GalleriesUi) -> Unit
+        wallpaperRequest: WallpaperRequest, atFinish: () -> Unit, successful: (GalleriesUi) -> Unit
     )
 
     suspend fun favorites(
-        atFinish: () -> Unit,
-        successful: (GalleriesUi) -> Unit
+        atFinish: () -> Unit, successful: (GalleriesUi) -> Unit
     )
-
-//    suspend fun history(
-//        atFinish: () -> Unit,
-//        successful: (GalleriesUi) -> Unit
-//    )
 
     fun needToLoadMoreData(id: String, lastVisibleItemPosition: Int): Boolean
 
@@ -33,7 +26,7 @@ interface GalleryInteractor {
     fun clear()
     fun clear(request: WallpaperRequest)
 
-    class Base @Inject constructor(
+    abstract class Abstract(
         private val mapper: GalleriesDomain.Mapper<GalleriesUi>,
         private val repository: GalleryRepository,
         private val dispatchers: Dispatchers,
@@ -88,5 +81,22 @@ interface GalleryInteractor {
 
         override fun clear(request: WallpaperRequest) = repository.clear(request)
 
+
     }
+
+
+    class Base @Inject constructor(
+        private val mapper: GalleriesDomain.Mapper<GalleriesUi>,
+        private val repository: GalleryRepository,
+        private val dispatchers: Dispatchers,
+        private val handleError: HandleError
+    ) : Abstract(mapper, repository, dispatchers, handleError)
+
+    class Search @Inject constructor(
+        @SearchMapper private val mapper: GalleriesDomain.Mapper<GalleriesUi>,
+        private val repository: GalleryRepository,
+        private val dispatchers: Dispatchers,
+        private val handleError: HandleError
+    ) : Abstract(mapper, repository, dispatchers, handleError)
+
 }

@@ -56,6 +56,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>(
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_search -> viewModel.search()
+                R.id.action_changer -> viewModel.changer()
                 R.id.action_premium -> viewModel.navigateSubscriptions()
             }
 
