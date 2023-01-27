@@ -85,4 +85,7 @@
     <string name="error_get_prices">未能获取价格信息</string>
     <string name="subscription_purchased">您可以完全访问壁纸更换器，下载没有限制，直到%1$s没有广告。\n享受吧！</string>
     <string name="use_wallgram_pro">您正在使用\nWallgram Pro！\n😎</string>
+    <string name="set">组</string>
+    <string name="original_size">原始尺寸</string>
+    <string name="adapted">改编</string>
 </resources>

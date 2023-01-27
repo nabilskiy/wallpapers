@@ -40,6 +40,7 @@ import wallgram.hd.wallpapers.presentation.base.Screens
 import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.base.views.slidinguppanel.Features
 import wallgram.hd.wallpapers.presentation.dialogs.DownloadAction
+import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
 import wallgram.hd.wallpapers.util.*
 import wallgram.hd.wallpapers.views.ChefSnackbar
 import wallgram.hd.wallpapers.views.blur.GlideProvider
@@ -141,21 +142,21 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
             }
             adBanner.show(adViewContainer)
 
-            val glideProvider = GlideProvider(context, arrayOf(), 1080, 1920)
-            ecardflowLayout.setViewPager(list)
-            ecardflowLayout.setAnimMode(BlurAnimMode())
+//            val glideProvider = GlideProvider(context, arrayOf(), 1080, 1920)
+//            ecardflowLayout.setViewPager(list)
+//            ecardflowLayout.setAnimMode(BlurAnimMode())
 
             viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
                 it.map(galleryAdapter)
 
-                it.map(object : Mapper.Unit<List<ItemUi>> {
-                    override fun map(data: List<ItemUi>) {
-                        val list = data.map { item -> item.uri().first }
-                        ecardflowLayout.setImages(list.toTypedArray())
-                        ecardflowLayout.setImageProvider(glideProvider, binding.list.currentItem)
-
-                    }
-                })
+//                it.map(object : Mapper.Unit<List<ItemUi>> {
+//                    override fun map(data: List<ItemUi>) {
+//                        val list = data.map { item -> item.uri().first }
+//                        ecardflowLayout.setImages(list.toTypedArray())
+//                        ecardflowLayout.setImageProvider(glideProvider, binding.list.currentItem)
+//
+//                    }
+//                })
             }
 
             viewModel.downloadLiveData.observe(viewLifecycleOwner) {
@@ -170,7 +171,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
             viewModel.positionLiveData.observe(viewLifecycleOwner) {
                 binding.list.setCurrentItem(it, false)
-                binding.ecardflowLayout.switchBgToNext(it - 1)
+             //   binding.ecardflowLayout.switchBgToNext(it - 1)
             }
 
             toolbar.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
@@ -183,13 +184,13 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 windowInsetsCompat
             }
 
-            list.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
-                view.updatePadding(
-                    top = rect.top + windowInsetsCompat.systemWindowInsetTop,
-                    bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom
-                )
-                windowInsetsCompat
-            }
+//            list.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
+//                view.updatePadding(
+//                    top = rect.top + windowInsetsCompat.systemWindowInsetTop,
+//                    bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom
+//                )
+//                windowInsetsCompat
+//            }
 
             adViewContainer.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
                 view.updatePadding(bottom = rect.bottom + windowInsetsCompat.systemWindowInsetBottom)
@@ -212,20 +213,20 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 true
             }
 
-            list.clipToPadding = false
-            list.clipChildren = false
+         //   list.clipToPadding = false
+         //   list.clipChildren = false
             list.offscreenPageLimit = 3
-            list.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+          //  list.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
-            val compositePageTransformer = CompositePageTransformer().apply {
-                addTransformer(MarginPageTransformer(30.dp))
-                addTransformer { page, position ->
-                    val r: Float = 1 - Math.abs(position)
-                    page.scaleY = 0.9f + r * 0.1f
-                }
-            }
+//            val compositePageTransformer = CompositePageTransformer().apply {
+//                addTransformer(MarginPageTransformer(30.dp))
+//                addTransformer { page, position ->
+//                    val r: Float = 1 - Math.abs(position)
+//                    page.scaleY = 0.9f + r * 0.1f
+//                }
+//            }
 
-            list.setPageTransformer(compositePageTransformer)
+          //  list.setPageTransformer(compositePageTransformer)
 
 
             list.apply {
@@ -260,7 +261,11 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
             }
 
             downloadBtn.setOnClickListener {
-                show(Features.Download())
+                val item = currentItem()
+                if(item is GalleryUi){
+                    show(Features.Download(item.originalResolution()))
+                }
+
             }
 
             viewModel.init()
@@ -335,6 +340,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 }
             }
             is DownloadAction.Download -> viewModel.download(id)
+            is DownloadAction.DownloadSource -> viewModel.downloadSource(id)
 //            is DownloadAction.Download -> downloadImageNew(
 //                id.toString(),
 //                currentItem().uri().second

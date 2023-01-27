@@ -14,7 +14,7 @@ interface GalleryCache {
 
     class Empty : GalleryCache {
         override fun <T> map(mapper: Mapper<T>): T =
-            mapper.map(-1, 1080, 1920, "", "", Links("", "", ""))
+            mapper.map(-1, 1080, 1920, 1080, 1920,"", "", Links("", "", ""))
     }
 
     @Entity(tableName = "favorites", primaryKeys = ["id", "isHistory"])
@@ -32,7 +32,7 @@ interface GalleryCache {
         val isHistory: Boolean
     ) : GalleryCache {
         override fun <T> map(mapper: Mapper<T>): T =
-            mapper.map(id, width, height, preview, original, links)
+            mapper.map(id, width, height, originalWidth, originalHeight, preview, original, links)
     }
 
     interface Mapper<T> {
@@ -40,6 +40,8 @@ interface GalleryCache {
             id: Int,
             width: Int,
             height: Int,
+            originalWidth: Int,
+            originalHeight: Int,
             preview: String,
             original: String?,
             links: Links
@@ -50,11 +52,13 @@ interface GalleryCache {
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String?,
                 links: Links
             ): GalleryData.Base =
-                GalleryData.Base(id, width, height, preview, original ?: "", links)
+                GalleryData.Base(id, width, height, originalWidth, originalHeight, preview, original ?: "", links)
         }
     }
 }

@@ -5,20 +5,15 @@ import wallgram.hd.wallpapers.R
 sealed class DownloadAction {
 
 
-    class Home() : DownloadAction() {
-    }
+    class Home() : DownloadAction()
 
-    class Lock : DownloadAction() {
+    class Lock : DownloadAction()
 
-    }
+    class Both : DownloadAction()
 
-    class Both : DownloadAction() {
+    class Download : DownloadAction()
 
-    }
-
-    class Download : DownloadAction() {
-
-    }
+    class DownloadSource: DownloadAction()
 
 }
 

@@ -15,6 +15,8 @@ interface GalleryDomain {
         private val id: Int,
         private val width: Int,
         private val height: Int,
+        private val originalWidth: Int,
+        private val originalHeight: Int,
         private val preview: String,
         private val original: String,
         private val links: Links,
@@ -23,7 +25,18 @@ interface GalleryDomain {
     ) :
         GalleryDomain {
         override fun <T> map(mapper: Mapper<T>): T =
-            mapper.map(id, width, height, preview, original, links, filter, requestId)
+            mapper.map(
+                id,
+                width,
+                height,
+                originalWidth,
+                originalHeight,
+                preview,
+                original,
+                links,
+                filter,
+                requestId
+            )
     }
 
     class Error(private val e: Exception) : GalleryDomain {
@@ -34,6 +47,8 @@ interface GalleryDomain {
         private val id: Int,
         private val width: Int,
         private val height: Int,
+        private val originalWidth: Int,
+        private val originalHeight: Int,
         private val preview: String,
         private val original: String,
         private val links: Links,
@@ -41,7 +56,7 @@ interface GalleryDomain {
         private val requestId: String
     ) : GalleryDomain {
         override fun <T> map(mapper: Mapper<T>) =
-            mapper.map(id, width, height, preview, original, links, filter, requestId)
+            mapper.map(id, width, height, originalWidth, originalHeight, preview, original, links, filter, requestId)
     }
 
     interface Mapper<T> {
@@ -49,6 +64,8 @@ interface GalleryDomain {
             id: Int,
             width: Int,
             height: Int,
+            originalWidth: Int,
+            originalHeight: Int,
             preview: String,
             original: String,
             links: Links,
@@ -69,6 +86,8 @@ interface GalleryDomain {
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String,
                 links: Links, filter: Int,
@@ -77,6 +96,7 @@ interface GalleryDomain {
                 id,
                 width,
                 height,
+                originalWidth, originalHeight,
                 preview,
                 original,
                 links,
@@ -95,6 +115,8 @@ interface GalleryDomain {
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String,
                 links: Links,
@@ -106,11 +128,13 @@ interface GalleryDomain {
 
         }
 
-        class Link: Mapper<String>{
+        class Link : Mapper<String> {
             override fun map(
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String,
                 links: Links,
@@ -122,11 +146,31 @@ interface GalleryDomain {
 
         }
 
+        class SourceLink : Mapper<String> {
+            override fun map(
+                id: Int,
+                width: Int,
+                height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
+                preview: String,
+                original: String,
+                links: Links,
+                filter: Int,
+                requestId: String
+            ) = links.source
+
+            override fun map(e: Exception) = ""
+
+        }
+
         class CompareId(private val id: Int) : Mapper<Boolean> {
             override fun map(
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String,
                 links: Links,

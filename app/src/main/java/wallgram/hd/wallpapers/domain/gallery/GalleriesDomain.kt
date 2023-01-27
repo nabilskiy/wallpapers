@@ -184,6 +184,17 @@ interface GalleriesDomain {
 
         }
 
+        class SourceLink(private val id: Int) : Mapper<String> {
+            override fun map(source: List<GalleryDomain>, isEmpty: Boolean): String =
+                try {
+                    source.first { it.map(GalleryDomain.Mapper.CompareId(id)) }
+                        .map(GalleryDomain.Mapper.SourceLink())
+                } catch (e: NoSuchElementException) {
+                    ""
+                }
+
+        }
+
 
         class Favorites @Inject constructor(
             private val galleryMapper: GalleryDomain.Mapper<GalleryUi>

@@ -83,5 +83,8 @@
     <string name="error_get_prices">No se pudo obtener la información de precios</string>
     <string name="subscription_purchased">Tiene acceso completo al cambiador de fondo de pantalla, sin restricciones en las descargas y sin anuncios hasta el %1$s.\n¡Que lo disfrutes!</string>
     <string name="use_wallgram_pro">Está utilizando\nWallgram Pro 😎</string>
+    <string name="set">Establecer</string>
+    <string name="original_size">Tamaño original</string>
+    <string name="adapted">Adaptado</string>
 
 </resources>

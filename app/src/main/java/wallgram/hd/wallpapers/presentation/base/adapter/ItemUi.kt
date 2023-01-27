@@ -18,8 +18,6 @@ interface ItemUi {
 
     fun content(): String
 
-    fun uri(): Pair<String, String> = Pair("", "")
-
     fun changeFavorite() = Unit
     fun changeHistory() = Unit
 

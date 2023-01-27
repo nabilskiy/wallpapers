@@ -5,6 +5,7 @@ apply plugin: 'kotlin-parcelize'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.firebase.appdistribution'
 
 android {
     signingConfigs {
@@ -20,8 +21,8 @@ android {
         applicationId "wallgram.hd.wallpapers"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 35
-        versionName "1.2.1.8"
+        versionCode 38
+        versionName "1.2.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -44,6 +45,12 @@ android {
             buildConfigField("String", "NATIVE_BANNER", "\"ca-app-pub-3940256099942544/2247696110\"")
             buildConfigField("String", "NATIVE_CAROUSEL_BANNER", "\"ca-app-pub-3940256099942544/2247696110\"")
 
+            firebaseAppDistribution{
+                artifactType="APK"
+                releaseNotesFile="./releasenotes.txt"
+                testers="mfilmsnet@gmail.com"
+            }
+
         }
 
         release {
@@ -60,6 +67,12 @@ android {
             buildConfigField("String", "NATIVE_BANNER", "\"ca-app-pub-3722478150829941/4439943581\"")
             buildConfigField("String", "NATIVE_CAROUSEL_BANNER", "\"ca-app-pub-3722478150829941/9830009245\"")
 
+            firebaseAppDistribution{
+                appId="1:520346572369:android:f4dd14e4fa7b4433c40a70"
+                artifactType="AAB"
+                releaseNotesFile="./releasenotes.txt"
+                testers="mfilmsnet@gmail.com"
+            }
         }
     }
     compileOptions {

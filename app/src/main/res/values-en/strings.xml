@@ -85,6 +85,9 @@
     <string name="use_wallgram_pro">You are using\nWallgram Pro 😎</string>
     <string name="error_get_prices" >Failed to get price information</string>
     <string name="reload">Reload</string>
+    <string name="set">Set</string>
+    <string name="original_size">Original size</string>
+    <string name="adapted">Adapted</string>
 
 
 </resources>

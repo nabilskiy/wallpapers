@@ -104,5 +104,9 @@
         <attr name="switchAnimTime" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="DownloadButton">
+        <attr name="wallpaper" format="string"/>
+        <attr name="resolution" format="string"/>
+    </declare-styleable>
 
 </resources>

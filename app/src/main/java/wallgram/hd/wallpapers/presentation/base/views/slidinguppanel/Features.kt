@@ -1,6 +1,7 @@
 package wallgram.hd.wallpapers.presentation.base.views.slidinguppanel
 
 import wallgram.hd.wallpapers.WallpaperRequest
+import wallgram.hd.wallpapers.model.Links
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
 import wallgram.hd.wallpapers.presentation.dialogs.DownloadDialogFragment
 import wallgram.hd.wallpapers.presentation.wallpaper.WallpaperFragment
@@ -25,8 +26,8 @@ object Features {
         override val anchorPoint: Float = 1f
     }
 
-    class Download : Feature {
-        override val fragment: BaseFragment<*, *> = DownloadDialogFragment()
+    class Download(resolution: String) : Feature {
+        override val fragment: BaseFragment<*, *> = DownloadDialogFragment.newInstance(resolution)
         override val anchorPoint: Float = 1f
     }
 

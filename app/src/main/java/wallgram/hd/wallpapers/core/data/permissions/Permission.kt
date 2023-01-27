@@ -20,7 +20,7 @@ interface Permission {
         @RequiresApi(33)
         private fun tiramisuPermissions() = arrayOf(READ_MEDIA_IMAGES)
 
-        private fun basePermission() = arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE)
+        private fun basePermission() = arrayOf(READ_EXTERNAL_STORAGE)
 
         private fun isNewApi() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
     }
@@ -30,7 +30,6 @@ interface Permission {
             ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION -> Location
             WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE -> Storage
             READ_MEDIA_IMAGES -> Storage
-            MANAGE_EXTERNAL_STORAGE -> Storage
             CAMERA -> Camera
             else -> throw IllegalArgumentException("Unknown permission: $permission")
         }

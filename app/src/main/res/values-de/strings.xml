@@ -84,4 +84,7 @@
     <string name="use_wallgram_pro">Sie verwenden\nWallgram Pro\n😎</string>
     <string name="error_get_prices" >Preisinformationen konnten nicht abgerufen werden</string>
     <string name="reload">Aktualisieren</string>
+    <string name="set">Einstellen</string>
+    <string name="original_size">Originalgröße</string>
+    <string name="adapted">Angepaßt</string>
 </resources>

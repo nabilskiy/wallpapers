@@ -12,7 +12,7 @@ interface GalleryCloud {
 
     class Empty : GalleryCloud {
         override fun <T> map(mapper: Mapper<T>): T =
-            mapper.map(-1, 1080, 1920, "", "", Links("", "", ""))
+            mapper.map(-1, 1080, 1920, 1080, 1920,"", "", Links("", "", ""))
     }
     
     @Keep
@@ -29,15 +29,15 @@ interface GalleryCloud {
         val original: String? = null,
         @SerializedName("promoted")
         val promoted: Int,
-        @SerializedName("original_width")
+        @SerializedName("originalWidth")
         val originalWidth: Int,
-        @SerializedName("original_height")
+        @SerializedName("originalHeight")
         val originalHeight: Int,
         @SerializedName("links")
         val links: Links
     ) : GalleryCloud {
         override fun <T> map(mapper: Mapper<T>): T =
-            mapper.map(id, width, height, preview, original, links)
+            mapper.map(id, width, height, originalWidth, originalHeight, preview, original, links)
     }
 
     interface Mapper<T> {
@@ -45,6 +45,8 @@ interface GalleryCloud {
             id: Int,
             width: Int,
             height: Int,
+            originalWidth: Int,
+            originalHeight: Int,
             preview: String,
             original: String?,
             links: Links
@@ -56,11 +58,13 @@ interface GalleryCloud {
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String?,
                 links: Links
             ): GalleryData.Base =
-                GalleryData.Base(id, width, height, preview, original ?: "", links)
+                GalleryData.Base(id, width, height, originalWidth, originalHeight, preview, original ?: "", links)
         }
 
     }

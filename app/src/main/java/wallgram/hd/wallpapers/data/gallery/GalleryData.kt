@@ -16,16 +16,18 @@ interface GalleryData {
         private val id: Int,
         private val width: Int,
         private val height: Int,
+        private val originalWidth: Int,
+        private val originalHeight: Int,
         private val preview: String,
         private val original: String,
         private val links: Links
     ) : GalleryData {
 
         override fun <T> map(mapper: Mapper<T>) =
-            mapper.map(id, width, height, preview, original, links)
+            mapper.map(id, width, height, originalWidth, originalHeight, preview, original, links)
 
         override fun <T> map(mapper: Mapper<T>, filter: Int, requestId: String) =
-            mapper.map(id, width, height, preview, original, links, filter, requestId)
+            mapper.map(id, width, height, originalWidth, originalHeight, preview, original, links, filter, requestId)
 
 
     }
@@ -35,6 +37,8 @@ interface GalleryData {
             id: Int,
             width: Int,
             height: Int,
+            originalWidth: Int,
+            originalHeight: Int,
             preview: String,
             original: String,
             links: Links,
@@ -49,13 +53,26 @@ interface GalleryData {
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String,
                 links: Links,
                 filter: Int,
                 requestId: String
             ) =
-                GalleryDomain.Base(id, width, height, preview, original, links, filter, requestId)
+                GalleryDomain.Base(
+                    id,
+                    width,
+                    height,
+                    originalWidth,
+                    originalHeight,
+                    preview,
+                    original,
+                    links,
+                    filter,
+                    requestId
+                )
 
         }
 
@@ -64,6 +81,8 @@ interface GalleryData {
                 id: Int,
                 width: Int,
                 height: Int,
+                originalWidth: Int,
+                originalHeight: Int,
                 preview: String,
                 original: String,
                 links: Links,

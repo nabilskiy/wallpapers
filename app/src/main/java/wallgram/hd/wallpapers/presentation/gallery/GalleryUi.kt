@@ -10,6 +10,8 @@ interface GalleryUi : ItemUi {
 
     fun <T> map(mapper: Mapper<T>): T
 
+    fun originalResolution(): String
+
     class Error(private val e: Exception) : ItemUi, GalleryUi {
         override fun type(): Int {
             return 12
@@ -24,12 +26,16 @@ interface GalleryUi : ItemUi {
         override fun content() = "error"
         override fun <T> map(mapper: Mapper<T>) = mapper.map(e)
 
+        override fun originalResolution() = ""
+
     }
 
     class Base(
         private val id: Int,
         private val width: Int,
         private val height: Int,
+        private val originalWidth: Int,
+        private val originalHeight: Int,
         private val preview: String,
         private val original: String,
         private val links: Links,
@@ -68,7 +74,7 @@ interface GalleryUi : ItemUi {
             changeFavorite.changeFavorite(map(Mapper.History()))
         }
 
-        override fun uri() = Pair(preview, links.portrait ?: original)
+        override fun originalResolution() = "${originalWidth}x${originalHeight}"
         override fun isFavorite() = isFavorite
     }
 

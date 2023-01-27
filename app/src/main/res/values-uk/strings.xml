@@ -81,4 +81,7 @@
     <string name="use_wallgram_pro">Ви використовуєте\nWallgram Pro\n😎</string>
     <string name="error_get_prices" >Не вдалося отримати інформацію про ціни</string>
     <string name="reload">Оновити</string>
+    <string name="set">Встановити</string>
+    <string name="original_size">Оригінал</string>
+    <string name="adapted">Адаптований</string>
 </resources>

@@ -80,5 +80,8 @@
     <string name="error_get_prices">Falha ao obter informações sobre preços</string>
     <string name="subscription_purchased">Você tem acesso total ao trocador de papel de parede, sem restrições de downloads e sem anúncios até %1$s.\nAproveite!</string>
     <string name="use_wallgram_pro">Está a utilizar o \nWallgram Pro\n😎</string>
+    <string name="set">Configurar</string>
+    <string name="original_size">Tamanho original</string>
+    <string name="adapted">Adaptado</string>
 
 </resources>

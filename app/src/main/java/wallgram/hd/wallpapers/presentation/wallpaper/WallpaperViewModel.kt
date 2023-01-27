@@ -72,6 +72,15 @@ class WallpaperViewModel @Inject constructor(
         downloadLiveDataPrivate.postValue(result)
     }
 
+    fun downloadSource(id: Int){
+        val data = interactor.read()
+        val url = data.first.map(GalleriesDomain.Mapper.SourceLink(id))
+
+        val result = downloadManager.download(url)
+
+        downloadLiveDataPrivate.postValue(result)
+    }
+
     fun observeUpdate(owner: LifecycleOwner, observer: Observer<Boolean>) =
         update.observe(owner, observer)
 
