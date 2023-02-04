@@ -3,26 +3,16 @@ package wallgram.hd.wallpapers.presentation.main
 import com.google.firebase.analytics.FirebaseAnalytics
 import wallgram.hd.wallpapers.R
 import android.widget.Toast
-import android.content.Intent
-import android.content.ActivityNotFoundException
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.RatingBar
-import com.google.android.material.textfield.TextInputLayout
-import android.widget.RatingBar.OnRatingBarChangeListener
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.analytics.ktx.analytics
-import wallgram.hd.wallpapers.presentation.base.Screens
 import wallgram.hd.wallpapers.databinding.ActivityMainBinding
 import wallgram.hd.wallpapers.presentation.base.BaseActivity
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
@@ -34,6 +24,7 @@ import wallgram.hd.wallpapers.core.data.PreferenceDataStore
 import wallgram.hd.wallpapers.data.ads.appopen.OnShowAdCompleteListener
 import wallgram.hd.wallpapers.data.ads.banner.BannerAd
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
+import wallgram.hd.wallpapers.presentation.wallpaper.DownloadsCountStore
 import wallgram.hd.wallpapers.presentation.wallpaper.WallpaperFragment
 import wallgram.hd.wallpapers.util.modo.multi.StackContainerFragment
 import javax.inject.Inject
@@ -50,6 +41,7 @@ class MainActivity :
     lateinit var preferenceDataStore: PreferenceDataStore
 
     private val viewModel: MainViewModel by viewModels()
+
 
     private val modoRender by lazy {
         object : ModoRender(this@MainActivity, R.id.container) {
@@ -73,6 +65,7 @@ class MainActivity :
         super.onCreate(savedInstanceState)
 
         checkUpdate()
+
 
         firebaseAnalytics = Firebase.analytics
         FirebaseDynamicLinks.getInstance()
@@ -107,7 +100,7 @@ class MainActivity :
             modo.init(savedInstanceState, it.screen())
         }
 
-        viewModel.observeUpdate(this){
+        viewModel.observeUpdate(this) {
             Log.d("MAIN_ACTIVITY", it.toString())
         }
 
@@ -118,7 +111,6 @@ class MainActivity :
             startUpdate(appUpdateInfo)
         }
     }
-
 
     override fun onInstallState(
         installState: InstallState,

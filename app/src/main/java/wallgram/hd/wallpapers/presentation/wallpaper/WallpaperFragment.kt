@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.fragment.app.viewModels
@@ -19,16 +20,20 @@ import androidx.work.WorkInfo
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import wallgram.hd.wallpapers.App.Companion.modo
 import wallgram.hd.wallpapers.DEFAULT_SKU
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.WallpaperRequest
 import wallgram.hd.wallpapers.core.Mapper
+import wallgram.hd.wallpapers.core.data.PreferenceDataStore
 import wallgram.hd.wallpapers.core.data.permissions.Permission
 import wallgram.hd.wallpapers.core.data.permissions.PermissionProvider
 import wallgram.hd.wallpapers.data.ads.banner.BannerAd
 import wallgram.hd.wallpapers.data.ads.interstitial.InterstitialAd
+import wallgram.hd.wallpapers.data.billing.BillingRepository
 import wallgram.hd.wallpapers.data.workers.DownloadProgressLiveData
 import wallgram.hd.wallpapers.data.workers.WallpaperApplier.Companion.APPLY_EXTERNAL_KEY
 import wallgram.hd.wallpapers.data.workers.WallpaperApplier.Companion.APPLY_OPTION_KEY
@@ -41,6 +46,7 @@ import wallgram.hd.wallpapers.presentation.base.adapter.ItemUi
 import wallgram.hd.wallpapers.presentation.base.views.slidinguppanel.Features
 import wallgram.hd.wallpapers.presentation.dialogs.DownloadAction
 import wallgram.hd.wallpapers.presentation.gallery.GalleryUi
+import wallgram.hd.wallpapers.presentation.main.AppLaunchStore
 import wallgram.hd.wallpapers.util.*
 import wallgram.hd.wallpapers.views.ChefSnackbar
 import wallgram.hd.wallpapers.views.blur.GlideProvider
@@ -54,10 +60,18 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     FragmentWallpaperBinding::inflate
 ) {
 
+    private val manager: ReviewManager by lazy {
+        ReviewManagerFactory.create(requireActivity().applicationContext)
+    }
+
     override val viewModel: WallpaperViewModel by viewModels()
 
     private lateinit var snackbar: ChefSnackbar
     private lateinit var permissionProvider: PermissionProvider
+
+    @Inject
+    lateinit var preferenceDataStore: PreferenceDataStore
+    private lateinit var downloadsStore: DownloadsCountStore.Mutable
 
     @Inject
     lateinit var adInterstitial: InterstitialAd
@@ -110,12 +124,37 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         super.onCreate(savedInstanceState)
 
         permissionProvider = PermissionProvider.Base(this)
+        downloadsStore = DownloadsCountStore.Base(preferenceDataStore)
 
         lifecycle.addObserver(adBanner)
-
         adInterstitial.load()
     }
 
+    private fun addDownload(){
+        var downloadCount = downloadsStore.read()
+        downloadCount += 1
+        downloadsStore.save(downloadCount)
+        showReviewDialog()
+    }
+
+
+    private fun showReviewDialog() {
+        var downloadCount = downloadsStore.read()
+        if (downloadCount > 2) {
+            val request = manager.requestReviewFlow()
+            request.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val reviewInfo = task.result
+                    val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+                    flow.addOnCompleteListener {
+                        // Обрабатываем завершение сценария оценки
+                    }
+                } else {
+
+                }
+            }
+        }
+    }
     private fun currentItem(): ItemUi {
         return galleryAdapter.getItems()[binding.list.currentItem]
     }
@@ -422,6 +461,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     private fun onWallpaperApplied() {
         snackbar.state(WallpaperApplication.Applied())
+        addDownload()
         viewModel.cancelWorkManagerTasks()
     }
 
@@ -468,6 +508,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
             snackbar.state(Downloading.Existent(message) {
                 openFile(fileUri, file)
             })
+            addDownload()
         } catch (e: Exception) {
             Log.d("ERROR", e.message ?: "")
         }

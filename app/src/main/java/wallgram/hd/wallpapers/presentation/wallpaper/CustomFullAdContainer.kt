@@ -5,10 +5,8 @@ import wallgram.hd.wallpapers.databinding.ViewAdNativeBannerFullBinding
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.isNotEmpty
-import com.google.android.gms.ads.nativead.NativeAdView
 import wallgram.hd.wallpapers.data.ads.recyclerbanner.RecyclerBannerAd
 import wallgram.hd.wallpapers.presentation.base.adapter.MyView
 

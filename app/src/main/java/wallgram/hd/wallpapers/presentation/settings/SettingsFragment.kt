@@ -1,5 +1,6 @@
 package wallgram.hd.wallpapers.presentation.settings
 
+import android.content.ActivityNotFoundException
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -8,8 +9,10 @@ import wallgram.hd.wallpapers.presentation.base.BaseFragment
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
+import wallgram.hd.wallpapers.App.Companion.modo
 import wallgram.hd.wallpapers.presentation.base.Screens
 import wallgram.hd.wallpapers.util.Common
+import wallgram.hd.wallpapers.util.modo.launch
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding>(
@@ -43,19 +46,27 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
     }
 
     private fun onReviewClicked() {
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val reviewInfo = request.result
-                val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+        redirectToPlayStore()
+//        val request = manager.requestReviewFlow()
+//        request.addOnCompleteListener { task ->
+//            if (task.isSuccessful) {
+//                val reviewInfo = request.result
+//                val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+//                flow.addOnCompleteListener {
+//                    // Обрабатываем завершение сценария оценки
+//                }
+//            } else {
+//            }
+//        }
+    }
 
-                flow.addOnCompleteListener {
 
-                    // Обрабатываем завершение сценария оценки
-
-                }
-            } else {
-            }
+    private fun redirectToPlayStore() {
+        val appPackageName: String = requireContext().packageName
+        try {
+            modo.launch(Screens.Browser("market://details?id=$appPackageName"))
+        } catch (exception: ActivityNotFoundException) {
+            modo.launch(Screens.Browser("https://play.google.com/store/apps/details?id=$appPackageName"))
         }
     }
 
