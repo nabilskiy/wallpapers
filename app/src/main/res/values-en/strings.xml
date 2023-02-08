@@ -88,6 +88,7 @@
     <string name="set">Set</string>
     <string name="original_size">Original size</string>
     <string name="adapted">Adapted</string>
+    <string name="push_title">Notifications</string>
 
 
 </resources>

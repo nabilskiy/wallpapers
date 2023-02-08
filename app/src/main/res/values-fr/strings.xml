@@ -87,4 +87,5 @@
     <string name="set">Installer</string>
     <string name="original_size">Taille originale</string>
     <string name="adapted">Adapté</string>
+    <string name="push_title">Notifications</string>
 </resources>

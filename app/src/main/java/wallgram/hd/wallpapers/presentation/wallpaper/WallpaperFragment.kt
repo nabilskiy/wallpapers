@@ -130,11 +130,12 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         adInterstitial.load()
     }
 
-    private fun addDownload(){
+    private fun addDownload() {
         var downloadCount = downloadsStore.read()
         downloadCount += 1
         downloadsStore.save(downloadCount)
-        showReviewDialog()
+        if (isAdded())
+            showReviewDialog()
     }
 
 
@@ -155,6 +156,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
             }
         }
     }
+
     private fun currentItem(): ItemUi {
         return galleryAdapter.getItems()[binding.list.currentItem]
     }
@@ -210,7 +212,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
             viewModel.positionLiveData.observe(viewLifecycleOwner) {
                 binding.list.setCurrentItem(it, false)
-             //   binding.ecardflowLayout.switchBgToNext(it - 1)
+                //   binding.ecardflowLayout.switchBgToNext(it - 1)
             }
 
             toolbar.doOnApplyWindowInsets { view, windowInsetsCompat, rect ->
@@ -252,10 +254,10 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
                 true
             }
 
-         //   list.clipToPadding = false
-         //   list.clipChildren = false
+            //   list.clipToPadding = false
+            //   list.clipChildren = false
             list.offscreenPageLimit = 3
-          //  list.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+            //  list.getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
 
 //            val compositePageTransformer = CompositePageTransformer().apply {
 //                addTransformer(MarginPageTransformer(30.dp))
@@ -265,7 +267,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 //                }
 //            }
 
-          //  list.setPageTransformer(compositePageTransformer)
+            //  list.setPageTransformer(compositePageTransformer)
 
 
             list.apply {
@@ -301,7 +303,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
             downloadBtn.setOnClickListener {
                 val item = currentItem()
-                if(item is GalleryUi){
+                if (item is GalleryUi) {
                     show(Features.Download(item.originalResolution()))
                 }
 

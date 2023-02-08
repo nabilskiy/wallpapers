@@ -88,4 +88,5 @@
     <string name="set">组</string>
     <string name="original_size">原始尺寸</string>
     <string name="adapted">改编</string>
+    <string name="push_title">通知</string>
 </resources>

@@ -83,5 +83,6 @@
     <string name="set">Configurar</string>
     <string name="original_size">Tamanho original</string>
     <string name="adapted">Adaptado</string>
+    <string name="push_title">Notificações</string>
 
 </resources>

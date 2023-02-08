@@ -19,7 +19,7 @@
     <string name="image">Image</string>
     <string name="retry_button">Retry</string>
     <string name="lang_title">Language</string>
-    <string name="push_title" translatable="false">Notifications</string>
+    <string name="push_title">Notifications</string>
 
     <string-array name="feed_list">
         <item>@string/news_title</item>

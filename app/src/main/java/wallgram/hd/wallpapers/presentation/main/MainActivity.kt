@@ -45,7 +45,6 @@ class MainActivity :
 
     private val modoRender by lazy {
         object : ModoRender(this@MainActivity, R.id.container) {
-
             override fun createMultiStackFragment(multiScreen: MultiScreen): MultiStackFragment =
                 MainFragment()
         }
@@ -63,10 +62,7 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-
         checkUpdate()
-
-
         firebaseAnalytics = Firebase.analytics
         FirebaseDynamicLinks.getInstance()
             .getDynamicLink(intent)
@@ -100,10 +96,9 @@ class MainActivity :
             modo.init(savedInstanceState, it.screen())
         }
 
-        viewModel.observeUpdate(this) {
-            Log.d("MAIN_ACTIVITY", it.toString())
-        }
-
+//        viewModel.observeUpdate(this) {
+//            Log.d("MAIN_ACTIVITY", it.toString())
+//        }
     }
 
     override fun onUpdateAvailable(appUpdateInfo: AppUpdateInfo, updateAvailable: Boolean) {
@@ -133,7 +128,6 @@ class MainActivity :
         super.onResume()
         modo.render = modoRender
     }
-
 
     override fun onPause() {
         modo.render = null
