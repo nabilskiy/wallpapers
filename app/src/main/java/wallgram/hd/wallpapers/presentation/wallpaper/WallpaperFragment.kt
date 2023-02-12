@@ -134,12 +134,11 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         var downloadCount = downloadsStore.read()
         downloadCount += 1
         downloadsStore.save(downloadCount)
-        if (isAdded())
-            showReviewDialog()
+        showReviewDialog()
     }
 
-
     private fun showReviewDialog() {
+        if (getActivity() == null || !isAdded()) return
         var downloadCount = downloadsStore.read()
         if (downloadCount > 2) {
             val request = manager.requestReviewFlow()
