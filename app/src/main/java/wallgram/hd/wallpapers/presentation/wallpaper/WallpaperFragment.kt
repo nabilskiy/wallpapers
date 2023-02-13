@@ -60,10 +60,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     FragmentWallpaperBinding::inflate
 ) {
 
-    private val manager: ReviewManager by lazy {
-        ReviewManagerFactory.create(requireActivity().applicationContext)
-    }
-
     override val viewModel: WallpaperViewModel by viewModels()
 
     private lateinit var snackbar: ChefSnackbar
@@ -134,26 +130,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         var downloadCount = downloadsStore.read()
         downloadCount += 1
         downloadsStore.save(downloadCount)
-        showReviewDialog()
-    }
 
-    private fun showReviewDialog() {
-        if (getActivity() == null || !isAdded()) return
-        var downloadCount = downloadsStore.read()
-        if (downloadCount > 2) {
-            val request = manager.requestReviewFlow()
-            request.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val reviewInfo = task.result
-                    val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
-                    flow.addOnCompleteListener {
-                        // Обрабатываем завершение сценария оценки
-                    }
-                } else {
-
-                }
-            }
-        }
     }
 
     private fun currentItem(): ItemUi {

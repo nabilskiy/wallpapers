@@ -40,7 +40,9 @@ class MainActivity :
     @Inject
     lateinit var preferenceDataStore: PreferenceDataStore
 
+
     private val viewModel: MainViewModel by viewModels()
+
 
 
     private val modoRender by lazy {
@@ -62,6 +64,7 @@ class MainActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+
         checkUpdate()
         firebaseAnalytics = Firebase.analytics
         FirebaseDynamicLinks.getInstance()
@@ -100,6 +103,7 @@ class MainActivity :
 //            Log.d("MAIN_ACTIVITY", it.toString())
 //        }
     }
+
 
     override fun onUpdateAvailable(appUpdateInfo: AppUpdateInfo, updateAvailable: Boolean) {
         if (updateAvailable) {

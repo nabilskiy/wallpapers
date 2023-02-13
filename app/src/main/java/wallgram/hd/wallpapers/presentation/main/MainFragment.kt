@@ -3,7 +3,10 @@ package wallgram.hd.wallpapers.presentation.main
 import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import wallgram.hd.wallpapers.R
 import wallgram.hd.wallpapers.presentation.base.Screens
@@ -11,8 +14,13 @@ import wallgram.hd.wallpapers.databinding.FragmentMainBinding
 import wallgram.hd.wallpapers.util.modo.*
 import wallgram.hd.wallpapers.util.modo.multi.StackContainerFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
+import wallgram.hd.wallpapers.core.data.PreferenceDataStore
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
+import wallgram.hd.wallpapers.presentation.wallpaper.DownloadsCountStore
+import javax.inject.Inject
 
 @AndroidEntryPoint
 open class MainFragment : MultiStackFragment() {
@@ -20,6 +28,14 @@ open class MainFragment : MultiStackFragment() {
     private var _binding: FragmentMainBinding? = null
     protected val binding: FragmentMainBinding get() = _binding!!
 
+    @Inject
+    lateinit var preferenceDataStore: PreferenceDataStore
+    private lateinit var downloadsStore: DownloadsCountStore.Mutable
+
+
+    private val manager: ReviewManager by lazy {
+        ReviewManagerFactory.create(requireActivity().applicationContext)
+    }
 
     private var multiScreen: MultiScreen? = null
         set(value) {
@@ -65,6 +81,7 @@ open class MainFragment : MultiStackFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+        downloadsStore = DownloadsCountStore.Base(preferenceDataStore)
         return binding.root
     }
 
@@ -89,9 +106,31 @@ open class MainFragment : MultiStackFragment() {
             }
         }
 
-
+        if (activity != null || isAdded)
+            Handler(Looper.getMainLooper()).postDelayed({
+                showReviewDialog()
+            }, 1000)
 
     }
+
+    private fun showReviewDialog() {
+        var downloadCount = downloadsStore.read()
+        if (downloadCount > 2) {
+            val request = manager.requestReviewFlow()
+            request.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val reviewInfo = task.result
+                    val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+                    flow.addOnCompleteListener {
+                        // Обрабатываем завершение сценария оценки
+                    }
+                } else {
+
+                }
+            }
+        }
+    }
+
 
     private fun redirectToPlayStore() {
         val appPackageName: String = requireContext().packageName
