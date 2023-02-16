@@ -16,10 +16,14 @@ import wallgram.hd.wallpapers.util.modo.multi.StackContainerFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManager
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
 import wallgram.hd.wallpapers.core.data.PreferenceDataStore
+import wallgram.hd.wallpapers.presentation.base.BaseActivity
 import wallgram.hd.wallpapers.presentation.base.BaseFragment
 import wallgram.hd.wallpapers.presentation.wallpaper.DownloadsCountStore
+import wallgram.hd.wallpapers.presentation.wallpaper.SubsTopicStore
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,7 +35,7 @@ open class MainFragment : MultiStackFragment() {
     @Inject
     lateinit var preferenceDataStore: PreferenceDataStore
     private lateinit var downloadsStore: DownloadsCountStore.Mutable
-
+    private lateinit var subsTopicStore: SubsTopicStore.Mutable
 
     private val manager: ReviewManager by lazy {
         ReviewManagerFactory.create(requireActivity().applicationContext)
@@ -82,6 +86,7 @@ open class MainFragment : MultiStackFragment() {
     ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         downloadsStore = DownloadsCountStore.Base(preferenceDataStore)
+        subsTopicStore = SubsTopicStore.Base(preferenceDataStore)
         return binding.root
     }
 
@@ -111,6 +116,23 @@ open class MainFragment : MultiStackFragment() {
                 showReviewDialog()
             }, 1000)
 
+
+        if (!subsTopicStore.read()){
+            Firebase.messaging.subscribeToTopic("news_" + getCurrentLanguage())
+                .addOnCompleteListener { task ->
+                    var msg = "Subscribed"
+                    if (!task.isSuccessful) {
+                        msg = "Subscribe failed"
+                    }else{
+                        subsTopicStore.save(true)
+                    }
+                }
+        }
+
+    }
+
+    private fun getCurrentLanguage(): String {
+        return (requireActivity() as BaseActivity<*>).getCurrentLanguage().language
     }
 
     private fun showReviewDialog() {

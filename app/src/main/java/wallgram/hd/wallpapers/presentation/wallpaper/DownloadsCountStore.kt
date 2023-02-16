@@ -14,7 +14,6 @@ interface DownloadsCountStore {
     class Base(private val preferences: PreferenceDataStore) : Mutable {
 
         override fun save(data: Int) = preferences.save(KEY, data)
-
         override fun read() = preferences.readInt(KEY)
 
         companion object {

@@ -69,6 +69,8 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     lateinit var preferenceDataStore: PreferenceDataStore
     private lateinit var downloadsStore: DownloadsCountStore.Mutable
 
+
+
     @Inject
     lateinit var adInterstitial: InterstitialAd
 
@@ -122,6 +124,7 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         permissionProvider = PermissionProvider.Base(this)
         downloadsStore = DownloadsCountStore.Base(preferenceDataStore)
 
+
         lifecycle.addObserver(adBanner)
         adInterstitial.load()
     }
@@ -130,7 +133,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
         var downloadCount = downloadsStore.read()
         downloadCount += 1
         downloadsStore.save(downloadCount)
-
     }
 
     private fun currentItem(): ItemUi {

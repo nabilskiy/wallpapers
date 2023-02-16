@@ -21,8 +21,8 @@ android {
         applicationId "wallgram.hd.wallpapers"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 43
-        versionName "1.2.2.6"
+        versionCode 44
+        versionName "1.2.2.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -48,7 +48,7 @@ android {
             firebaseAppDistribution{
                 artifactType="APK"
                 releaseNotesFile="./releasenotes.txt"
-               // testers="mfilmsnet@gmail.com"
+                testers="mfilmsnet@gmail.com"
             }
 
         }
@@ -71,7 +71,7 @@ android {
                 appId="1:520346572369:android:f4dd14e4fa7b4433c40a70"
                 artifactType="AAB"
                 releaseNotesFile="./releasenotes.txt"
-             //   testers="mfilmsnet@gmail.com"
+                testers="mfilmsnet@gmail.com"
             }
         }
     }
