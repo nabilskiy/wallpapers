@@ -52,7 +52,6 @@ class WallpapersFragment : BaseFragment<WallpapersViewModel, FragmentWallpapersB
         val galleryAdapter = GalleryAdapter()
 
         viewModel.wallpapersLiveData.observe(viewLifecycleOwner) {
-
             it.map(galleryAdapter)
         }
 
@@ -61,7 +60,6 @@ class WallpapersFragment : BaseFragment<WallpapersViewModel, FragmentWallpapersB
         }
 
         with(binding) {
-
             swipeRefreshLayout.apply {
                 setColorSchemeResources(wallgram.hd.wallpapers.R.color.colorYellow)
                 setOnRefreshListener {

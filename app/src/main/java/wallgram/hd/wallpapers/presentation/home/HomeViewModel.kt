@@ -36,11 +36,15 @@ class HomeViewModel @Inject constructor(
     fun loadData() {
         categoriesLiveDataPrivate.value = FiltersUi.Base(listOf(ProgressUi()))
         handle {
-            homeInteractor.filters({ atFinish.invoke() }) { categoriesLiveDataPrivate.value = it }
+            homeInteractor.filters({
+                atFinish.invoke()
+            }) {
+                categoriesLiveDataPrivate.value = it
+            }
         }
     }
 
-    fun observeSubscriptions(lifecycleOwner: LifecycleOwner, observer: Observer<Boolean>){
+    fun observeSubscriptions(lifecycleOwner: LifecycleOwner, observer: Observer<Boolean>) {
         observeSubscriptions.observe(lifecycleOwner, observer)
     }
 
@@ -52,7 +56,7 @@ class HomeViewModel @Inject constructor(
         showScreen(Screens.Search())
     }
 
-    fun changer(){
+    fun changer() {
         showScreen(Screens.Changer())
     }
 

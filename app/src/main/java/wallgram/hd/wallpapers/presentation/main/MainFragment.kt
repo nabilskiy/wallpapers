@@ -1,6 +1,7 @@
 package wallgram.hd.wallpapers.presentation.main
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
@@ -34,12 +35,8 @@ open class MainFragment : MultiStackFragment() {
 
     @Inject
     lateinit var preferenceDataStore: PreferenceDataStore
-    private lateinit var downloadsStore: DownloadsCountStore.Mutable
-    private lateinit var subsTopicStore: SubsTopicStore.Mutable
 
-    private val manager: ReviewManager by lazy {
-        ReviewManagerFactory.create(requireActivity().applicationContext)
-    }
+    private lateinit var subsTopicStore: SubsTopicStore.Mutable
 
     private var multiScreen: MultiScreen? = null
         set(value) {
@@ -85,7 +82,6 @@ open class MainFragment : MultiStackFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-        downloadsStore = DownloadsCountStore.Base(preferenceDataStore)
         subsTopicStore = SubsTopicStore.Base(preferenceDataStore)
         return binding.root
     }
@@ -111,47 +107,27 @@ open class MainFragment : MultiStackFragment() {
             }
         }
 
-        if (activity != null || isAdded)
-            Handler(Looper.getMainLooper()).postDelayed({
-                showReviewDialog()
-            }, 1000)
 
-
-        if (!subsTopicStore.read()){
+        if (!subsTopicStore.read()) {
             Firebase.messaging.subscribeToTopic("news_" + getCurrentLanguage())
                 .addOnCompleteListener { task ->
                     var msg = "Subscribed"
                     if (!task.isSuccessful) {
                         msg = "Subscribe failed"
-                    }else{
+                    } else {
                         subsTopicStore.save(true)
                     }
                 }
         }
-
     }
+
+
 
     private fun getCurrentLanguage(): String {
         return (requireActivity() as BaseActivity<*>).getCurrentLanguage().language
     }
 
-    private fun showReviewDialog() {
-        var downloadCount = downloadsStore.read()
-        if (downloadCount > 2) {
-            val request = manager.requestReviewFlow()
-            request.addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val reviewInfo = task.result
-                    val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
-                    flow.addOnCompleteListener {
-                        // Обрабатываем завершение сценария оценки
-                    }
-                } else {
 
-                }
-            }
-        }
-    }
 
 
     private fun redirectToPlayStore() {

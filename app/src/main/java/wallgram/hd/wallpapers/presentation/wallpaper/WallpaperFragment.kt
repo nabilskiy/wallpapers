@@ -69,8 +69,6 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
     lateinit var preferenceDataStore: PreferenceDataStore
     private lateinit var downloadsStore: DownloadsCountStore.Mutable
 
-
-
     @Inject
     lateinit var adInterstitial: InterstitialAd
 
@@ -89,15 +87,12 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     override fun onDestroyView() {
         snackbar.dismiss()
-
         showInterstitialAd()
-
         super.onDestroyView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
         viewModel.cancelWorkManagerTasks()
     }
 
@@ -120,11 +115,8 @@ class WallpaperFragment : BaseSlidingUpFragment<WallpaperViewModel, FragmentWall
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         permissionProvider = PermissionProvider.Base(this)
         downloadsStore = DownloadsCountStore.Base(preferenceDataStore)
-
-
         lifecycle.addObserver(adBanner)
         adInterstitial.load()
     }
